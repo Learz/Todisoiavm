@@ -1,11 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://scenes/assets/UI/StartGameButton.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/assets/UI/StartButton.tscn" type="PackedScene" id=1]
 [ext_resource path="res://resources/title.png" type="Texture" id=2]
 [ext_resource path="res://scenes/assets/UI/OptionsButton.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/assets/UI/ExitButton.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/assets/UI/CompanyButton.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/assets/UI/Fade_in.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/s_menu/s_menu.gd" type="Script" id=8]
 
 [sub_resource type="StyleBoxEmpty" id=1]
@@ -52,16 +51,14 @@ alignment = 2
 margin_top = 216.0
 margin_right = 876.0
 margin_bottom = 276.0
-focus_neighbour_top = NodePath("../ExitBtn")
-custom_styles/focus = SubResource( 1 )
-link = "res://scenes/s_main/S_Main.tscn"
-type = 0
+textLabel = NodePath("")
 
 [node name="OptionsBtn" parent="Menu/CenterRow/Buttons" instance=ExtResource( 3 )]
 margin_top = 286.0
 margin_right = 876.0
 margin_bottom = 346.0
 custom_styles/focus = SubResource( 1 )
+textLabel = NodePath("")
 
 [node name="ExitBtn" parent="Menu/CenterRow/Buttons" instance=ExtResource( 4 )]
 margin_top = 356.0
@@ -69,6 +66,7 @@ margin_right = 876.0
 margin_bottom = 416.0
 focus_neighbour_bottom = NodePath("../StartBtn")
 custom_styles/focus = SubResource( 1 )
+textLabel = NodePath("")
 
 [node name="CompanyBtn" parent="Menu/CenterRow" instance=ExtResource( 5 )]
 margin_left = 880.0
@@ -79,6 +77,4 @@ focus_neighbour_bottom = NodePath("../Buttons/StartBtn")
 custom_styles/focus = SubResource( 1 )
 link = "https://learz.itch.io/"
 type = 1
-
-[node name="Fade_in" parent="." instance=ExtResource( 6 )]
-[connection signal="animation_finished" from="Fade_in" to="." method="_on_Fade_in_animation_finished"]
+textLabel = NodePath("")

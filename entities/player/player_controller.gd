@@ -5,6 +5,8 @@ extends KinematicBody
 # Camera
 export var mouse_sensitivity := 10.0
 export var mouse_smoothness := 80
+export var joystick_sensitivity := 2.0
+export var joystick_deadzone := 0.08
 export var head_path: NodePath
 export var cam_path: NodePath
 export var FOV := 80.0
@@ -32,6 +34,9 @@ export var fly_accel := 4
 var flying := false
 # Slopes
 export var floor_max_angle := 45.0
+
+#Phone
+var phone_out = false
 
 ##################################################
 
@@ -61,7 +66,12 @@ func _physics_process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		mouse_axis = event.relative
-
+	if event.is_action_pressed("phone"):
+		phone_out = !phone_out
+		var phonePos = Vector3(0.15,-0.07,-0.2) if phone_out else Vector3(0.15,-0.4,-0.2)
+		var easeType = Tween.EASE_OUT if phone_out else Tween.EASE_IN
+		$Tween.interpolate_property($Head/Phone, "translation", $Head/Phone.translation, phonePos, 1.0, Tween.TRANS_BACK, easeType)
+		$Tween.start()
 
 func walk(delta: float) -> void:
 	# Input
@@ -151,20 +161,27 @@ func fly(delta: float) -> void:
 	velocity = move_and_slide(velocity)
 
 
-func camera_rotation() -> void:
-	if Input.get_mouse_mode() != Input.MOUSE_MODE_CAPTURED:
-		return
-	if mouse_axis.length() > 0:
+func camera_rotation() -> void:	
+	var joystick_axis = Vector2(Input.get_joy_axis(0, 2),Input.get_joy_axis(0, 3))
+	
+	var horizontal:float = 0
+	var vertical:float = 0
+	
+	if joystick_axis.length() > joystick_deadzone:
+		horizontal += -(joystick_axis.x * joystick_sensitivity)
+		vertical += -(joystick_axis.y * joystick_sensitivity)
+	
+	if mouse_axis.length() > 0 and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		# Get mouse delta
-		var horizontal: float = -(mouse_axis.x * mouse_sensitivity) / mouse_smoothness 
-		var vertical: float = -(mouse_axis.y * mouse_sensitivity) / mouse_smoothness 
+		horizontal += -(mouse_axis.x * mouse_sensitivity) / mouse_smoothness 
+		vertical += -(mouse_axis.y * mouse_sensitivity) / mouse_smoothness 
 		
 		mouse_axis = Vector2()
 		
-		rotate_y(deg2rad(horizontal))
-		head.rotate_x(deg2rad(vertical))
-		
-		# Clamp mouse rotation
-		var temp_rot: Vector3 = head.rotation_degrees
-		temp_rot.x = clamp(temp_rot.x, -90, 90)
-		head.rotation_degrees = temp_rot
+	rotate_y(deg2rad(horizontal))
+	head.rotate_x(deg2rad(vertical))
+	
+	# Clamp mouse rotation
+	var temp_rot: Vector3 = head.rotation_degrees
+	temp_rot.x = clamp(temp_rot.x, -90, 90)
+	head.rotation_degrees = temp_rot
