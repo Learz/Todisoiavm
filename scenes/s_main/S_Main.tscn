@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scenes/s_main/default_env.tres" type="Environment" id=1]
 [ext_resource path="res://scenes/s_main/s_main.gd" type="Script" id=2]
@@ -8,9 +8,8 @@
 [ext_resource path="res://scenes/s_main/materials/dark.material" type="Material" id=6]
 [ext_resource path="res://scenes/s_main/materials/blue.material" type="Material" id=7]
 [ext_resource path="res://entities/House.tscn" type="PackedScene" id=8]
-[ext_resource path="res://resources/Tree_SpriteSheet.png" type="Texture" id=9]
-[ext_resource path="res://resources/Tree_SpriteSheet_n.png" type="Texture" id=10]
-[ext_resource path="res://scenes/s_main/MeshInstance.gd" type="Script" id=11]
+[ext_resource path="res://entities/Billboard.tscn" type="PackedScene" id=9]
+[ext_resource path="res://resources/sided_billboard_test.png" type="Texture" id=13]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 1, 1, 1 )
@@ -21,20 +20,16 @@ points = PoolVector3Array( -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 
 [sub_resource type="CubeMesh" id=3]
 size = Vector3( 1, 1, 1 )
 
-[sub_resource type="QuadMesh" id=4]
-
-[sub_resource type="SpatialMaterial" id=5]
-flags_transparent = true
+[sub_resource type="SpatialMaterial" id=4]
+resource_local_to_scene = true
 params_billboard_mode = 2
 params_billboard_keep_scale = true
 params_use_alpha_scissor = true
 params_alpha_scissor_threshold = 0.5
-albedo_texture = ExtResource( 9 )
+albedo_texture = ExtResource( 13 )
 normal_enabled = true
 normal_scale = 1.0
-normal_texture = ExtResource( 10 )
-uv1_scale = Vector3( 0.2, 0.5, 1 )
-uv1_offset = Vector3( 0, 0.075, 0 )
+uv1_scale = Vector3( 0.25, 1, 1 )
 
 [node name="S_Main" type="Spatial"]
 script = ExtResource( 2 )
@@ -111,7 +106,7 @@ shadow_enabled = true
 shadow_color = Color( 0.6, 0.6, 0.6, 1 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24.3396, 3, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23.7362, 3, -6.5016 )
 head_path = NodePath("../Player/Head")
 cam_path = NodePath("../Player/Head/Camera")
 FOV = 70.0
@@ -182,8 +177,11 @@ transform = Transform( 6.55671e-07, 0, -5, 0, 5, 0, 5, 0, 6.55671e-07, 25.8588, 
 [node name="House9" parent="Houses" instance=ExtResource( 8 )]
 transform = Transform( 5, 0, 8.74228e-07, 0, 5, 0, -8.74228e-07, 0, 5, 41.7588, 0, 26 )
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 20, 25.7491, 5.43674, -1.42935 )
-mesh = SubResource( 4 )
-material/0 = SubResource( 5 )
-script = ExtResource( 11 )
+[node name="Ladder" parent="." instance=ExtResource( 4 )]
+transform = Transform( -2.99966, 0, 0.0453938, 0, 3, 0, -0.0453938, 0, -2.99966, 33.9834, 1.5, 3.27069 )
+
+[node name="Billboard" parent="." instance=ExtResource( 9 )]
+transform = Transform( 2.98237, 0, -0.324724, 0, 3, 0, 0.324724, 0, 2.98237, 23.0283, 2.05533, 0 )
+material/0 = SubResource( 4 )
+four_sided = true
+texture = ExtResource( 13 )

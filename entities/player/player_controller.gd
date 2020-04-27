@@ -32,6 +32,7 @@ export var jump_height := 10
 export var fly_speed := 10
 export var fly_accel := 4
 var flying := false
+var climbing := false
 # Slopes
 export var floor_max_angle := 45.0
 
@@ -59,6 +60,8 @@ func _process(_delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	if flying:
 		fly(delta)
+	elif climbing:
+		climb(delta)
 	else:
 		walk(delta)
 
@@ -139,6 +142,26 @@ func walk(delta: float) -> void:
 	velocity.y = move_and_slide_with_snap(velocity, _snap, FLOOR_NORMAL, 
 			true, 4, deg2rad(floor_max_angle)).y
 
+func climb(delta: float) -> void:
+	# Input
+	direction = Vector3()
+	var aim = head.get_global_transform().basis
+	if move_axis.x == 1:
+		direction -= aim.z
+	if move_axis.x == -1:
+		direction += aim.z
+	if move_axis.y == -1:
+		direction -= aim.x
+	if move_axis.y == 1:
+		direction += aim.x
+	direction = direction.normalized()
+	
+	# Acceleration and Deacceleration
+	var target: Vector3 = direction * fly_speed
+	velocity = velocity.linear_interpolate(target, fly_accel * delta)
+	
+	# Move
+	velocity = move_and_slide(velocity)
 
 func fly(delta: float) -> void:
 	# Input
