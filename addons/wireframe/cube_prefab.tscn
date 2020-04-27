@@ -2,7 +2,8 @@
 
 [ext_resource path="res://addons/wireframe/cube_basic.mesh" type="ArrayMesh" id=1]
 [ext_resource path="res://addons/wireframe/cyan.material" type="Material" id=2]
-[ext_resource path="res://addons/wireframe/onlyInEditor.gd" type="Script" id=3]
+[ext_resource path="res://entities/onlyInEditor.gd" type="Script" id=3]
+
 
 [node name="cube_prefab" type="MeshInstance"]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )

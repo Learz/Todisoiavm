@@ -76,6 +76,8 @@ func _input(event: InputEvent) -> void:
 		var easeType = Tween.EASE_OUT if phone_out else Tween.EASE_IN
 		$Tween.interpolate_property($Head/Phone, "translation", $Head/Phone.translation, phonePos, 1.0, Tween.TRANS_BACK, easeType)
 		$Tween.start()
+	if event.is_action_pressed("fly"):
+		flying = !flying
 
 func walk(delta: float) -> void:
 	# Input

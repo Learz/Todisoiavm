@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/s_main/default_env.tres" type="Environment" id=1]
 [ext_resource path="res://scenes/s_main/s_main.gd" type="Script" id=2]
@@ -9,7 +9,7 @@
 [ext_resource path="res://scenes/s_main/materials/blue.material" type="Material" id=7]
 [ext_resource path="res://entities/House.tscn" type="PackedScene" id=8]
 [ext_resource path="res://entities/Billboard.tscn" type="PackedScene" id=9]
-[ext_resource path="res://resources/sided_billboard_test.png" type="Texture" id=13]
+[ext_resource path="res://resources/monkeh.png" type="Texture" id=10]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 1, 1, 1 )
@@ -19,17 +19,6 @@ points = PoolVector3Array( -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 
 
 [sub_resource type="CubeMesh" id=3]
 size = Vector3( 1, 1, 1 )
-
-[sub_resource type="SpatialMaterial" id=4]
-resource_local_to_scene = true
-params_billboard_mode = 2
-params_billboard_keep_scale = true
-params_use_alpha_scissor = true
-params_alpha_scissor_threshold = 0.5
-albedo_texture = ExtResource( 13 )
-normal_enabled = true
-normal_scale = 1.0
-uv1_scale = Vector3( 0.25, 1, 1 )
 
 [node name="S_Main" type="Spatial"]
 script = ExtResource( 2 )
@@ -180,8 +169,7 @@ transform = Transform( 5, 0, 8.74228e-07, 0, 5, 0, -8.74228e-07, 0, 5, 41.7588, 
 [node name="Ladder" parent="." instance=ExtResource( 4 )]
 transform = Transform( -2.99966, 0, 0.0453938, 0, 3, 0, -0.0453938, 0, -2.99966, 33.9834, 1.5, 3.27069 )
 
-[node name="Billboard" parent="." instance=ExtResource( 9 )]
-transform = Transform( 2.98237, 0, -0.324724, 0, 3, 0, 0.324724, 0, 2.98237, 23.0283, 2.05533, 0 )
-material/0 = SubResource( 4 )
+[node name="Billlboard" parent="." instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23.859, 1.5, -1.14891 )
 four_sided = true
-texture = ExtResource( 13 )
+texture = ExtResource( 10 )
