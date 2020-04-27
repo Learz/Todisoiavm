@@ -51,14 +51,14 @@ alignment = 2
 margin_top = 216.0
 margin_right = 876.0
 margin_bottom = 276.0
-textLabel = NodePath("")
+title = "StartGame"
 
 [node name="OptionsBtn" parent="Menu/CenterRow/Buttons" instance=ExtResource( 3 )]
 margin_top = 286.0
 margin_right = 876.0
 margin_bottom = 346.0
 custom_styles/focus = SubResource( 1 )
-textLabel = NodePath("")
+title = "Options"
 
 [node name="ExitBtn" parent="Menu/CenterRow/Buttons" instance=ExtResource( 4 )]
 margin_top = 356.0
@@ -66,7 +66,7 @@ margin_right = 876.0
 margin_bottom = 416.0
 focus_neighbour_bottom = NodePath("../StartBtn")
 custom_styles/focus = SubResource( 1 )
-textLabel = NodePath("")
+title = "Exit"
 
 [node name="CompanyBtn" parent="Menu/CenterRow" instance=ExtResource( 5 )]
 margin_left = 880.0
@@ -75,6 +75,6 @@ focus_neighbour_top = NodePath("../Buttons/StartBtn")
 focus_neighbour_right = NodePath("../Buttons/StartBtn")
 focus_neighbour_bottom = NodePath("../Buttons/StartBtn")
 custom_styles/focus = SubResource( 1 )
+title = "V0.0.1"
 link = "https://learz.itch.io/"
 type = 1
-textLabel = NodePath("")

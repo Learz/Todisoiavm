@@ -4,11 +4,10 @@ extends Button
 export(String, MULTILINE) var title setget setTitle
 export(String) var link
 export(int, "Scene", "Url", "Quit") var type := 2
-export(NodePath) var textLabel
 
 func setTitle(newTitle):
-	if(textLabel):
-		textLabel.text = newTitle
+	if($Label):
+		$Label.text = newTitle
 		title = newTitle
 
 func _on_MenuButton_focus_entered():

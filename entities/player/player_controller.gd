@@ -50,6 +50,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	move_axis.x = Input.get_action_strength("move_forward") - Input.get_action_strength("move_backward")
 	move_axis.y = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+	$Head/Phone.translation.x = (get_viewport().get_visible_rect().size.x/1280)*0.15 * 720/get_viewport().get_visible_rect().size.y
 	
 	camera_rotation()
 
@@ -68,7 +69,7 @@ func _input(event: InputEvent) -> void:
 		mouse_axis = event.relative
 	if event.is_action_pressed("phone"):
 		phone_out = !phone_out
-		var phonePos = Vector3(0.15,-0.07,-0.2) if phone_out else Vector3(0.15,-0.4,-0.2)
+		var phonePos = Vector3($Head/Phone.translation.x,-0.07,-0.2) if phone_out else Vector3($Head/Phone.translation.x,-0.4,-0.2)
 		var easeType = Tween.EASE_OUT if phone_out else Tween.EASE_IN
 		$Tween.interpolate_property($Head/Phone, "translation", $Head/Phone.translation, phonePos, 1.0, Tween.TRANS_BACK, easeType)
 		$Tween.start()

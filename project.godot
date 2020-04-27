@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="TODISOIAVM"
-run/main_scene="res://scenes/s_menu/s_menu.tscn"
+run/main_scene="res://scenes/s_main/S_Main.tscn"
 
 [autoload]
 
@@ -29,7 +29,7 @@ window/size/height=720
 
 [editor_plugins]
 
-enabled=PoolStringArray( "CodeSnippetPopup", "scene_transition" )
+enabled=PoolStringArray( "CodeSnippetPopup", "scene_transition", "zylann.translation_editor" )
 
 [importer_defaults]
 
@@ -1151,6 +1151,10 @@ phone={
 
 3d_physics/layer_1="Objects"
 3d_physics/layer_2="Player"
+
+[locale]
+
+translations=PoolStringArray( "res://resources/Localization/menus.csv" )
 
 [rendering]
 

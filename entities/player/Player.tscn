@@ -26,7 +26,6 @@ shape = SubResource( 1 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 
 [node name="Camera" type="Camera" parent="Head"]
-far = 250.0
 
 [node name="Phone" type="MeshInstance" parent="Head"]
 transform = Transform( 0.0866025, 0.0173648, -0.00492404, 0, 0.196962, 0.00173648, 0.05, -0.0300767, 0.00852869, 0.15, -0.4, -0.2 )
