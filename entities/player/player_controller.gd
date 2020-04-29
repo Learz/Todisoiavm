@@ -38,12 +38,14 @@ export var floor_max_angle := 45.0
 
 #Phone
 var phone_out = false
+var phoneOrigin : Vector3
 
 ##################################################
 
 # Called when the node enters the scene tree
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	phoneOrigin = $Head/Phone.translation
 	cam.fov = FOV
 
 
@@ -51,7 +53,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	move_axis.x = Input.get_action_strength("move_forward") - Input.get_action_strength("move_backward")
 	move_axis.y = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
-	$Head/Phone.translation.x = (get_viewport().get_visible_rect().size.x/1280)*0.15 * 720/get_viewport().get_visible_rect().size.y
+	$Head/Phone.translation.x = (get_viewport().get_visible_rect().size.x/1280)*phoneOrigin.x * 720/get_viewport().get_visible_rect().size.y
 	
 	camera_rotation()
 
@@ -72,12 +74,27 @@ func _input(event: InputEvent) -> void:
 		mouse_axis = event.relative
 	if event.is_action_pressed("phone"):
 		phone_out = !phone_out
-		var phonePos = Vector3($Head/Phone.translation.x,-0.07,-0.2) if phone_out else Vector3($Head/Phone.translation.x,-0.4,-0.2)
+		if phone_out:
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		else:
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		var phonePos = Vector3($Head/Phone.translation.x,-0.02,phoneOrigin.z) if phone_out else Vector3($Head/Phone.translation.x,-0.5,phoneOrigin.z)
 		var easeType = Tween.EASE_OUT if phone_out else Tween.EASE_IN
 		$Tween.interpolate_property($Head/Phone, "translation", $Head/Phone.translation, phonePos, 1.0, Tween.TRANS_BACK, easeType)
 		$Tween.start()
 	if event.is_action_pressed("fly"):
 		flying = !flying
+	if event.is_action_pressed("action"):
+		if(not phone_out):
+			for uiElement in get_tree().get_nodes_in_group("UI"):
+				uiElement.hide()
+			yield(get_tree(), "idle_frame")
+			yield(get_tree(), "idle_frame")
+			var image = get_viewport().get_texture().get_data()
+			image.flip_y()
+			image.save_png("res://screenshot.png")
+			for uiElement in get_tree().get_nodes_in_group("UI"):
+				uiElement.show()
 
 func walk(delta: float) -> void:
 	# Input

@@ -6,6 +6,9 @@ export var enabled := true
 
 ##################################################
 
+func _ready():
+	add_to_group("UI")
+
 func _process(_delta: float) -> void:
 	if enabled:
 		var frames: float = Engine.get_frames_per_second()

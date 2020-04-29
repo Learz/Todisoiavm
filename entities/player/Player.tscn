@@ -1,13 +1,28 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://entities/player/player_controller.gd" type="Script" id=1]
+[ext_resource path="res://entities/player/PhoneTouchInput.gd" type="Script" id=2]
+[ext_resource path="res://entities/PhoneUI.tscn" type="PackedScene" id=3]
+[ext_resource path="res://resources/models/phone.obj" type="ArrayMesh" id=4]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.6
 height = 1.5
 
-[sub_resource type="CubeMesh" id=2]
-size = Vector3( 1, 1, 1 )
+[sub_resource type="ViewportTexture" id=2]
+viewport_path = NodePath("Head/Phone/Viewport")
+
+[sub_resource type="SpatialMaterial" id=3]
+resource_local_to_scene = true
+albedo_texture = SubResource( 2 )
+
+[sub_resource type="QuadMesh" id=4]
+
+[sub_resource type="SpatialMaterial" id=5]
+params_cull_mode = 1
+
+[sub_resource type="BoxShape" id=6]
+margin = 0.001
 
 [node name="Player" type="KinematicBody" groups=[
 "Player",
@@ -29,9 +44,33 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 size = 3.0
 
 [node name="Phone" type="MeshInstance" parent="Head"]
-transform = Transform( 0.0866025, 0.0173648, -0.00492404, 0, 0.196962, 0.00173648, 0.05, -0.0300767, 0.00852869, 0.15, -0.4, -0.2 )
-cast_shadow = 0
-mesh = SubResource( 2 )
-material/0 = null
+transform = Transform( 0.0492404, -0.00868241, 3.7952e-10, 0, -2.18557e-09, -0.05, 0.00868241, 0.0492404, -2.15237e-09, 0.15, -0.5, -0.2 )
+mesh = ExtResource( 4 )
+material/0 = SubResource( 3 )
+script = ExtResource( 2 )
+
+[node name="Viewport" type="Viewport" parent="Head/Phone"]
+size = Vector2( 1024, 1024 )
+hdr = false
+usage = 0
+render_target_v_flip = true
+
+[node name="PhoneUI" parent="Head/Phone/Viewport" instance=ExtResource( 3 )]
+margin_right = 0.0
+margin_bottom = 0.0
+
+[node name="Quad" type="MeshInstance" parent="Head/Phone"]
+transform = Transform( 4, -7.10543e-15, 0, 0, -6.51683e-07, 1, 0, -4, -1.62921e-07, 0.70314, 0.131338, -0.125641 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="Area" type="Area" parent="Head/Phone/Quad"]
+transform = Transform( 1, 0, 8.88178e-16, 0, 1, 0, 0, -3.55271e-15, 1, 0, 0, 0 )
+input_capture_on_drag = true
+collision_layer = 2
+
+[node name="CollisionShape" type="CollisionShape" parent="Head/Phone/Quad/Area"]
+transform = Transform( 2.25, 0, 0, 0, 2.25, 0, 0, 0, 0.5, 0, 0, 0 )
+shape = SubResource( 6 )
 
 [node name="Tween" type="Tween" parent="."]

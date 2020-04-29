@@ -102,7 +102,9 @@ FOV = 70.0
 walk_speed = 5
 sprint_speed = 7
 
-[node name="FPS_Counter" parent="." instance=ExtResource( 5 )]
+[node name="FPS_Counter" parent="." groups=[
+"UI",
+] instance=ExtResource( 5 )]
 
 [node name="Houses" type="Spatial" parent="."]
 
