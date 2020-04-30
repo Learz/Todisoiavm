@@ -51,7 +51,7 @@ alignment = 2
 margin_top = 216.0
 margin_right = 876.0
 margin_bottom = 276.0
-title = "StartGame"
+title = "Start Wandering"
 
 [node name="OptionsBtn" parent="Menu/CenterRow/Buttons" instance=ExtResource( 3 )]
 margin_top = 286.0

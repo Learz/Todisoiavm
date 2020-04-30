@@ -4,6 +4,8 @@ extends Spatial
 var quad_mesh_size
 # Used for checking if the mouse is inside the Area
 var is_mouse_inside = false
+# Used for checking if the mouse is inside the Area
+var is_phone_out = false
 # Used for checking if the mouse was pressed inside the Area
 var is_mouse_held = false
 # The last non-empty mouse position. Used when dragging outside of the box.
@@ -26,7 +28,6 @@ func _process(_delta):
 func _mouse_entered_area():
 	is_mouse_inside = true
 
-
 func _input(event):
 	# Check if the event is a non-mouse/non-touch event
 	var is_mouse_event = false
@@ -38,7 +39,7 @@ func _input(event):
 	# If the event is a mouse/touch event and/or the mouse is either held or inside the area, then
 	# we need to do some additional processing in the handle_mouse function before passing the event to the viewport.
 	# If the event is not a mouse/touch event, then we can just pass the event directly to the viewport.
-	if is_mouse_event and (is_mouse_inside or is_mouse_held):
+	if is_mouse_event and (is_mouse_inside or is_mouse_held) and is_phone_out:
 		handle_mouse(event)
 	elif not is_mouse_event:
 		node_viewport.input(event)

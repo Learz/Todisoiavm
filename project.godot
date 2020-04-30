@@ -17,6 +17,7 @@ _global_script_class_icons={
 
 config/name="TODISOIAVM"
 run/main_scene="res://scenes/s_main/S_Main.tscn"
+config/icon="res://icon.png"
 
 [autoload]
 
@@ -1164,6 +1165,8 @@ translations=PoolStringArray( "res://resources/Localization/menus.csv" )
 
 [rendering]
 
+quality/directional_shadow/size=8192
+quality/shadow_atlas/size=8192
 environment/default_clear_color=Color( 0.14902, 0.192157, 0.219608, 1 )
-quality/filters/msaa=1
+quality/filters/msaa=4
 environment/default_environment="res://scenes/s_main/default_env.tres"
