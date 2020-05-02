@@ -9,12 +9,13 @@
 radius = 0.6
 height = 1.5
 
-[sub_resource type="ViewportTexture" id=2]
-viewport_path = NodePath("Head/Phone/Viewport")
+[sub_resource type="ViewportTexture" id=7]
+viewport_path = NodePath("Head/Viewport")
 
 [sub_resource type="SpatialMaterial" id=3]
 resource_local_to_scene = true
-albedo_texture = SubResource( 2 )
+flags_no_depth_test = true
+albedo_texture = SubResource( 7 )
 
 [sub_resource type="QuadMesh" id=4]
 
@@ -45,22 +46,22 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 [node name="Camera" type="Camera" parent="Head"]
 size = 3.0
 
+[node name="Viewport" type="Viewport" parent="Head"]
+size = Vector2( 1024, 1024 )
+hdr = false
+usage = 0
+render_target_v_flip = true
+
+[node name="PhoneUI" parent="Head/Viewport" instance=ExtResource( 3 )]
+margin_right = 0.0
+margin_bottom = 0.0
+
 [node name="Phone" type="MeshInstance" parent="Head"]
 transform = Transform( 0.0492404, -0.00868241, 3.7952e-10, 0, -2.18557e-09, -0.05, 0.00868241, 0.0492404, -2.15237e-09, 0.15, -0.5, -0.2 )
 cast_shadow = 0
 mesh = ExtResource( 4 )
 material/0 = SubResource( 3 )
 script = ExtResource( 2 )
-
-[node name="Viewport" type="Viewport" parent="Head/Phone"]
-size = Vector2( 1024, 1024 )
-hdr = false
-usage = 0
-render_target_v_flip = true
-
-[node name="PhoneUI" parent="Head/Phone/Viewport" instance=ExtResource( 3 )]
-margin_right = 0.0
-margin_bottom = 0.0
 
 [node name="Quad" type="MeshInstance" parent="Head/Phone"]
 transform = Transform( 4, -7.10543e-15, 0, 0, -6.51683e-07, 1, 0, -4, -1.62921e-07, 0.70314, 0.131338, -0.125641 )

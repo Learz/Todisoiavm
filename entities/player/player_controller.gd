@@ -88,30 +88,33 @@ func _input(event: InputEvent) -> void:
 		flying = !flying
 	if event.is_action_pressed("action"):
 		if(not phone_out):
-			for uiElement in get_tree().get_nodes_in_group("UI"):
-				uiElement.hide()
-			yield(get_tree(), "idle_frame")
-			yield(get_tree(), "idle_frame")
-			var image = get_viewport().get_texture().get_data()
-			image.flip_y()
-			var timeDict = OS.get_datetime()
-			
-			var year = timeDict.year
-			var month = timeDict.month
-			var day = timeDict.day
-			var hour = timeDict.hour
-			var minute = timeDict.minute
-			var second = timeDict.second
-			
-			var screenshot_title = ("Photo_%02d%02d%02d_%02d%02d%02d" % [year, month, day, hour, minute, second])
-			var dir = Directory.new()
-			dir.open("res://")
-			if not dir.dir_exists("TODISOIAVM Photos"): 
-				dir.make_dir("TODISOIAVM Photos")
-			dir.open("TODISOIAVM Photos")
-			image.save_png("%s/%s.png" % [dir.get_current_dir(), screenshot_title])
-			for uiElement in get_tree().get_nodes_in_group("UI"):
-				uiElement.show()
+			screenshot()
+
+func screenshot():
+	for uiElement in get_tree().get_nodes_in_group("UI"):
+		uiElement.hide()
+	yield(get_tree(), "idle_frame")
+	yield(get_tree(), "idle_frame")
+	var image = get_viewport().get_texture().get_data()
+	image.flip_y()
+	var timeDict = OS.get_datetime()
+	
+	var year = timeDict.year
+	var month = timeDict.month
+	var day = timeDict.day
+	var hour = timeDict.hour
+	var minute = timeDict.minute
+	var second = timeDict.second
+	
+	var screenshot_title = ("Photo_%02d%02d%02d_%02d%02d%02d" % [year, month, day, hour, minute, second])
+	var dir = Directory.new()
+	dir.open("res://")
+	if not dir.dir_exists("TODISOIAVM Photos"): 
+		dir.make_dir("TODISOIAVM Photos")
+	dir.open("TODISOIAVM Photos")
+	image.save_png("%s/%s.png" % [dir.get_current_dir(), screenshot_title])
+	for uiElement in get_tree().get_nodes_in_group("UI"):
+		uiElement.show()
 
 func walk(delta: float) -> void:
 	# Input

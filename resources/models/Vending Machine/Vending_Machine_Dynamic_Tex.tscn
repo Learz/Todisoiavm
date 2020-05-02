@@ -1,0 +1,146 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://resources/fonts/Roboto-Black.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://resources/models/Vending Machine/Vending_Machine_Tex.png" type="Texture" id=2]
+[ext_resource path="res://resources/models/Vending Machine/Vending_Machine.png" type="Texture" id=3]
+[ext_resource path="res://resources/models/Vending Machine/Vending_Machine_Dynamic_Tex.gd" type="Script" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+outline_size = 2
+use_filter = true
+font_data = ExtResource( 1 )
+
+[node name="Vending_Machine_Generated_Texture" type="Control"]
+anchor_right = 0.8
+anchor_bottom = 1.422
+margin_bottom = 0.159973
+rect_min_size = Vector2( 1024, 1024 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VMC1" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -40.0
+color = Color( 0.690196, 1, 0.235294, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VMC2" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 499.0
+margin_right = -1.0
+margin_bottom = 60.0
+color = Color( 0.690196, 1, 0.235294, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VMC3" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 630.0
+margin_top = 1.0
+margin_right = 269.0
+color = Color( 0.690196, 1, 0.235294, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Template" type="TextureRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BrandingWindow" type="ColorRect" parent="."]
+margin_left = 41.0
+margin_top = 14.0
+margin_right = 357.0
+margin_bottom = 298.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Label" type="Label" parent="BrandingWindow"]
+margin_left = 109.754
+margin_top = 13.3309
+margin_right = 344.754
+margin_bottom = 133.331
+rect_rotation = 45.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "REALTIME
+GENERATED
+TEXTURE"
+align = 1
+valign = 1
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AdWindow" type="ColorRect" parent="."]
+margin_left = 41.788
+margin_top = 307.582
+margin_right = 358.788
+margin_bottom = 489.582
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Label" type="Label" parent="AdWindow"]
+margin_left = 42.882
+margin_top = 29.1621
+margin_right = 277.882
+margin_bottom = 149.162
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "I CAN PUT 
+ANYTHING
+HERE"
+align = 1
+valign = 1
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SidePanelText" type="Label" parent="."]
+margin_left = 398.0
+margin_top = 555.0
+margin_right = 598.0
+margin_bottom = 675.0
+rect_rotation = -23.2
+rect_pivot_offset = Vector2( 100, 60 )
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "HAHA
+HOW BOUT
+THAT"
+align = 1
+valign = 1
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Node" type="Node" parent="."]

@@ -13,7 +13,7 @@ var last_mouse_pos3D = null
 # The last processed input touch/mouse event. To calculate relative movement.
 var last_mouse_pos2D = null
 
-onready var node_viewport = $Viewport
+onready var node_viewport = get_node("../Viewport")
 onready var node_quad = $Quad
 onready var node_area = $Quad/Area
 

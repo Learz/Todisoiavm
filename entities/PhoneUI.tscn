@@ -1,13 +1,14 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://resources/models/phone_bg.jpg" type="Texture" id=1]
 [ext_resource path="res://entities/time.gd" type="Script" id=2]
 [ext_resource path="res://resources/signal.png" type="Texture" id=3]
 [ext_resource path="res://entities/PhoneUI.gd" type="Script" id=4]
 [ext_resource path="res://resources/fonts/PhoneUI_font.tres" type="DynamicFontData" id=5]
+[ext_resource path="res://resources/notch.png" type="Texture" id=6]
 [ext_resource path="res://entities/PhoneIcon.tscn" type="PackedScene" id=7]
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=1]
 size = 24
 font_data = ExtResource( 5 )
 
@@ -69,7 +70,7 @@ color = Color( 0.501961, 0.501961, 0.501961, 0.705882 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -60.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 1 )
 text = "00:00"
 align = 2
 valign = 1
@@ -83,7 +84,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 60.0
 size_flags_horizontal = 8
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 1 )
 text = "AC&C"
 valign = 1
 __meta__ = {
@@ -102,10 +103,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TextureRect2" type="TextureRect" parent="HBoxContainer/TextureRect/VBoxContainer/Notification"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -8.0
+margin_right = 0.154053
+rect_min_size = Vector2( 48, 48 )
+size_flags_horizontal = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="ScreenContent" type="MarginContainer" parent="HBoxContainer/TextureRect/VBoxContainer"]
 margin_top = 140.0
 margin_right = 509.0
-margin_bottom = 874.0
+margin_bottom = 924.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_right = 60
@@ -116,7 +131,7 @@ custom_constants/margin_left = 60
 margin_left = 60.0
 margin_top = 40.0
 margin_right = 449.0
-margin_bottom = 734.0
+margin_bottom = 784.0
 custom_constants/vseparation = 30
 custom_constants/hseparation = 23
 columns = 4
@@ -129,19 +144,19 @@ title = ""
 margin_left = 103.0
 margin_right = 183.0
 iconTex = null
-title = "Title2"
+title = ""
 
 [node name="PhoneIcon3" parent="HBoxContainer/TextureRect/VBoxContainer/ScreenContent/GridContainer" instance=ExtResource( 7 )]
 margin_left = 206.0
 margin_right = 286.0
 iconTex = null
-title = "AAA"
+title = ""
 
 [node name="BottomBar" type="ColorRect" parent="HBoxContainer/TextureRect/VBoxContainer"]
-margin_top = 874.0
+margin_top = 924.0
 margin_right = 509.0
 margin_bottom = 1024.0
-rect_min_size = Vector2( 0, 150 )
+rect_min_size = Vector2( 0, 100 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -3,10 +3,10 @@
 [ext_resource path="res://entities/House.gd" type="Script" id=1]
 [ext_resource path="res://scenes/assets/structures/materials/wall.tres" type="Material" id=2]
 
-[sub_resource type="VisualShaderNodeColorConstant" id=2]
+[sub_resource type="VisualShaderNodeColorConstant" id=1]
 constant = Color( 0.144531, 0.144531, 0.144531, 1 )
 
-[sub_resource type="VisualShader" id=3]
+[sub_resource type="VisualShader" id=2]
 code = "shader_type spatial;
 
 
@@ -32,76 +32,85 @@ void light() {
 }
 "
 graph_offset = Vector2( -279, 91 )
-nodes/fragment/2/node = SubResource( 2 )
+nodes/fragment/2/node = SubResource( 1 )
 nodes/fragment/2/position = Vector2( 140, 160 )
 nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0 )
 
-[sub_resource type="ShaderMaterial" id=4]
-shader = SubResource( 3 )
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
 
-[sub_resource type="BoxShape" id=1]
-extents = Vector3( 0.5, 0.5, 0.5 )
+[sub_resource type="BoxShape" id=4]
+extents = Vector3( 8, 8, 8 )
 
 [node name="House" type="Spatial"]
-transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0 )
 script = ExtResource( 1 )
 colors = [ Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 1 ) ]
 
+[node name="Floor" type="CSGBox" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
+width = 16.0
+height = 1.0
+depth = 16.0
+
 [node name="CSGCombiner" type="CSGCombiner" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0.3 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.3 )
 
 [node name="Body" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.200139 )
-height = 3.0
-depth = 2.3
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.5, -0.2 )
+width = 12.0
+height = 15.0
+depth = 12.0
 material = ExtResource( 2 )
 
 [node name="Roof" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 1, 0, 0, 0, 0.927184, -0.374607, 0, 0.374607, 0.927184, 0, 2, 0 )
+transform = Transform( 1, 0, 0, 0, 0.972305, -0.233715, 0, 0.233715, 0.972305, 0, 17.7978, -0.131036 )
 operation = 2
-width = 3.0
-depth = 5.0
-material = SubResource( 4 )
+width = 15.0
+height = 10.0
+depth = 30.0
+material = SubResource( 3 )
 
 [node name="RoofInvert" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( -1, -1.22062e-07, -3.02115e-07, 0, 0.927184, -0.374607, 3.25841e-07, -0.374607, -0.927184, 0, 2, 0 )
+transform = Transform( -1, -1.22062e-07, -3.02115e-07, -4.80733e-08, 0.972305, -0.233715, 3.22275e-07, -0.233715, -0.972305, -5.00579e-07, 17.4045, -1.66069 )
 operation = 2
-width = 3.0
-depth = 5.0
-material = SubResource( 4 )
+width = 15.0
+height = 10.0
+depth = 30.0
+material = SubResource( 3 )
 
 [node name="Cut" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19151, -2.38419e-07, 0.882194 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 9, 6 )
 operation = 2
-height = 4.0
+width = 12.0
+height = 20.0
+depth = 12.0
 material = ExtResource( 2 )
 
 [node name="Fence" type="CSGBox" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0 )
-width = 3.0
-height = 0.5
-depth = 3.5
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+width = 16.0
+depth = 16.0
 
 [node name="Inside" type="CSGBox" parent="Fence"]
 operation = 2
-width = 2.85
-depth = 3.35
+width = 15.5
+height = 4.0
+depth = 15.5
 
 [node name="Gate" type="CSGBox" parent="Fence"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 0, 0.6 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.10348, 0, 3.57022 )
 operation = 2
 width = 0.5
-height = 1.0
-depth = 0.6
+height = 3.0
 
 [node name="Mailbox" type="CSGBox" parent="Fence"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5294, 0.0609578, 0.0971207 )
-width = 0.0968193
-height = 0.199469
-depth = 0.271556
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.02358, 0.0609578, 1.98529 )
+width = 0.5
+height = 0.5
+depth = 0.75
 
 [node name="StaticBody" type="StaticBody" parent="."]
 
 [node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
-transform = Transform( 3, 0, 0, 0, 3, 0, 0, 0, 3.5, 0, 1.5, 0 )
-shape = SubResource( 1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 0 )
+shape = SubResource( 4 )

@@ -27,7 +27,6 @@ func set_direction(dir):
 
 func _ready():
 	$SpriteQuad.set_surface_material(0, $SpriteQuad.get_surface_material(0).duplicate())
-	pass
 
 func _process(delta):
 	if get_viewport().get_camera():

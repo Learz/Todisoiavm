@@ -28,3 +28,20 @@ func _input(event: InputEvent) -> void:
 			"VISIBLE":
 				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 				mouse_mode = "CAPTURED"
+	if event.is_action_pressed("dev_action"):
+		generate_textures()
+				
+func generate_textures():
+	Global.vending_machine_textures = []
+	for i in range(Global.nb_vending_machine_textures):
+		$Viewport/Dynamic_Texture.generate_brand(randf())
+		yield(get_tree(), "idle_frame")
+		yield(get_tree(), "idle_frame")
+		var texture = ImageTexture.new()
+		texture.create_from_image($Viewport.get_texture().get_data())
+		Global.vending_machine_textures.push_back(texture)
+	Global.textures_generated = true
+
+
+func _on_Viewport_ready():
+	generate_textures()

@@ -8,7 +8,6 @@ func fade_in():
 func fade_out():
 	$AnimationPlayer.play("fade_out")
 
-
 func _process(delta):
 	if scene_manager.loading_scene_path:
 		var progress = scene_manager.get_progress()
