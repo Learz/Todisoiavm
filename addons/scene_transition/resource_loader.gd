@@ -12,7 +12,7 @@ func start_loading(path):
 	resource_loaded = null
 	resource_path = path
 	# check if it is already loaded
-	if ResourceLoader.has(path):
+	if ResourceLoader.has_cached(path):
 		var res = ResourceLoader.load(path)
 		resource_path = res
 	else:

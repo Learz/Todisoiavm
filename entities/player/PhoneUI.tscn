@@ -1,12 +1,13 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://resources/models/phone_bg.jpg" type="Texture" id=1]
-[ext_resource path="res://entities/time.gd" type="Script" id=2]
+[ext_resource path="res://entities/player/time.gd" type="Script" id=2]
 [ext_resource path="res://resources/signal.png" type="Texture" id=3]
-[ext_resource path="res://entities/PhoneUI.gd" type="Script" id=4]
+[ext_resource path="res://entities/player/PhoneUI.gd" type="Script" id=4]
 [ext_resource path="res://resources/fonts/PhoneUI_font.tres" type="DynamicFontData" id=5]
 [ext_resource path="res://resources/notch.png" type="Texture" id=6]
-[ext_resource path="res://entities/PhoneIcon.tscn" type="PackedScene" id=7]
+[ext_resource path="res://entities/player/PhoneIcon.tscn" type="PackedScene" id=7]
+
 
 [sub_resource type="DynamicFont" id=1]
 size = 24

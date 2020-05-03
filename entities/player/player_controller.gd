@@ -40,6 +40,8 @@ export var floor_max_angle := 45.0
 var phone_out = false
 var phoneOrigin : Vector3
 
+var vending_mode = false
+
 ##################################################
 
 # Called when the node enters the scene tree
@@ -55,8 +57,8 @@ func _process(_delta: float) -> void:
 	move_axis.y = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	$Head/Phone.translation.x = (get_viewport().get_visible_rect().size.x/1280)*phoneOrigin.x * 720/get_viewport().get_visible_rect().size.y
 	
-	camera_rotation()
-
+	if !vending_mode:
+		camera_rotation()	
 
 # Called every physics tick. 'delta' is constant
 func _physics_process(delta: float) -> void:
@@ -73,22 +75,55 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		mouse_axis = event.relative
 	if event.is_action_pressed("phone"):
-		phone_out = !phone_out
-		if phone_out:
-			$Head/Phone.is_phone_out = true
-			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		else:
-			$Head/Phone.is_phone_out = false
-			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		var phonePos = Vector3($Head/Phone.translation.x,-0.02,phoneOrigin.z) if phone_out else Vector3($Head/Phone.translation.x,-0.5,phoneOrigin.z)
-		var easeType = Tween.EASE_OUT if phone_out else Tween.EASE_IN
-		$Tween.interpolate_property($Head/Phone, "translation", $Head/Phone.translation, phonePos, 1.0, Tween.TRANS_BACK, easeType)
-		$Tween.start()
+		move_phone()
 	if event.is_action_pressed("fly"):
 		flying = !flying
 	if event.is_action_pressed("action"):
-		if(not phone_out):
-			screenshot()
+		move_to_anchor()
+		#if(not phone_out):
+		#	screenshot()
+	if(phone_out or vending_mode):
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	if(!phone_out and !vending_mode):
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+func move_phone():
+	phone_out = !phone_out
+	var phonePos = Vector3($Head/Phone.translation.x,-0.02,phoneOrigin.z) if phone_out else Vector3($Head/Phone.translation.x,-0.5,phoneOrigin.z)
+	var easeType = Tween.EASE_OUT if phone_out else Tween.EASE_IN
+	$Tween.interpolate_property($Head/Phone, "translation", null, phonePos, 1.0, Tween.TRANS_BACK, easeType)
+	$Tween.start()
+	if phone_out:
+		$Head/Phone.visible = true
+		$Head/Phone.is_phone_out = true
+	else:
+		$Head/Phone.is_phone_out = false
+		yield($Tween, "tween_all_completed")
+		$Head/Phone.visible = false
+
+func move_to_anchor():
+	var trans_speed = 0.5
+	var trans_type = Tween.TRANS_BACK
+	if vending_mode:
+		if phone_out:
+			move_phone()
+		#$Head/Camera.global_translate()
+		$Tween.interpolate_property($Head, "translation", null, Vector3(0,1,0), trans_speed, trans_type)
+		$Tween.interpolate_property($Head, "rotation", null, Vector3(0,0,0), trans_speed, trans_type)
+		$Tween.start()
+		vending_mode = false
+	else:
+		var rayCollider : Object = $Head/Camera/RayCast.get_collider()
+		if rayCollider:
+			var anchor : Spatial = rayCollider.owner.get_node("Camera_Anchor")
+			if anchor:
+#				#$Head/Camera.look_at(anchor.global_transform.origin, Vector3.UP)
+#				$Head/Camera.global_transform.origin = anchor.global_transform.origin
+#				$Head/Camera.global_transform.basis = anchor.global_transform.basis
+				$Tween.interpolate_property($Head, "global_transform:origin", null, anchor.global_transform.origin, trans_speed, trans_type)
+				$Tween.interpolate_property($Head, "global_transform:basis", null, anchor.global_transform.basis, trans_speed, trans_type)
+				$Tween.start()
+				vending_mode = true
 
 func screenshot():
 	for uiElement in get_tree().get_nodes_in_group("UI"):

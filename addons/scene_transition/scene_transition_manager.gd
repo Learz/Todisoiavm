@@ -16,6 +16,8 @@ var node_wrapper = Node.new()
 
 var exit_thread = false
 
+var wait_for_generation = false
+
 func _enter_tree():
 	#print("init>"+str(get_tree().get_root()));
 	time_to_load_scene = OS.get_system_time_msecs()
@@ -28,7 +30,7 @@ func _enter_tree():
 func detect_current_scene():
 	var rt = get_tree().get_root()
 	for ch in rt.get_children():
-		if ch.name != self.name:
+		if ch.name != self.name and ch.name != "Global":
 			print("Startup scene:" + ch.name)
 			return ch
 	return null
@@ -58,8 +60,9 @@ func _exit_tree():
 	mutex.unlock()
 	local_thread.wait_to_finish()
 	
-func change_scene_to(var scene, play_start_anim:bool = true)-> void:
+func change_scene_to(var scene, wait_for_gen:bool = false, play_start_anim:bool = true)-> void:
 	mutex.lock()
+	wait_for_generation = wait_for_gen
 	self.play_start_anim = play_start_anim
 	if loading_scene_path == null:
 		loading_scene_path = scene
@@ -112,6 +115,8 @@ func thread_func(ignore):
 
 func _listener_scene_complete_loaded():
 	# Called when scene is full loaded
+	if wait_for_generation:
+		yield(Global, "textures_generated")
 	loading_scene.fade_in()
 	var ms = OS.get_system_time_msecs() - time_to_load_scene
 	print("Loaded new scene with: "+str(ms))

@@ -28,8 +28,8 @@ func _input(event: InputEvent) -> void:
 			"VISIBLE":
 				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 				mouse_mode = "CAPTURED"
-	if event.is_action_pressed("dev_action"):
-		generate_textures()
+#	if event.is_action_pressed("dev_action"):
+#		generate_textures()
 				
 func generate_textures():
 	Global.vending_machine_textures = []

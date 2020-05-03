@@ -9,11 +9,9 @@ func _ready():
 func _on_Button_Pressed(link, type):
 	match type:
 		0:
-			scene_manager.change_scene_to(link)
+			#get_tree().change_scene(link)
+			scene_manager.change_scene_to(link, true)
 		1:
 			OS.shell_open(link)
 		2:
 			get_tree().quit()
-	
-func _on_Fade_in_animation_finished():
-	pass
