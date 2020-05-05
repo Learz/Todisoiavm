@@ -28,3 +28,5 @@ shape = SubResource( 1 )
 
 [node name="Tween" type="Tween" parent="."]
 [connection signal="input_event" from="Button/ButtonBody" to="." method="_on_ButtonBody_input_event"]
+[connection signal="mouse_entered" from="Button/ButtonBody" to="." method="_on_ButtonBody_mouse_entered"]
+[connection signal="mouse_exited" from="Button/ButtonBody" to="." method="_on_ButtonBody_mouse_exited"]

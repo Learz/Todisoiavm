@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/s_main/default_env.tres" type="Environment" id=1]
 [ext_resource path="res://scenes/s_main/s_main.gd" type="Script" id=2]
@@ -10,10 +10,60 @@
 [ext_resource path="res://entities/House.tscn" type="PackedScene" id=8]
 [ext_resource path="res://entities/Billboard.tscn" type="PackedScene" id=9]
 [ext_resource path="res://resources/monkeh.png" type="Texture" id=10]
+[ext_resource path="res://scenes/s_menu/s_menu.tscn" type="PackedScene" id=11]
 [ext_resource path="res://resources/models/Roads/Roads.meshlib" type="MeshLibrary" id=12]
+[ext_resource path="res://resources/reticle.png" type="Texture" id=13]
 
 [node name="S_Main" type="Spatial"]
 script = ExtResource( 2 )
+
+[node name="TitleScreen" parent="." instance=ExtResource( 11 )]
+
+[node name="HUD" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Reticle" type="TextureRect" parent="HUD"]
+modulate = Color( 1, 1, 1, 0.470588 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 13 )
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -60.0
+margin_top = -60.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HUD/MarginContainer"]
+size_flags_vertical = 5
+text = "Phone
+Icon 
+WIP"
+align = 1
+valign = 1
+
+[node name="FPS_Counter" parent="." groups=[
+"UI",
+] instance=ExtResource( 5 )]
+margin_left = 10.0
+margin_top = 10.0
 
 [node name="Viewport" parent="." instance=ExtResource( 7 )]
 render_target_clear_mode = 2
@@ -30,16 +80,12 @@ shadow_enabled = true
 shadow_color = Color( 0.6, 0.6, 0.6, 1 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23.7362, 3, -6.5016 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6727, 2.07181, -0.429492 )
 head_path = NodePath("../Player/Head")
 cam_path = NodePath("../Player/Head/Camera")
 FOV = 70.0
 walk_speed = 5
 sprint_speed = 7
-
-[node name="FPS_Counter" parent="." groups=[
-"UI",
-] instance=ExtResource( 5 )]
 
 [node name="Ladder" parent="." instance=ExtResource( 4 )]
 transform = Transform( -4.88763e-07, 0, 3, 0, 3, 0, -3, 0, -4.88763e-07, 28.8463, 3.84333, -0.517106 )
@@ -55,7 +101,7 @@ direction = 0.0
 mesh_library = ExtResource( 12 )
 cell_size = Vector3( 16, 1, 16 )
 data = {
-"cells": PoolIntArray( 0, 0, 2, 3, 0, 3, 6, 0, 2, 65530, 0, 1, 65533, 0, 2, 0, 1, 655361, 3, 1, 1, 6, 1, 655361, 65530, 1, 1, 65533, 1, 1, 0, 2, 655361, 6, 2, 655361, 65530, 2, 1, 65533, 2, 1, 0, 3, 655361, 6, 3, 655361, 65530, 3, 1, 65533, 3, 1, 0, 4, 655366, 1, 4, 1048577, 2, 4, 1441793, 3, 4, 1441793, 4, 4, 1441793, 5, 4, 1441793, 6, 4, 1441796, 65530, 4, 1, 65533, 4, 655364, 65534, 4, 1048577, 65535, 4, 1048577, 0, 65526, 1048580, 1, 65526, 1441793, 2, 65526, 1441793, 3, 65526, 1441793, 4, 65526, 1441793, 5, 65526, 1441793, 6, 65526, 4, 0, 65527, 1, 6, 65527, 655361, 0, 65528, 655362, 6, 65528, 655361, 0, 65529, 1441792, 1, 65529, 1048579, 2, 65529, 1441793, 3, 65529, 4, 6, 65529, 655361, 65530, 65529, 1611661316, 65531, 65529, 1048577, 65532, 65529, 1441794, 65533, 65529, 6, 65534, 65529, 1048578, 65535, 65529, 1441795, 0, 65530, 2, 3, 65530, 1, 6, 65530, 655361, 65530, 65530, 1, 65533, 65530, 2, 0, 65531, 1, 3, 65531, 1, 6, 65531, 655361, 65530, 65531, 1, 65533, 65531, 655361, 0, 65532, 655361, 3, 65532, 1, 6, 65532, 655361, 65530, 65532, 1, 65533, 65532, 655361, 0, 65533, 655361, 2, 65533, 1441793, 3, 65533, 1441796, 6, 65533, 655361, 65530, 65533, 1, 65533, 65533, 655361, 0, 65534, 655362, 6, 65534, 655362, 65530, 65534, 1, 65533, 65534, 655362, 0, 65535, 1048576, 1, 65535, 1048579, 2, 65535, 1048577, 3, 65535, 6, 4, 65535, 1048577, 5, 65535, 1441794, 6, 65535, 1441798, 65530, 65535, 1, 65533, 65535, 1048582, 65534, 65535, 1048578, 65535, 65535, 1441795 )
+"cells": PoolIntArray( 0, 0, 2, 3, 0, 3, 6, 0, 2, 65530, 0, 1, 65533, 0, 2, 0, 1, 655361, 3, 1, 536870913, 6, 1, 655361, 65530, 1, 1, 65533, 1, 1, 0, 2, 655361, 6, 2, 655361, 65530, 2, 1, 65533, 2, 1, 0, 3, 655361, 6, 3, 655361, 65530, 3, 1, 65533, 3, 1, 0, 4, 655366, 1, 4, 1048577, 2, 4, 1441793, 3, 4, 1441793, 4, 4, 1441793, 5, 4, 1441793, 6, 4, 1441796, 65530, 4, 1, 65533, 4, 655364, 65534, 4, 1048577, 65535, 4, 1048577, 0, 65526, 1048580, 1, 65526, 1441793, 2, 65526, 1441793, 3, 65526, 1441793, 4, 65526, 1441793, 5, 65526, 1441793, 6, 65526, 4, 0, 65527, 1, 6, 65527, 655361, 0, 65528, 655362, 6, 65528, 655361, 0, 65529, 1441792, 1, 65529, 1048579, 2, 65529, 1441793, 3, 65529, 4, 6, 65529, 655361, 65530, 65529, 1048580, 65531, 65529, 1048577, 65532, 65529, 1441794, 65533, 65529, 6, 65534, 65529, 1048578, 65535, 65529, 1441795, 0, 65530, 2, 3, 65530, 1, 6, 65530, 655361, 65530, 65530, 1, 65533, 65530, 2, 0, 65531, 1, 3, 65531, 1, 6, 65531, 655361, 65530, 65531, 1, 65533, 65531, 655361, 0, 65532, 655361, 3, 65532, 1, 6, 65532, 655361, 65530, 65532, 1, 65533, 65532, 655361, 0, 65533, 655361, 2, 65533, 1075183617, 3, 65533, 1441796, 6, 65533, 655361, 65530, 65533, 1, 65533, 65533, 655361, 0, 65534, 655362, 6, 65534, 655362, 65530, 65534, 1, 65533, 65534, 537526274, 0, 65535, 1048576, 1, 65535, 1048579, 2, 65535, 1048577, 3, 65535, 6, 4, 65535, 1048577, 5, 65535, 1441794, 6, 65535, 1441798, 65530, 65535, 1, 65533, 65535, 1048582, 65534, 65535, 1048578, 65535, 65535, 1441795 )
 }
 __meta__ = {
 "_editor_clip_": 0,
@@ -92,6 +138,85 @@ transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 48 )
 
 [node name="House6" parent="Houses" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 64 )
+
+[node name="Houses6" type="Spatial" parent="."]
+transform = Transform( -2.8213e-07, 0, 1, 0, 1, 0, -1, 0, -2.8213e-07, 24, 0.5, -120 )
+
+[node name="House" parent="Houses6" instance=ExtResource( 8 )]
+
+[node name="House2" parent="Houses6" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.24521e-06, 0, 16 )
+
+[node name="House3" parent="Houses6" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.04904e-05, 0, 32 )
+
+[node name="House4" parent="Houses6" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57356e-05, 0, 48 )
+
+[node name="House5" parent="Houses6" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.09808e-05, 0, 64 )
+
+[node name="House10" parent="Houses6" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 5.72205e-06 )
+
+[node name="House9" parent="Houses6" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 16 )
+
+[node name="House8" parent="Houses6" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 32 )
+
+[node name="House7" parent="Houses6" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 48 )
+
+[node name="House6" parent="Houses6" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 64 )
+
+[node name="Houses7" type="Spatial" parent="."]
+transform = Transform( -2.8213e-07, 0, 1, 0, 1, 0, -1, 0, -2.8213e-07, 24, 0.5, -168 )
+
+[node name="House" parent="Houses7" instance=ExtResource( 8 )]
+
+[node name="House13" parent="Houses7" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16 )
+
+[node name="House15" parent="Houses7" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -9.15527e-05, 0, -32 )
+
+[node name="House2" parent="Houses7" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.24521e-06, 0, 16 )
+
+[node name="House3" parent="Houses7" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.04904e-05, 0, 32 )
+
+[node name="House4" parent="Houses7" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57356e-05, 0, 48 )
+
+[node name="House5" parent="Houses7" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.57764e-05, 0, 64 )
+
+[node name="House11" parent="Houses7" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.62939e-05, 0, 80 )
+
+[node name="House10" parent="Houses7" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 5.72205e-06 )
+
+[node name="House12" parent="Houses7" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -16 )
+
+[node name="House14" parent="Houses7" instance=ExtResource( 8 )]
+transform = Transform( -4.56975e-07, 0, 1, 0, 1, 0, -1, 0, -4.56975e-07, -16.0001, 0, -32 )
+
+[node name="House9" parent="Houses7" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 16 )
+
+[node name="House8" parent="Houses7" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 32 )
+
+[node name="House7" parent="Houses7" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 48 )
+
+[node name="House6" parent="Houses7" instance=ExtResource( 8 )]
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 64 )
 
 [node name="Houses2" type="Spatial" parent="."]
@@ -155,6 +280,12 @@ transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 
 [node name="House20" parent="Houses3" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.67029e-05, 0, -80 )
 
+[node name="House22" parent="Houses3" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.05176e-05, 0, -96 )
+
+[node name="House24" parent="Houses3" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8147e-05, 0, -112 )
+
 [node name="House19" parent="Houses3" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.90735e-05, 0, -64 )
 
@@ -170,6 +301,15 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8147e-06, 0, -16 )
 [node name="House15" parent="Houses3" instance=ExtResource( 8 )]
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -80 )
 
+[node name="House21" parent="Houses3" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -96 )
+
+[node name="House23" parent="Houses3" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -112 )
+
+[node name="House25" parent="Houses3" instance=ExtResource( 8 )]
+transform = Transform( 3.69552e-07, 0, -1, 0, 1, 0, 1, 0, 3.69552e-07, 32, 0, -112 )
+
 [node name="House14" parent="Houses3" instance=ExtResource( 8 )]
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -64 )
 
@@ -180,6 +320,198 @@ transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -32 )
 
 [node name="House11" parent="Houses3" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -16 )
+
+[node name="Houses11" type="Spatial" parent="."]
+transform = Transform( 3.69552e-07, 0, -1, 0, 1, 0, 1, 0, 3.69552e-07, 24, 0.5, 88 )
+
+[node name="House" parent="Houses11" instance=ExtResource( 8 )]
+
+[node name="House2" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.24521e-06, 0, 16 )
+
+[node name="House3" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.04904e-05, 0, 32 )
+
+[node name="House4" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57356e-05, 0, 48 )
+
+[node name="House5" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.09808e-05, 0, 64 )
+
+[node name="House10" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 5.72205e-06 )
+
+[node name="House9" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 16 )
+
+[node name="House8" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 32 )
+
+[node name="House7" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 48 )
+
+[node name="House6" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 64 )
+
+[node name="House20" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.67029e-05, 0, -80 )
+
+[node name="House19" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.90735e-05, 0, -64 )
+
+[node name="House18" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.52588e-05, 0, -48 )
+
+[node name="House17" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.14441e-05, 0, -32 )
+
+[node name="House16" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8147e-06, 0, -16 )
+
+[node name="House15" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -80 )
+
+[node name="House14" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -64 )
+
+[node name="House13" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -48 )
+
+[node name="House12" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -32 )
+
+[node name="House11" parent="Houses11" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -16 )
+
+[node name="Houses9" type="Spatial" parent="."]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, -104, 0.5, -24 )
+
+[node name="House" parent="Houses9" instance=ExtResource( 8 )]
+
+[node name="House2" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.24521e-06, 0, 16 )
+
+[node name="House3" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.04904e-05, 0, 32 )
+
+[node name="House4" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57356e-05, 0, 48 )
+
+[node name="House5" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.09808e-05, 0, 64 )
+
+[node name="House21" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.28882e-05, 0, 80 )
+
+[node name="House10" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 5.72205e-06 )
+
+[node name="House9" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 16 )
+
+[node name="House8" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 32 )
+
+[node name="House7" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 48 )
+
+[node name="House6" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 64 )
+
+[node name="House22" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 80 )
+
+[node name="House20" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.67029e-05, 0, -80 )
+
+[node name="House24" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.05176e-05, 0, -96 )
+
+[node name="House26" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8147e-05, 0, -112 )
+
+[node name="House19" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.90735e-05, 0, -64 )
+
+[node name="House18" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.52588e-05, 0, -48 )
+
+[node name="House17" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.14441e-05, 0, -32 )
+
+[node name="House16" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8147e-06, 0, -16 )
+
+[node name="House15" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -80 )
+
+[node name="House23" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -96 )
+
+[node name="House25" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -112 )
+
+[node name="House14" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -64 )
+
+[node name="House13" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -48 )
+
+[node name="House12" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -32 )
+
+[node name="House11" parent="Houses9" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -16 )
+
+[node name="Houses10" type="Spatial" parent="."]
+transform = Transform( -2.8213e-07, 0, 1, 0, 1, 0, -1, 0, -2.8213e-07, -72, 0.5, -120 )
+
+[node name="House" parent="Houses10" instance=ExtResource( 8 )]
+
+[node name="House2" parent="Houses10" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.24521e-06, 0, 16 )
+
+[node name="House3" parent="Houses10" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.04904e-05, 0, 32 )
+
+[node name="House4" parent="Houses10" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57356e-05, 0, 48 )
+
+[node name="House5" parent="Houses10" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.09808e-05, 0, 64 )
+
+[node name="House10" parent="Houses10" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 5.72205e-06 )
+
+[node name="House9" parent="Houses10" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 16 )
+
+[node name="House8" parent="Houses10" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 32 )
+
+[node name="House7" parent="Houses10" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 48 )
+
+[node name="House6" parent="Houses10" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 64 )
+
+[node name="House18" parent="Houses10" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.52588e-05, 0, -48 )
+
+[node name="House17" parent="Houses10" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.14441e-05, 0, -32 )
+
+[node name="House16" parent="Houses10" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8147e-06, 0, -16 )
+
+[node name="House13" parent="Houses10" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -48 )
+
+[node name="House12" parent="Houses10" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -32 )
+
+[node name="House11" parent="Houses10" instance=ExtResource( 8 )]
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -16 )
 
 [node name="Houses5" type="Spatial" parent="."]
@@ -199,6 +531,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57356e-05, 0, 48 )
 [node name="House5" parent="Houses5" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.09808e-05, 0, 64 )
 
+[node name="House21" parent="Houses5" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.28882e-05, 0, 80 )
+
 [node name="House10" parent="Houses5" instance=ExtResource( 8 )]
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 5.72205e-06 )
 
@@ -213,6 +548,9 @@ transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 
 
 [node name="House6" parent="Houses5" instance=ExtResource( 8 )]
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 64 )
+
+[node name="House11" parent="Houses5" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 80 )
 
 [node name="House20" parent="Houses5" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.67029e-05, 0, -80 )
@@ -240,6 +578,107 @@ transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 
 
 [node name="House12" parent="Houses5" instance=ExtResource( 8 )]
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -32 )
+
+[node name="Houses8" type="Spatial" parent="."]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 136, 0.5, -24 )
+
+[node name="House" parent="Houses8" instance=ExtResource( 8 )]
+
+[node name="House2" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.24521e-06, 0, 16 )
+
+[node name="House3" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.04904e-05, 0, 32 )
+
+[node name="House4" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.52588e-05, 0, 48 )
+
+[node name="House5" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.52588e-05, 0, 64 )
+
+[node name="House21" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.10352e-05, 0, 80 )
+
+[node name="House29" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.05176e-05, 0, 96 )
+
+[node name="House28" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.05176e-05, 0, 112 )
+
+[node name="House27" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.52588e-05, 0, 128 )
+
+[node name="House26" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.57764e-05, 0, 144 )
+
+[node name="House10" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 5.72205e-06 )
+
+[node name="House9" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 16 )
+
+[node name="House8" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 32 )
+
+[node name="House7" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 48 )
+
+[node name="House6" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 64 )
+
+[node name="House11" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16.0001, 0, 80 )
+
+[node name="House25" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 96 )
+
+[node name="House24" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 112 )
+
+[node name="House23" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 128 )
+
+[node name="House16" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16.0001, 0, 144 )
+
+[node name="House20" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.67029e-05, 0, -80 )
+
+[node name="House19" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.90735e-05, 0, -64 )
+
+[node name="House18" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.52588e-05, 0, -48 )
+
+[node name="House17" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.14441e-05, 0, -32 )
+
+[node name="House22" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.05176e-05, 0, -16 )
+
+[node name="House15" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -80 )
+
+[node name="House30" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -64 )
+
+[node name="House31" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -96 )
+
+[node name="House32" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16.0001, 0, -112 )
+
+[node name="House33" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0.00012207, 0, -96 )
+
+[node name="House13" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -48 )
+
+[node name="House12" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -32 )
+
+[node name="House14" parent="Houses8" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -16 )
 
 [node name="Houses4" type="Spatial" parent="."]
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 40, 0.5, -24 )

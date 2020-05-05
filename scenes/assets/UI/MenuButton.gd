@@ -3,7 +3,7 @@ extends Button
 
 export(String, MULTILINE) var title setget setTitle
 export(String) var link
-export(int, "Scene", "Url", "Quit") var type := 2
+export(int, "Scene", "Url", "Quit", "MoveTo", "Hide Menu") var type := 2
 
 func setTitle(newTitle):
 	if($Label):
