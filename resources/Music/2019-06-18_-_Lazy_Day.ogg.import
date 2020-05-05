@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/2019-06-18_-_Lazy_Day.ogg-8b6e8f611101652810ea7a433ecb5bef.oggstr"
+
+[deps]
+
+source_file="res://resources/Music/2019-06-18_-_Lazy_Day.ogg"
+dest_files=[ "res://.import/2019-06-18_-_Lazy_Day.ogg-8b6e8f611101652810ea7a433ecb5bef.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

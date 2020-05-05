@@ -8,6 +8,7 @@ extends CheckButton
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	pressed = Global.display_FPS
 	pass # Replace with function body.
 
 func _toggled(button_pressed):

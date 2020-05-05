@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/2019-06-21_-_Out_And_About.ogg-adad25a07dbc4877c3b5d64c06776b9c.oggstr"
+
+[deps]
+
+source_file="res://resources/Music/2019-06-21_-_Out_And_About.ogg"
+dest_files=[ "res://.import/2019-06-21_-_Out_And_About.ogg-adad25a07dbc4877c3b5d64c06776b9c.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

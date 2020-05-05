@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Bottle.obj-6d3f1364b7a87760296cd18fd903a513.mesh"
+
+[deps]
+
+files=[ "res://.import/Bottle.obj-6d3f1364b7a87760296cd18fd903a513.mesh" ]
+
+source_file="res://resources/models/Vending Machine/Bottle.obj"
+dest_files=[ "res://.import/Bottle.obj-6d3f1364b7a87760296cd18fd903a513.mesh", "res://.import/Bottle.obj-6d3f1364b7a87760296cd18fd903a513.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

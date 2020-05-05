@@ -102,7 +102,7 @@ func move_phone():
 
 func move_to_anchor():
 	var trans_speed = 0.5
-	var trans_type = Tween.TRANS_BACK
+	var trans_type = Tween.TRANS_QUART
 	if vending_mode:
 		Global.display_reticle = true
 		#$Head/Camera.global_translate()
@@ -175,6 +175,7 @@ func walk(delta: float) -> void:
 	# Jump
 	var _snap: Vector3
 	if is_on_floor():
+		#TO FIX : Makes the player jitter between tiles
 		_snap = Vector3(0, -1, 0)
 		if Input.is_action_just_pressed("move_jump"):
 			_snap = Vector3(0, 0, 0)
@@ -221,6 +222,8 @@ func walk(delta: float) -> void:
 	# Move
 	velocity.y = move_and_slide_with_snap(velocity, _snap, FLOOR_NORMAL, 
 			true, 4, deg2rad(floor_max_angle)).y
+#	velocity.y = move_and_slide(velocity, FLOOR_NORMAL, 
+#			true, 4, deg2rad(floor_max_angle)).y
 
 func climb(delta: float) -> void:
 	# Input

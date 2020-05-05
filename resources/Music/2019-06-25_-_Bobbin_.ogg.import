@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/2019-06-25_-_Bobbin_.ogg-cc6a2bca2c0622d14c9172dcb40206ca.oggstr"
+
+[deps]
+
+source_file="res://resources/Music/2019-06-25_-_Bobbin_.ogg"
+dest_files=[ "res://.import/2019-06-25_-_Bobbin_.ogg-cc6a2bca2c0622d14c9172dcb40206ca.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/PriceTag.obj-9258bf7cc9c1aebf139c7ca137667148.mesh"
+
+[deps]
+
+files=[ "res://.import/PriceTag.obj-9258bf7cc9c1aebf139c7ca137667148.mesh" ]
+
+source_file="res://resources/models/Vending Machine/PriceTag.obj"
+dest_files=[ "res://.import/PriceTag.obj-9258bf7cc9c1aebf139c7ca137667148.mesh", "res://.import/PriceTag.obj-9258bf7cc9c1aebf139c7ca137667148.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

@@ -46,4 +46,3 @@ custom_fonts/font = SubResource( 1 )
 text = "Title"
 align = 1
 valign = 1
-clip_text = true

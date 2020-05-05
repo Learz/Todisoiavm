@@ -5,20 +5,17 @@ extends Button
 # Declare member variables here. Examples:
 export (StreamTexture) var iconTex setget set_icon_tex
 export (String) var title setget set_title
+export (NodePath) var app
  
 onready var tween : Tween = owner.get_node("Tween")
 
 var is_ready = false
 
 func set_icon_tex(tex):
-	if not is_ready:
-		return
 	iconTex = tex
 	$VBoxContainer/TextureRect.texture = iconTex
 	
 func set_title(txt):
-	if not is_ready:
-		return
 	title = txt
 	$VBoxContainer/Label.text = title
 
@@ -33,7 +30,6 @@ func _ready():
 	connect("button_up", self, "_reset_size")
 
 func _on_mouse_over():
-	#Input.set_default_cursor_shape(Control.CURSOR_POINTING_HAND)
 	_on_focus_entered()
 
 func _on_focus_entered():
@@ -41,7 +37,6 @@ func _on_focus_entered():
 	tween.start()
 
 func _on_mouse_exit():
-	#Input.set_default_cursor_shape(Control.CURSOR_ARROW)
 	_reset_size()
 
 func _reset_size():
@@ -52,6 +47,11 @@ func _on_button_down():
 	tween.interpolate_property(self, "rect_scale", rect_scale, Vector2(0.9,0.9), 0.1, Tween.TRANS_BACK, Tween.EASE_OUT)
 	tween.start()
 	
+func _pressed():
+	if app:
+		owner.get_node("Tween").interpolate_property(get_node(app), "rect_position", null, Vector2(0,0), 0.5, Tween.TRANS_QUART)
+		owner.get_node("Tween").interpolate_property(get_node(app), "rect_scale", null, Vector2(1,1), 0.8, Tween.TRANS_CIRC)
+		owner.get_node("Tween").start()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass

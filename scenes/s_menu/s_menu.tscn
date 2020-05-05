@@ -37,6 +37,8 @@ __meta__ = {
 [node name="MainMenu" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -107,10 +109,11 @@ link = "https://learz.itch.io/"
 type = 1
 
 [node name="Options" type="Control" parent="."]
-anchor_right = 1.0
+anchor_left = 1.0
+anchor_right = 2.0
 anchor_bottom = 1.0
-margin_left = 1280.0
-margin_right = 1280.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }

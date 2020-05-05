@@ -2,7 +2,7 @@
 
 [ext_resource path="res://resources/LeagueGothic_24.tres" type="DynamicFont" id=1]
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.345098, 0.345098, 0.345098, 0 )
 border_width_left = 1
 border_width_top = 1
@@ -11,11 +11,11 @@ border_width_bottom = 1
 border_color = Color( 0.8, 0.8, 0.8, 0.392157 )
 shadow_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.27451, 0.27451, 0.27451, 1 )
 shadow_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.333333, 0.333333, 0.333333, 1 )
 shadow_color = Color( 0, 0, 0, 1 )
 
@@ -37,9 +37,9 @@ Button/colors/font_color_pressed = Color( 1, 1, 1, 1 )
 Button/constants/hseparation = 2
 Button/fonts/font = null
 Button/styles/disabled = null
-Button/styles/focus = SubResource( 2 )
-Button/styles/hover = SubResource( 3 )
-Button/styles/normal = SubResource( 1 )
+Button/styles/focus = SubResource( 1 )
+Button/styles/hover = SubResource( 2 )
+Button/styles/normal = SubResource( 3 )
 Button/styles/pressed = SubResource( 4 )
 PopupMenu/colors/font_color = Color( 0.88, 0.88, 0.88, 1 )
 PopupMenu/colors/font_color_accel = Color( 0.7, 0.7, 0.7, 0.8 )

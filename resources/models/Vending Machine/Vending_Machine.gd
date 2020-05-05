@@ -12,7 +12,7 @@ func _ready():
 	yield(Global, "textures_generated")
 	set_texture()
 	
-	generate_cans()
+	#generate_cans()
 	is_ready = true
 
 #func _input(event):
@@ -28,14 +28,6 @@ func set_texture():
 	#TO FIX : Crashes when generated too fast
 	$Machine.get_surface_material(0).albedo_texture = Global.vending_machine_textures[texture_id]
 	$Door.get_surface_material(0).albedo_texture = Global.vending_machine_textures[texture_id]
-
-func generate_cans():
-	for i in range(6):
-		var can_scn = load("res://entities/Vending_Machine_Option.tscn")
-		var can : Spatial = can_scn.instance()
-		can.translation = Vector3(-0.9+(0.3*i),2.29,0.59)
-		add_child(can)
-	pass
 
 func _on_StaticBody_input_event(camera, event: InputEvent, click_position, click_normal, shape_idx):
 	if event.is_action_pressed("left_click"):

@@ -13,6 +13,7 @@ var mouse_mode: String = "CAPTURED"
 ##################################################
 
 func _ready() -> void:
+	SoundManager.play_bgm("Bobbin")
 	if fast_close:
 		print("** Fast Close enabled in the 's_main.gd' script **")
 		print("** 'Esc' to close 'Shift + F1' to release mouse **")
@@ -21,13 +22,11 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		if fast_close:
-			get_tree().quit() # Quits the game
+			Global.quit() # Quits the game
 		else:
 			if !$TitleScreen.visible:
-				Global.display_HUD = false
 				$TitleScreen.open_menu()
 			else:
-				Global.display_HUD = true
 				$TitleScreen.close_menu()
 #	if event.is_action_pressed("mouse_input") and fast_close:
 #		match mouse_mode: # Switch statement in GDScript

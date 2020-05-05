@@ -1,12 +1,11 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://resources/models/Vending Machine/Plane.mesh" type="ArrayMesh" id=1]
 [ext_resource path="res://resources/models/Vending Machine/Vending_Machine.gd" type="Script" id=2]
 [ext_resource path="res://resources/default.png" type="Texture" id=3]
-[ext_resource path="res://resources/models/Vending Machine/Cube_005.mesh" type="ArrayMesh" id=4]
+[ext_resource path="res://entities/Shelf.tscn" type="PackedScene" id=4]
 [ext_resource path="res://resources/models/Vending Machine/Cube_004.mesh" type="ArrayMesh" id=5]
 [ext_resource path="res://resources/models/Vending Machine/Cylinder_019.mesh" type="ArrayMesh" id=6]
-[ext_resource path="res://resources/models/Vending Machine/Plane_001.mesh" type="ArrayMesh" id=8]
 [ext_resource path="res://resources/models/Vending Machine/Cube_006.mesh" type="ArrayMesh" id=9]
 [ext_resource path="res://resources/models/Vending Machine/Circle_001.mesh" type="ArrayMesh" id=10]
 [ext_resource path="res://resources/models/Vending Machine/Button.obj" type="ArrayMesh" id=11]
@@ -30,10 +29,16 @@ data = PoolVector3Array( 0.4275, -0.3811, 0.5878, -0.8172, -0.3811, 0.5878, -0.8
 [node name="Vending_Machine" type="Spatial"]
 script = ExtResource( 2 )
 
-[node name="Button_Shelf" type="MeshInstance" parent="."]
-transform = Transform( 1.10714, 0, 0, 0, 1.10714, 0, 0, 0, 0.767108, 0, 2.0029, 0.541747 )
-mesh = ExtResource( 8 )
-material/0 = null
+[node name="Shelf" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9585, 0.55 )
+drinkType = 1
+
+[node name="Shelf2" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.43933, 0.55 )
+
+[node name="Shelf3" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.02174, 0.55 )
+drinkType = 2
 
 [node name="Change_Lever" type="MeshInstance" parent="."]
 transform = Transform( 0.0308588, 0, -5.02753e-09, -5.02753e-09, 8.17717e-16, -0.0308588, 0, 0.0308071, 8.19089e-16, 0.678078, 1.56316, 0.848604 )
@@ -75,11 +80,6 @@ shape = SubResource( 4 )
 [node name="PayFrame" type="MeshInstance" parent="."]
 transform = Transform( -0.175985, 9.81294e-16, 5.73433e-08, 5.73433e-08, 3.01157e-09, 0.175985, 0, 0.0688967, -7.69257e-09, 0.758318, 1.59113, 0.776597 )
 mesh = ExtResource( 6 )
-material/0 = null
-
-[node name="Shelf" type="MeshInstance" parent="."]
-transform = Transform( 1.08559, 0, 0, 0, 0.0530151, 0, 0, 0, 0.169682, 0, 2.12687, 0.584076 )
-mesh = ExtResource( 4 )
 material/0 = null
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

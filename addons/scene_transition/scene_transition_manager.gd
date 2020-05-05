@@ -30,7 +30,7 @@ func _enter_tree():
 func detect_current_scene():
 	var rt = get_tree().get_root()
 	for ch in rt.get_children():
-		if ch.name != self.name and ch.name != "Global":
+		if ch.name != self.name and ch.name != "Global" and ch.name != "SoundManager":
 			print("Startup scene:" + ch.name)
 			return ch
 	return null

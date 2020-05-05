@@ -8,21 +8,29 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node",
+"class": "SoundManagerModule",
+"language": "GDScript",
+"path": "res://addons/sound_manager/module/internal_scripts/SoundManager_config.gd"
+} ]
 _global_script_class_icons={
-
+"SoundManagerModule": ""
 }
 
 [application]
 
 config/name="TODISOIAVM"
 run/main_scene="res://scenes/s_main/S_Main.tscn"
+boot_splash/image="res://icon.png"
+boot_splash/fullsize=false
 config/icon="res://icon.png"
 
 [autoload]
 
 Global="*res://Global.gd"
 scene_manager="*res://addons/scene_transition/scene_transition_manager.gd"
+SoundManager="*res://addons/sound_manager/module/SoundManager.tscn"
 
 [display]
 
@@ -31,7 +39,7 @@ window/size/height=720
 
 [editor_plugins]
 
-enabled=PoolStringArray( "CodeSnippetPopup", "scene_transition", "zylann.translation_editor" )
+enabled=PoolStringArray( "CodeSnippetPopup", "scene_transition", "sound_manager", "zylann.translation_editor" )
 
 [importer_defaults]
 
