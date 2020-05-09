@@ -1,0 +1,129 @@
+[gd_resource type="VisualShader" load_steps=14 format=2]
+
+[sub_resource type="VisualShaderNodeVectorOp" id=1]
+
+[sub_resource type="VisualShaderNodeVectorOp" id=2]
+operator = 2
+
+[sub_resource type="VisualShaderNodeVec3Uniform" id=3]
+uniform_name = "Direction"
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=4]
+output_port_for_preview = 0
+function = 15
+
+[sub_resource type="VisualShaderNodeColorUniform" id=5]
+uniform_name = "CloudColor"
+
+[sub_resource type="VisualShaderNodeVectorOp" id=6]
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorInterp" id=7]
+
+[sub_resource type="OpenSimplexNoise" id=8]
+
+[sub_resource type="NoiseTexture" id=9]
+width = 2048
+height = 2048
+seamless = true
+noise = SubResource( 8 )
+
+[sub_resource type="VisualShaderNodeTexture" id=10]
+output_port_for_preview = 0
+texture = SubResource( 9 )
+
+[sub_resource type="VisualShaderNodeInput" id=11]
+output_port_for_preview = 0
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeScalarSmoothStep" id=12]
+output_port_for_preview = 0
+default_input_values = [ 0, 0.0, 1, 0.5, 2, 0.0 ]
+
+[sub_resource type="VisualShaderNodeInput" id=13]
+input_name = "time"
+
+[resource]
+code = "shader_type canvas_item;
+uniform vec3 Direction;
+uniform sampler2D tex_frg_2;
+uniform vec4 CloudColor : hint_color;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0 = vec3(UV, 0.0);
+
+// Input:6
+	float n_out6p0 = TIME;
+
+// VectorUniform:12
+	vec3 n_out12p0 = Direction;
+
+// VectorOp:11
+	vec3 n_out11p0 = vec3(n_out6p0) * n_out12p0;
+
+// VectorOp:10
+	vec3 n_out10p0 = n_out3p0 + n_out11p0;
+
+// Texture:2
+	vec4 tex_frg_2_read = texture(tex_frg_2, n_out10p0.xy);
+	vec3 n_out2p0 = tex_frg_2_read.rgb;
+	float n_out2p1 = tex_frg_2_read.a;
+
+// ScalarFunc:13
+	float n_out13p0 = round(dot(n_out2p0, vec3(0.333333, 0.333333, 0.333333)));
+
+// ColorUniform:15
+	vec3 n_out15p0 = CloudColor.rgb;
+	float n_out15p1 = CloudColor.a;
+
+// VectorOp:16
+	vec3 n_out16p0 = vec3(n_out13p0) * n_out15p0;
+
+// VectorMix:17
+	vec3 n_out17p0 = mix(n_out16p0, n_out16p0, n_out16p0);
+
+// Output:0
+	COLOR.rgb = n_out17p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -289.08, 185.84 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 1160, 400 )
+nodes/fragment/2/node = SubResource( 10 )
+nodes/fragment/2/position = Vector2( 260, 140 )
+nodes/fragment/3/node = SubResource( 11 )
+nodes/fragment/3/position = Vector2( -380, 160 )
+nodes/fragment/5/node = SubResource( 12 )
+nodes/fragment/5/position = Vector2( 460, 140 )
+nodes/fragment/6/node = SubResource( 13 )
+nodes/fragment/6/position = Vector2( -420, 340 )
+nodes/fragment/10/node = SubResource( 1 )
+nodes/fragment/10/position = Vector2( 40, 260 )
+nodes/fragment/11/node = SubResource( 2 )
+nodes/fragment/11/position = Vector2( -180, 340 )
+nodes/fragment/12/node = SubResource( 3 )
+nodes/fragment/12/position = Vector2( -420, 420 )
+nodes/fragment/13/node = SubResource( 4 )
+nodes/fragment/13/position = Vector2( 460, 360 )
+nodes/fragment/15/node = SubResource( 5 )
+nodes/fragment/15/position = Vector2( 480, 540 )
+nodes/fragment/16/node = SubResource( 6 )
+nodes/fragment/16/position = Vector2( 720, 380 )
+nodes/fragment/17/node = SubResource( 7 )
+nodes/fragment/17/position = Vector2( 960, 280 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 5, 0, 3, 0, 10, 0, 6, 0, 11, 0, 11, 0, 10, 1, 10, 0, 2, 0, 12, 0, 11, 1, 2, 0, 13, 0, 13, 0, 16, 0, 15, 0, 16, 1, 16, 0, 17, 2, 17, 0, 0, 0, 16, 0, 17, 0, 16, 0, 17, 1 )

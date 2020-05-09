@@ -9,6 +9,7 @@ var nb_can_textures = 20
 var can_textures = []
 
 #Settings
+var invert_mouse_buttons = false
 var display_FPS = false
 var setting_reticle = false setget set_setting_reticle
 enum WINDOW_MODE {WINDOWED, FULLSCREEN, BORDERLESS}
@@ -55,6 +56,8 @@ func save_config():
 	configFile.set_value("Display","window_mode", window_mode)
 	configFile.set_value("Display","resolution", OS.window_size)
 	
+	
+	configFile.set_value("Input","invert_mouse_buttons", invert_mouse_buttons)
 	# Actions
 	for a in InputMap.get_actions():
 		configFile.set_value("Input", a, InputMap.get_action_list(a))
@@ -94,6 +97,9 @@ func load_config():
 	
 	config = configFile.get_value("Display", "resolution")
 	if config : OS.window_size = config
+	
+	config = configFile.get_value("Input", "invert_mouse_buttons")
+	if config : Global.invert_mouse_buttons = config
 	
 	for a in InputMap.get_actions():
 		config = configFile.get_value("Input", a)

@@ -9,7 +9,9 @@
 margin_right = 1080.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 200, 60 )
+mouse_default_cursor_shape = 2
 custom_styles/focus = SubResource( 1 )
+button_mask = 3
 flat = true
 script = ExtResource( 2 )
 __meta__ = {

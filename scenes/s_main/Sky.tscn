@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/s_main/sky_visual_shader.tres" type="Shader" id=1]
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = ExtResource( 1 )
+shader_param/Direction = Vector3( 0.001, 0, 0 )
+shader_param/CloudColor = Color( 1, 1, 1, 1 )
+
+[node name="Sky" type="Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 1024, 512 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource( 5 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
