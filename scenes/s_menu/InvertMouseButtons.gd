@@ -12,18 +12,4 @@ func _ready():
 	pass # Replace with function body.
 
 func _toggled(button_pressed):
-	var clickEvent = InputEventMouseButton.new()
-	InputMap.action_erase_events("left_click")
-	InputMap.action_erase_events("right_click")
-	if button_pressed:
-		Global.invert_mouse_buttons = false
-		clickEvent.button_index = BUTTON_LEFT
-		InputMap.action_add_event("left_click", clickEvent)
-		clickEvent.button_index = BUTTON_RIGHT
-		InputMap.action_add_event("right_click", clickEvent)
-	else:
-		Global.invert_mouse_buttons = true
-		clickEvent.button_index = BUTTON_RIGHT
-		InputMap.action_add_event("left_click", clickEvent)
-		clickEvent.button_index = BUTTON_LEFT
-		InputMap.action_add_event("right_click", clickEvent)
+	Global.invert_mouse_buttons = button_pressed

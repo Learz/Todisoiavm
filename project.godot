@@ -28,7 +28,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Global="*res://Global.gd"
+Global="*res://Global.tscn"
 scene_manager="*res://addons/scene_transition/scene_transition_manager.gd"
 SoundManager="*res://addons/sound_manager/module/SoundManager.tscn"
 

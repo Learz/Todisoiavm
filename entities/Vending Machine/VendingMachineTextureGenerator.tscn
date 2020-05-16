@@ -12,3 +12,5 @@ render_target_clear_mode = 1
 render_target_update_mode = 1
 
 [node name="Dynamic_Texture" parent="." instance=ExtResource( 1 )]
+margin_right = 204.8
+margin_bottom = -432.128

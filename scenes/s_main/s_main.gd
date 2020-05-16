@@ -48,20 +48,21 @@ func generate_textures():
 	randomize()
 	Global.vending_machine_textures = []
 	for i in range(Global.nb_vending_machine_textures):
-		$VM_Tex_Generator/Dynamic_Texture.generate_brand(randf())
+		$VM_Tex_Generator/Dynamic_Texture.generate_brand()
 		yield(get_tree(), "idle_frame")
 		yield(get_tree(), "idle_frame")
 		var texture = ImageTexture.new()
 		texture.create_from_image($VM_Tex_Generator.get_texture().get_data())
 		Global.vending_machine_textures.push_back(texture)
-#	Global.can_textures
-#	for i in range(Global.nb_can_textures):
-#		$VM_Tex_Generator/Dynamic_Texture.generate_brand(randf())
-#		yield(get_tree(), "idle_frame")
-#		yield(get_tree(), "idle_frame")
-#		var texture = ImageTexture.new()
-#		texture.create_from_image($VM_Tex_Generator.get_texture().get_data())
-#		Global.vending_machine_textures.push_back(texture)
+	
+	Global.can_textures = []
+	for i in range(Global.nb_can_textures):
+		$Drink_Tex_Generator/Dynamic_Texture.generate_brand()
+		yield(get_tree(), "idle_frame")
+		yield(get_tree(), "idle_frame")
+		var texture = ImageTexture.new()
+		texture.create_from_image($Drink_Tex_Generator.get_texture().get_data())
+		Global.can_textures.push_back(texture)
 	Global.textures_generated = true
 
 

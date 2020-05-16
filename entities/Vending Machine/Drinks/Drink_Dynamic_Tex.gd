@@ -10,12 +10,12 @@ func _process(delta):
 func generate_brand():
 	get_viewport().render_target_update_mode = Viewport.UPDATE_ONCE
 	var rnd = randf()
+	var hot = randi() & 1
+	var price = rand_range(8,15)
 	
-	#var ticks = OS.get_ticks_msec()
 	var hue = rnd
-	var vmCol = Color.from_hsv(hue,1,1,1)
-	$VMC1.color = vmCol
-	$VMC2.color = vmCol
-	$VMC3.color = vmCol
-	
-	$SidePanelText.text = str(rnd)
+	var botCol = Color.from_hsv(hue,1,1,1)
+	$Brand.color = botCol
+	$Price/VBoxContainer/Label.text = "%d0" % price
+	$Price/VBoxContainer/HotLabel.visible = hot
+	$Price/VBoxContainer/ColdLabel.visible = !hot

@@ -1,4 +1,3 @@
-tool
 extends Spatial
 
 export (Array, Mesh) var drinkTypes
@@ -14,22 +13,26 @@ func set_drink_type(dt):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	buttonPos = $Button.translation
-	pass # Replace with function body.
+	
+	yield(Global, "textures_generated")
+	$Drink.set_surface_material(0, load("res://resources/models/Vending Machine/Drink_Mat.tres").duplicate())
+	$PriceTag.set_surface_material(0, $Drink.get_surface_material(0))
+	set_texture()
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func set_texture():
+	var tex_id = randi()%Global.nb_can_textures
+	#TO FIX : Crashes when generated too fast
+	$Drink.get_surface_material(0).albedo_texture = Global.can_textures[tex_id]
 
 func _on_ButtonBody_input_event(camera, event, click_position, click_normal, shape_idx):
 	if event.is_action_pressed("left_click"):
+		SoundManager.play_se("Blip_Select", true, false)
 		tween.interpolate_property($Button, "translation", null, buttonPos + Vector3(0,0,-0.05), 0.1)
 		tween.start()
 		yield(tween, "tween_completed")
 		tween.interpolate_property($Button, "translation", null, buttonPos, 0.2)
 		tween.start()
 		#$Button.translate(Vector3(0,0,-0.01))
-
 
 func _on_ButtonBody_mouse_entered():
 	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
