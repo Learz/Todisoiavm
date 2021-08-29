@@ -61,6 +61,7 @@ margin_bottom = 140.0
 texture = ExtResource( 2 )
 
 [node name="CenterRow" type="HBoxContainer" parent="MainMenu/Menu"]
+visible = false
 margin_top = 144.0
 margin_right = 1080.0
 margin_bottom = 540.0
@@ -78,7 +79,7 @@ alignment = 2
 margin_top = 196.0
 margin_right = 876.0
 margin_bottom = 256.0
-title = "Start Wandering"
+title = "LABEL_START_GAME"
 type = 4
 
 [node name="OptionsBtn" parent="MainMenu/Menu/CenterRow/Buttons" instance=ExtResource( 3 )]
@@ -360,7 +361,6 @@ focus_mode = 2
 custom_fonts/font = ExtResource( 7 )
 custom_constants/hseparation = 20
 button_mask = 3
-enabled_focus_mode = 2
 text = "Display Mode"
 flat = false
 items = [ "Windowed", null, 0, false, false, 0, 0, null, "", false, "Fullscreen", null, 0, false, false, 1, 0, null, "", false, "Borderless Window", null, 0, false, false, 2, 0, null, "", false ]

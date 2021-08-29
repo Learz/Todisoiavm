@@ -39,10 +39,10 @@ func _input(event: InputEvent) -> void:
 #	if event.is_action_pressed("dev_action"):
 #		generate_textures()
 				
-func _process(delta):
+func _physics_process(delta):
 	$HUD.visible = Global.display_HUD
 	$FPS_Counter.visible = Global.display_FPS
-	$HUD/Reticle.visible = Global.display_reticle	
+	$HUD/ReticleUI.visible = Global.display_reticle
 
 func generate_textures():
 	randomize()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://scenes/s_main/default_env.tres" type="Environment" id=1]
 [ext_resource path="res://scenes/s_main/s_main.gd" type="Script" id=2]
@@ -28,6 +28,8 @@
 [ext_resource path="res://resources/clouds/Fancé_Nuaj-2.png" type="Texture" id=26]
 [ext_resource path="res://entities/Vending Machine/Drinks/DrinkTextureGenerator.tscn" type="PackedScene" id=27]
 [ext_resource path="res://resources/clouds/Fancé_Nuaj-1.png" type="Texture" id=28]
+[ext_resource path="res://resources/LeagueGothic_24.tres" type="DynamicFont" id=29]
+[ext_resource path="res://entities/houseV2.tscn" type="PackedScene" id=30]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 19 )
@@ -66,7 +68,29 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Reticle" type="TextureRect" parent="HUD"]
+[node name="ReticleUI" type="Control" parent="HUD"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Action" type="Label" parent="HUD/ReticleUI"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_top = -50.0
+margin_right = 50.0
+custom_fonts/font = ExtResource( 29 )
+text = "E"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Reticle" type="TextureRect" parent="HUD/ReticleUI"]
 modulate = Color( 1, 1, 1, 0.470588 )
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -123,7 +147,7 @@ shadow_enabled = true
 shadow_color = Color( 0.662745, 0.662745, 0.662745, 1 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6727, 2.07181, -0.429492 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.59442, 2.49691, -6.52272 )
 head_path = NodePath("../Player/Head")
 cam_path = NodePath("../Player/Head/Camera")
 FOV = 70.0
@@ -134,44 +158,44 @@ sprint_speed = 7
 transform = Transform( -4.88763e-07, 0, 3, 0, 3, 0, -3, 0, -4.88763e-07, 28.8463, 3.84333, -0.517106 )
 
 [node name="Billlboard" parent="." instance=ExtResource( 9 )]
-transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 20.6639, 1.8195, -6.07941 )
+transform = Transform( 0.0184788, 0, 0.499658, 0, 0.5, 0, -0.499658, 0, 0.0184788, 20.6639, 1.8195, -6.07941 )
 four_sided = true
 texture = ExtResource( 10 )
 
 [node name="Pot" parent="." instance=ExtResource( 9 )]
-transform = Transform( -1, 0, -0.000994595, 0, 1, 0, 0.000994595, 0, -1, -9.09299, 1.72616, -14.4367 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16.0348, 2.47363, -28.7564 )
 texture = ExtResource( 16 )
 
 [node name="Pot2" parent="." instance=ExtResource( 9 )]
-transform = Transform( -1, 0, -0.000994595, 0, 1, 0, 0.000994595, 0, -1, -7.29219, 1.72616, -14.4385 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.29219, 1.72616, -14.4385 )
 texture = ExtResource( 16 )
 
 [node name="Pot3" parent="." instance=ExtResource( 9 )]
-transform = Transform( -1, 0, -0.000994595, 0, 1, 0, 0.000994595, 0, -1, -5.89859, 1.72616, -14.4399 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.89859, 1.72616, -14.4399 )
 texture = ExtResource( 17 )
 
 [node name="Pot4" parent="." instance=ExtResource( 9 )]
-transform = Transform( -1, 0, -0.000994595, 0, 1, 0, 0.000994595, 0, -1, -4.1676, 1.72616, -14.4416 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00957489, 2.50175, -22.5277 )
 texture = ExtResource( 18 )
 
 [node name="Pot5" parent="." instance=ExtResource( 9 )]
-transform = Transform( -1, 0, -0.000994595, 0, 1, 0, 0.000994595, 0, -1, -2.4374, 1.72616, -14.4434 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0615187, 2.59032, -39.2264 )
 texture = ExtResource( 14 )
 
 [node name="Pot6" parent="." instance=ExtResource( 9 )]
-transform = Transform( -1, 0, -0.000994595, 0, 1, 0, 0.000994595, 0, -1, -0.876097, 1.72616, -14.4449 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.29368, 1.62727, -14.6104 )
 texture = ExtResource( 15 )
 
 [node name="Pot9" parent="." instance=ExtResource( 9 )]
-transform = Transform( -1, 0, -0.000994595, 0, 1, 0, 0.000994595, 0, -1, 1.47768, 1.71092, -14.1626 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.25434, 0.800683, -15.3401 )
 texture = ExtResource( 22 )
 
 [node name="Pot10" parent="." instance=ExtResource( 9 )]
-transform = Transform( -1, 0, -0.000994595, 0, 1, 0, 0.000994595, 0, -1, 1.47539, 1.71092, -16.4742 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.66071, 1.5299, -13.4199 )
 texture = ExtResource( 23 )
 
 [node name="Pot11" parent="." instance=ExtResource( 9 )]
-transform = Transform( -1, 0, -0.000994595, 0, 1, 0, 0.000994595, 0, -1, 1.47325, 1.71092, -18.621 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0116526, 2.49697, -10.9088 )
 texture = ExtResource( 21 )
 
 [node name="GridMap" type="GridMap" parent="."]
@@ -815,10 +839,10 @@ transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -32 )
 
 [node name="Vending_Machine" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 25.2516, 0.7, -14.7166 )
+transform = Transform( 3.69553e-07, 0, -1, 0, 1, 0, 1, 0, 3.69553e-07, 14.7718, 0.7, -18.3728 )
 
 [node name="Vending_Machine2" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 21.9681, 0.7, -14.7166 )
+transform = Transform( 3.69553e-07, 0, -1, 0, 1, 0, 1, 0, 3.69553e-07, 15.0352, 0.7, -40.973 )
 texture_id = 1
 
 [node name="Vending_Machine3" parent="." instance=ExtResource( 6 )]
@@ -826,7 +850,7 @@ transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 28.2616, 
 texture_id = 2
 
 [node name="Vending_Machine4" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 18.3222, 0.7, -14.7166 )
+transform = Transform( -4.56975e-07, 0, 1, 0, 1, 0, -1, 0, -4.56975e-07, 1.18349, 0.7, -62.1499 )
 texture_id = 3
 
 [node name="Vending_Machine5" parent="." instance=ExtResource( 6 )]
@@ -860,4 +884,8 @@ clouds = [ ExtResource( 28 ), ExtResource( 26 ), ExtResource( 24 ), ExtResource(
 particle_amount = 60
 particle_scale = 60.0
 visible_dimensions = Vector3( 500, 300, 100 )
+
+[node name="house" parent="." instance=ExtResource( 30 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00271702, 0.57645, -3.49904 )
+
 [connection signal="ready" from="VM_Tex_Generator" to="." method="_on_Viewport_ready"]

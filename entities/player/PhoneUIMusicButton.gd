@@ -10,7 +10,6 @@ func _ready():
 	connect("focus_exited", self, "_reset_size")
 	connect("button_down", self, "_on_button_down")
 	connect("button_up", self, "_reset_size")
-	pass # Replace with function body.
 
 func _on_mouse_over():
 	_on_focus_entered()

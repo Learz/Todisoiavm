@@ -63,6 +63,14 @@ func _process(_delta: float) -> void:
 
 # Called every physics tick. 'delta' is constant
 func _physics_process(delta: float) -> void:
+	var rayCollider : Object = $Head/Camera/RayCast.get_collider()
+	$"../HUD/ReticleUI/Action".visible = false
+	if rayCollider:
+		var anchor : Spatial = rayCollider.owner.get_node("Camera_Anchor")
+		if anchor:
+			$"../HUD/ReticleUI/Action".visible = true
+			
+			
 	if !vending_mode and !Global.paused:
 		if flying:
 			fly(delta)
@@ -220,10 +228,10 @@ func walk(delta: float) -> void:
 			velocity.z = 0
 	
 	# Move
-	velocity.y = move_and_slide_with_snap(velocity, _snap, FLOOR_NORMAL, 
-			true, 4, deg2rad(floor_max_angle)).y
-#	velocity.y = move_and_slide(velocity, FLOOR_NORMAL, 
+#	velocity.y = move_and_slide_with_snap(velocity, _snap, FLOOR_NORMAL, 
 #			true, 4, deg2rad(floor_max_angle)).y
+	velocity.y = move_and_slide(velocity, FLOOR_NORMAL, 
+			true, 4, deg2rad(floor_max_angle)).y
 
 func climb(delta: float) -> void:
 	# Input

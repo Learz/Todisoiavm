@@ -7,7 +7,7 @@ export(int, "Scene", "Url", "Quit", "MoveTo", "Hide Menu") var type := 2
 
 func setTitle(newTitle):
 	if($Label):
-		$Label.text = newTitle
+		$Label.set_text(tr(newTitle))
 		title = newTitle
 
 func _on_MenuButton_focus_entered():

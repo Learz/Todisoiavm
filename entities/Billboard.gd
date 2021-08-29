@@ -1,5 +1,6 @@
 tool
 extends Spatial
+class_name Billboard
 
 export var four_sided := false setget set_four_sided
 export (Texture) var texture setget set_texture
@@ -31,8 +32,9 @@ func _ready():
 func _process(delta):
 	if get_viewport().get_camera():
 		var playerPos = get_viewport().get_camera().owner.translation
-		$SpriteQuad.look_at(Vector3(playerPos.x, translation.y ,playerPos.z), Vector3.UP)
-	
+		$SpriteQuad.look_at(playerPos, Vector3.UP)
+		$SpriteQuad.rotation = Vector3(0, $SpriteQuad.rotation.y, 0)
+		
 		if four_sided:
 			var playerPosToSprite = (rotation.y - PI / 4) + Vector2(translation.x, translation.z).angle_to_point(Vector2(playerPos.x, playerPos.z))
 			var currentOffset = floor(playerPosToSprite/(PI/2))/4

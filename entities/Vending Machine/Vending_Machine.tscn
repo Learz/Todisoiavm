@@ -86,4 +86,5 @@ material/0 = null
 
 [node name="Camera_Anchor" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 3 )
+
 [connection signal="input_event" from="Change_Lever/StaticBody" to="." method="_on_StaticBody_input_event"]

@@ -1,48 +1,15 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://entities/House.gd" type="Script" id=1]
 [ext_resource path="res://scenes/assets/structures/materials/wall.tres" type="Material" id=2]
+[ext_resource path="res://entities/HouseRoof.tres" type="Material" id=3]
 
 [sub_resource type="VisualShaderNodeColorConstant" id=1]
-constant = Color( 0.144531, 0.144531, 0.144531, 1 )
 
 [sub_resource type="VisualShader" id=2]
 code = "shader_type spatial;
+render_mode specular_schlick_ggx;
 
-
-
-void vertex() {
-// Output:0
-
-}
-
-void fragment() {
-// Color:2
-	vec3 n_out2p0 = vec3(0.144531, 0.144531, 0.144531);
-	float n_out2p1 = 1.000000;
-
-// Output:0
-	ALBEDO = n_out2p0;
-
-}
-
-void light() {
-// Output:0
-
-}
-"
-graph_offset = Vector2( -279, 91 )
-nodes/fragment/2/node = SubResource( 1 )
-nodes/fragment/2/position = Vector2( 140, 160 )
-nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0 )
-
-[sub_resource type="ShaderMaterial" id=3]
-shader = SubResource( 2 )
-
-[sub_resource type="VisualShaderNodeColorConstant" id=5]
-
-[sub_resource type="VisualShader" id=6]
-code = "shader_type spatial;
 
 
 
@@ -67,12 +34,12 @@ void light() {
 }
 "
 nodes/fragment/0/position = Vector2( 400, 160 )
-nodes/fragment/2/node = SubResource( 5 )
+nodes/fragment/2/node = SubResource( 1 )
 nodes/fragment/2/position = Vector2( 200, 160 )
 nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0 )
 
-[sub_resource type="ShaderMaterial" id=7]
-shader = SubResource( 6 )
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
 
 [sub_resource type="BoxShape" id=4]
 extents = Vector3( 8, 8, 8 )
@@ -87,39 +54,87 @@ width = 16.0
 height = 1.0
 depth = 16.0
 
-[node name="CSGCombiner" type="CSGCombiner" parent="."]
+[node name="House" type="CSGCombiner" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.3 )
 
-[node name="Body" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.5, -0.2 )
-width = 12.0
+[node name="Body" type="CSGBox" parent="House"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05595, 7.5, -0.2 )
+width = 10.0
 height = 15.0
 depth = 12.0
 material = ExtResource( 2 )
 
-[node name="Roof" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 1, 0, 0, 0, 0.978148, 0.207912, 0, -0.207912, 0.978148, 0, 18.8809, 0.361323 )
+[node name="Roof" type="CSGBox" parent="House"]
+transform = Transform( 1, 0, 0, 0, 0.973408, 0.229081, 0, -0.229081, 0.973408, 0, 18.8809, 0.361323 )
 operation = 2
 width = 15.0
 height = 10.0
 depth = 30.0
-material = SubResource( 3 )
+material = ExtResource( 3 )
 
-[node name="RoofInvert" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( -1, -6.77463e-08, 3.18721e-07, 0, 0.978148, 0.207912, -3.25841e-07, 0.207912, -0.978148, -4.25587e-07, 19.0632, -1.90122 )
+[node name="RoofInvert" type="CSGBox" parent="House"]
+transform = Transform( 1, 0, 0, 0, 0.973408, 0.229081, 0, -0.229081, 0.973408, -4.25587e-07, 19.0632, -1.90122 )
 operation = 2
 width = 15.0
 height = 10.0
 depth = 30.0
-material = SubResource( 3 )
+material = ExtResource( 3 )
 
-[node name="Cut" type="CSGBox" parent="CSGCombiner"]
+[node name="Cut" type="CSGBox" parent="House"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.02347, 9, 5.35671 )
 operation = 2
 width = 12.0
 height = 20.0
 depth = 12.0
-material = SubResource( 7 )
+material = SubResource( 3 )
+
+[node name="Window" type="CSGBox" parent="House"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.01363, 3.66687, -3.52761 )
+operation = 2
+width = 0.618148
+height = 3.21296
+depth = 3.39673
+material = ExtResource( 3 )
+
+[node name="Window2" type="CSGBox" parent="House"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.01363, 8.80674, -3.52761 )
+operation = 2
+width = 0.618148
+height = 3.21296
+depth = 3.39673
+material = ExtResource( 3 )
+
+[node name="Window4" type="CSGBox" parent="House"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.206829, 8.80674, 2.14995 )
+operation = 2
+width = 0.618148
+height = 3.21296
+depth = 3.39673
+material = ExtResource( 3 )
+
+[node name="Door" type="CSGBox" parent="House"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0625858, 2.29347, 2.41151 )
+operation = 2
+width = 0.618148
+height = 4.58893
+depth = 1.87166
+material = ExtResource( 3 )
+
+[node name="Window5" type="CSGBox" parent="House"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.74988, 8.80674, 2.14995 )
+operation = 2
+width = 0.618148
+height = 3.21296
+depth = 3.39673
+material = ExtResource( 3 )
+
+[node name="Door2" type="CSGBox" parent="House"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.60564, 2.29347, 2.41151 )
+operation = 2
+width = 0.618148
+height = 4.58893
+depth = 1.87166
+material = ExtResource( 3 )
 
 [node name="Fence" type="CSGBox" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
@@ -149,3 +164,6 @@ depth = 0.75
 [node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 0 )
 shape = SubResource( 4 )
+
+[node name="Plants" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )

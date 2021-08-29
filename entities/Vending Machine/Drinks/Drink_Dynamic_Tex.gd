@@ -4,8 +4,6 @@ extends Control
 func _ready():
 	pass # Replace with function body.
 
-func _process(delta):
-	pass
 	
 func generate_brand():
 	get_viewport().render_target_update_mode = Viewport.UPDATE_ONCE

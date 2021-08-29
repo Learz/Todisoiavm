@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://resources/models/phone_bg.jpg" type="Texture" id=1]
 [ext_resource path="res://entities/player/time.gd" type="Script" id=2]
@@ -14,14 +14,20 @@
 [ext_resource path="res://resources/Phone_UI_Next_Hover.png" type="Texture" id=12]
 [ext_resource path="res://resources/Phone_UI_Next_Clicked.png" type="Texture" id=13]
 [ext_resource path="res://resources/Phone_UI_Stop.png" type="Texture" id=14]
+[ext_resource path="res://addons/dialogue_tree/resource/dialogue_tree.gd" type="Script" id=15]
 [ext_resource path="res://resources/Phone_UI_Previous_Hover.png" type="Texture" id=16]
 [ext_resource path="res://resources/Phone_UI_Previous_Clicked.png" type="Texture" id=17]
 [ext_resource path="res://entities/player/PhoneUIMusicButton.gd" type="Script" id=18]
 [ext_resource path="res://resources/Phone_UI_Home.png" type="Texture" id=19]
 [ext_resource path="res://icon.png" type="Texture" id=20]
 [ext_resource path="res://resources/Phone_UI_Chat_Icon.png" type="Texture" id=21]
-[ext_resource path="res://resources/Phone_UI_Chat_Bubble_Right.png" type="Texture" id=22]
-[ext_resource path="res://resources/Phone_UI_Chat_Bubble_Left.png" type="Texture" id=23]
+[ext_resource path="res://entities/player/ChatSentMessage.tscn" type="PackedScene" id=22]
+[ext_resource path="res://entities/player/ChatReceivedMessage.tscn" type="PackedScene" id=23]
+[ext_resource path="res://addons/dialogue_tree/scripts/dialogue.gd" type="Script" id=24]
+[ext_resource path="res://addons/dialogue_tree/assets/ResIcon.png" type="Texture" id=25]
+[ext_resource path="res://entities/player/PhoneChat.gd" type="Script" id=26]
+[ext_resource path="res://entities/player/PhoneMusic.gd" type="Script" id=27]
+[ext_resource path="res://entities/player/ChatChoiceButton.tscn" type="PackedScene" id=28]
 
 [sub_resource type="DynamicFont" id=1]
 size = 24
@@ -32,7 +38,7 @@ size = 32
 use_filter = true
 font_data = ExtResource( 5 )
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 1, 1, 1, 1 )
 corner_radius_top_left = 5
 corner_radius_top_right = 5
@@ -50,16 +56,294 @@ VScrollBar/icons/decrement = null
 VScrollBar/icons/decrement_highlight = null
 VScrollBar/icons/increment = null
 VScrollBar/icons/increment_highlight = null
-VScrollBar/styles/grabber = SubResource( 6 )
+VScrollBar/styles/grabber = SubResource( 3 )
 VScrollBar/styles/grabber_highlight = null
 VScrollBar/styles/grabber_pressed = null
 VScrollBar/styles/scroll = SubResource( 4 )
 VScrollBar/styles/scroll_focus = null
 
-[sub_resource type="DynamicFont" id=3]
-size = 24
+[sub_resource type="DynamicFont" id=6]
+size = 32
 use_filter = true
 font_data = ExtResource( 5 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="Theme" id=8]
+Button/colors/font_color = Color( 0, 0, 0, 1 )
+Button/colors/font_color_disabled = Color( 0.137255, 0.137255, 0.137255, 0.2 )
+Button/colors/font_color_hover = Color( 0.184314, 0.184314, 0.184314, 1 )
+Button/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+Button/constants/hseparation = 2
+Button/fonts/font = SubResource( 6 )
+Button/styles/disabled = null
+Button/styles/focus = null
+Button/styles/hover = null
+Button/styles/normal = SubResource( 7 )
+Button/styles/pressed = null
+
+[sub_resource type="Resource" id=9]
+script = ExtResource( 15 )
+__meta__ = {
+"_editor_icon": ExtResource( 25 )
+}
+connections = [ {
+"from": "ChoiceDialogue",
+"from_port": 0,
+"to": "BasicDialogue2",
+"to_port": 0
+}, {
+"from": "StartNode",
+"from_port": 0,
+"to": "BasicDialogue4",
+"to_port": 0
+}, {
+"from": "BasicDialogue4",
+"from_port": 0,
+"to": "BasicDialogue5",
+"to_port": 0
+}, {
+"from": "BasicDialogue5",
+"from_port": 0,
+"to": "ChoiceDialogue",
+"to_port": 0
+}, {
+"from": "BasicDialogue2",
+"from_port": 0,
+"to": "ChoiceDialogue2",
+"to_port": 0
+}, {
+"from": "ChoiceDialogue2",
+"from_port": 0,
+"to": "BasicDialogue",
+"to_port": 0
+}, {
+"from": "BasicDialogue",
+"from_port": 0,
+"to": "ChoiceDialogue3",
+"to_port": 0
+}, {
+"from": "ChoiceDialogue3",
+"from_port": 0,
+"to": "BasicDialogue3",
+"to_port": 0
+}, {
+"from": "ChoiceDialogue3",
+"from_port": 1,
+"to": "BasicDialogue6",
+"to_port": 0
+}, {
+"from": "BasicDialogue6",
+"from_port": 0,
+"to": "EndNode",
+"to_port": 0
+}, {
+"from": "BasicDialogue3",
+"from_port": 0,
+"to": "EndNode",
+"to_port": 0
+} ]
+Nodes = [ {
+"filename": "res://addons/dialogue_tree/scenes/EndNode.tscn",
+"name": "EndNode",
+"rect_size_x": 82.0,
+"rect_size_y": 55.0,
+"rect_x": 3604.0,
+"rect_y": 144.25
+}, {
+"Actor": "",
+"Dialogue": "Ah, I see. Alright then..",
+"RefName": "",
+"filename": "res://addons/dialogue_tree/scenes/BasicDialogue.tscn",
+"name": "BasicDialogue6",
+"rect_size_x": 276.0,
+"rect_size_y": 114.0,
+"rect_x": 2028.0,
+"rect_y": 324.0
+}, {
+"Actor": "",
+"Dialogue": "Anything is fine! Thanks!",
+"RefName": "",
+"filename": "res://addons/dialogue_tree/scenes/BasicDialogue.tscn",
+"name": "BasicDialogue3",
+"rect_size_x": 272.0,
+"rect_size_y": 114.0,
+"rect_x": 2028.0,
+"rect_y": 144.0
+}, {
+"Actor": "",
+"Dialogue": "Oh, could you get me one please?",
+"RefName": "",
+"filename": "res://addons/dialogue_tree/scenes/BasicDialogue.tscn",
+"name": "BasicDialogue",
+"rect_size_x": 320.0,
+"rect_size_y": 114.0,
+"rect_x": 1308.0,
+"rect_y": 184.0
+}, {
+"Conditonal": false,
+"RefName": "",
+"choices": [ {
+"Conditional": "",
+"Dialogue": "Looking for a drink outside",
+"ToolTip": ""
+} ],
+"filename": "res://addons/dialogue_tree/scenes/ChoiceDialogue.tscn",
+"name": "ChoiceDialogue2",
+"rect_size_x": 263.0,
+"rect_size_y": 114.0,
+"rect_x": 1008.0,
+"rect_y": 184.0
+}, {
+"Actor": "",
+"Dialogue": "U up?",
+"RefName": "",
+"filename": "res://addons/dialogue_tree/scenes/BasicDialogue.tscn",
+"name": "BasicDialogue5",
+"rect_size_x": 172.0,
+"rect_size_y": 114.0,
+"rect_x": 228.0,
+"rect_y": 184.0
+}, {
+"filename": "res://addons/dialogue_tree/scenes/StartNode.tscn",
+"name": "StartNode",
+"rect_size_x": 88.0,
+"rect_size_y": 55.0,
+"rect_x": -192.0,
+"rect_y": 104.0
+}, {
+"Actor": "",
+"Dialogue": "Hey",
+"RefName": "",
+"filename": "res://addons/dialogue_tree/scenes/BasicDialogue.tscn",
+"name": "BasicDialogue4",
+"rect_size_x": 172.0,
+"rect_size_y": 114.0,
+"rect_x": 28.0,
+"rect_y": 184.0
+}, {
+"Conditonal": false,
+"RefName": "",
+"choices": [ {
+"Conditional": "",
+"Dialogue": "Yea what's up",
+"ToolTip": ""
+} ],
+"filename": "res://addons/dialogue_tree/scenes/ChoiceDialogue.tscn",
+"name": "ChoiceDialogue",
+"rect_size_x": 213.0,
+"rect_size_y": 114.0,
+"rect_x": 448.0,
+"rect_y": 184.0
+}, {
+"Conditonal": false,
+"RefName": "",
+"choices": [ {
+"Conditional": "",
+"Dialogue": "Yeah what do u want?",
+"ToolTip": ""
+}, {
+"Conditional": "",
+"Dialogue": "Nah sorry I'm kinda busy...",
+"ToolTip": ""
+} ],
+"filename": "res://addons/dialogue_tree/scenes/ChoiceDialogue.tscn",
+"name": "ChoiceDialogue3",
+"rect_size_x": 295.0,
+"rect_size_y": 141.0,
+"rect_x": 1668.0,
+"rect_y": 184.0
+}, {
+"Actor": "",
+"Dialogue": "Not much, what u doin'?",
+"RefName": "",
+"filename": "res://addons/dialogue_tree/scenes/BasicDialogue.tscn",
+"name": "BasicDialogue2",
+"rect_size_x": 252.0,
+"rect_size_y": 114.0,
+"rect_x": 708.0,
+"rect_y": 184.0
+} ]
+DialogueTree = {
+"dialogue": [ {
+"Actor": "",
+"Dialogue": "Ah, I see. Alright then..",
+"NodeName": "BasicDialogue6",
+"Ref": "",
+"next": "End"
+}, {
+"Actor": "",
+"Dialogue": "Anything is fine! Thanks!",
+"NodeName": "BasicDialogue3",
+"Ref": "",
+"next": "End"
+}, {
+"Actor": "",
+"Dialogue": "Oh, could you get me one please?",
+"NodeName": "BasicDialogue",
+"Ref": "",
+"next": 7
+}, {
+"Choices": [ {
+"Conditional": "",
+"Dialogue": "Looking for a drink outside",
+"PassCondition": true,
+"ToolTip": "",
+"next": 2
+} ],
+"Conditonal": false,
+"NodeName": "ChoiceDialogue2",
+"Ref": ""
+}, {
+"Actor": "",
+"Dialogue": "U up?",
+"NodeName": "BasicDialogue5",
+"Ref": "",
+"next": 6
+}, {
+"Actor": "",
+"Dialogue": "Hey",
+"NodeName": "BasicDialogue4",
+"Ref": "",
+"next": 4
+}, {
+"Choices": [ {
+"Conditional": "",
+"Dialogue": "Yea what's up",
+"PassCondition": true,
+"ToolTip": "",
+"next": 8
+} ],
+"Conditonal": false,
+"NodeName": "ChoiceDialogue",
+"Ref": ""
+}, {
+"Choices": [ {
+"Conditional": "",
+"Dialogue": "Yeah what do u want?",
+"PassCondition": true,
+"ToolTip": "",
+"next": 1
+}, {
+"Conditional": "",
+"Dialogue": "Nah sorry I'm kinda busy...",
+"PassCondition": true,
+"ToolTip": "",
+"next": 0
+} ],
+"Conditonal": false,
+"NodeName": "ChoiceDialogue3",
+"Ref": ""
+}, {
+"Actor": "",
+"Dialogue": "Not much, what u doin'?",
+"NodeName": "BasicDialogue2",
+"Ref": "",
+"next": 3
+} ],
+"start_index": 5
+}
 
 [node name="PhoneUI" type="Control"]
 anchor_right = 1.0
@@ -218,6 +502,7 @@ margin_top = 600.0
 margin_bottom = 600.0
 rect_scale = Vector2( 0.2, 0.2 )
 rect_pivot_offset = Vector2( 254, 360 )
+script = ExtResource( 27 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -315,6 +600,7 @@ margin_bottom = 600.0
 rect_scale = Vector2( 0.2, 0.2 )
 rect_pivot_offset = Vector2( 254, 360 )
 rect_clip_content = true
+script = ExtResource( 26 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -327,420 +613,76 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 60.0
-margin_top = 40.0
-margin_right = -20.0
-margin_bottom = -40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/VBoxContainer"]
+margin_right = 509.0
+margin_bottom = 636.0
 rect_clip_content = false
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme = SubResource( 5 )
 scroll_horizontal_enabled = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer"]
-margin_right = 389.0
-margin_bottom = 994.0
+[node name="Messages" type="VBoxContainer" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/VBoxContainer/ScrollContainer"]
+margin_right = 509.0
+margin_bottom = 636.0
 size_flags_horizontal = 3
-size_flags_vertical = 0
+size_flags_vertical = 3
 custom_constants/separation = 30
+alignment = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Message" type="Label" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer"]
-margin_left = 34.0
-margin_right = 354.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 320, 40 )
-size_flags_horizontal = 4
-size_flags_vertical = 0
-custom_fonts/font = SubResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Hello World"
-align = 2
-valign = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Message2" type="NinePatchRect" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer/Message"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -10.0
-margin_top = -10.0
-margin_right = 10.0
-margin_bottom = 10.0
-rect_min_size = Vector2( 0, 50 )
-texture = ExtResource( 22 )
-patch_margin_left = 20
-patch_margin_top = 20
-patch_margin_right = 20
-patch_margin_bottom = 20
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Message1" type="Label" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer"]
-margin_left = 34.0
-margin_top = 70.0
-margin_right = 354.0
-margin_bottom = 110.0
-rect_min_size = Vector2( 320, 40 )
-size_flags_horizontal = 4
-size_flags_vertical = 0
-custom_fonts/font = SubResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Hey dev! How u doin?"
-valign = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Message2" type="NinePatchRect" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer/Message1"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -10.0
-margin_top = -10.0
-margin_right = 10.0
-margin_bottom = 10.0
-rect_min_size = Vector2( 0, 50 )
-texture = ExtResource( 23 )
-patch_margin_left = 20
-patch_margin_top = 20
-patch_margin_right = 20
-patch_margin_bottom = 20
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Message2" type="Label" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer"]
-margin_left = 34.0
-margin_top = 140.0
-margin_right = 354.0
-margin_bottom = 201.0
-rect_min_size = Vector2( 320, 40 )
-size_flags_horizontal = 4
-size_flags_vertical = 0
-custom_fonts/font = SubResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "I'm goind great! I'm currently working on a chat system!"
-align = 2
-valign = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Message2" type="NinePatchRect" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer/Message2"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -10.0
-margin_top = -10.0
-margin_right = 10.0
-margin_bottom = 10.0
-rect_min_size = Vector2( 0, 50 )
-texture = ExtResource( 22 )
-patch_margin_left = 20
-patch_margin_top = 20
-patch_margin_right = 20
-patch_margin_bottom = 20
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Message3" type="Label" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer"]
-margin_left = 34.0
-margin_top = 231.0
-margin_right = 354.0
-margin_bottom = 324.0
-rect_min_size = Vector2( 320, 40 )
-size_flags_horizontal = 4
-size_flags_vertical = 0
-custom_fonts/font = SubResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Oh that's great! So like... You'll be able to chat with other characters?"
-valign = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Message2" type="NinePatchRect" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer/Message3"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -10.0
-margin_top = -10.0
-margin_right = 10.0
-margin_bottom = 10.0
-rect_min_size = Vector2( 0, 50 )
-texture = ExtResource( 23 )
-patch_margin_left = 20
-patch_margin_top = 20
-patch_margin_right = 20
-patch_margin_bottom = 20
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Message4" type="Label" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer"]
-margin_left = 34.0
-margin_top = 354.0
-margin_right = 354.0
-margin_bottom = 447.0
-rect_min_size = Vector2( 320, 40 )
-size_flags_horizontal = 4
-size_flags_vertical = 0
-custom_fonts/font = SubResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Yeah, kinda like a visual novel, you'll have options to reply and all!"
-align = 2
-valign = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Message2" type="NinePatchRect" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer/Message4"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -10.0
-margin_top = -10.0
-margin_right = 10.0
-margin_bottom = 10.0
-rect_min_size = Vector2( 0, 50 )
-texture = ExtResource( 22 )
-patch_margin_left = 20
-patch_margin_top = 20
-patch_margin_right = 20
-patch_margin_bottom = 20
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Message5" type="Label" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer"]
-margin_left = 34.0
-margin_top = 477.0
-margin_right = 354.0
-margin_bottom = 538.0
-rect_min_size = Vector2( 320, 40 )
-size_flags_horizontal = 4
-size_flags_vertical = 0
-custom_fonts/font = SubResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Sounds neat! Looking forward to see it working!"
-valign = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Message2" type="NinePatchRect" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer/Message5"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -10.0
-margin_top = -10.0
-margin_right = 10.0
-margin_bottom = 10.0
-rect_min_size = Vector2( 0, 50 )
-texture = ExtResource( 23 )
-patch_margin_left = 20
-patch_margin_top = 20
-patch_margin_right = 20
-patch_margin_bottom = 20
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Message6" type="Label" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer"]
-margin_left = 34.0
+[node name="Message" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/VBoxContainer/ScrollContainer/Messages" instance=ExtResource( 22 )]
+visible = false
+margin_left = 94.0
 margin_top = 568.0
-margin_right = 354.0
-margin_bottom = 661.0
-rect_min_size = Vector2( 320, 40 )
-size_flags_horizontal = 4
-size_flags_vertical = 0
-custom_fonts/font = SubResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Yeah... Right now it's just a scrolling container with labels."
-align = 2
-valign = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
+margin_right = 414.0
+margin_bottom = 608.0
 
-[node name="Message2" type="NinePatchRect" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer/Message6"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -10.0
-margin_top = -10.0
-margin_right = 10.0
-margin_bottom = 10.0
+[node name="Message1" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/VBoxContainer/ScrollContainer/Messages" instance=ExtResource( 23 )]
+visible = false
+margin_left = 94.0
+margin_top = 638.0
+margin_right = 414.0
+margin_bottom = 678.0
+
+[node name="Choices" type="VBoxContainer" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/VBoxContainer"]
+margin_top = 640.0
+margin_right = 509.0
+margin_bottom = 720.0
 rect_min_size = Vector2( 0, 50 )
-texture = ExtResource( 22 )
-patch_margin_left = 20
-patch_margin_top = 20
-patch_margin_right = 20
-patch_margin_bottom = 20
-__meta__ = {
-"_edit_use_anchors_": false
-}
+size_flags_horizontal = 3
 
-[node name="Message7" type="Label" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer"]
-margin_left = 34.0
-margin_top = 691.0
-margin_right = 354.0
-margin_bottom = 731.0
-rect_min_size = Vector2( 320, 40 )
-size_flags_horizontal = 4
-size_flags_vertical = 0
-custom_fonts/font = SubResource( 3 )
+[node name="ChoiceButton" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/VBoxContainer/Choices" instance=ExtResource( 28 )]
+margin_right = 509.0
+
+[node name="Button2" type="Button" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/VBoxContainer/Choices"]
+margin_top = 42.0
+margin_right = 509.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+theme = SubResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "But it scrolls!!!"
-align = 2
-valign = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
+text = "Choice 1"
 
-[node name="Message2" type="NinePatchRect" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer/Message7"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -10.0
-margin_top = -10.0
-margin_right = 10.0
-margin_bottom = 10.0
-rect_min_size = Vector2( 0, 50 )
-texture = ExtResource( 22 )
-patch_margin_left = 20
-patch_margin_top = 20
-patch_margin_right = 20
-patch_margin_bottom = 20
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Dialogue" type="Node" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat"]
+script = ExtResource( 24 )
+DialogueResource = SubResource( 9 )
 
-[node name="Message8" type="Label" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer"]
-margin_left = 34.0
-margin_top = 761.0
-margin_right = 354.0
-margin_bottom = 801.0
-rect_min_size = Vector2( 320, 40 )
-size_flags_horizontal = 4
-size_flags_vertical = 0
-custom_fonts/font = SubResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Look!"
-align = 2
-valign = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Message2" type="NinePatchRect" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer/Message8"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -10.0
-margin_top = -10.0
-margin_right = 10.0
-margin_bottom = 10.0
-rect_min_size = Vector2( 0, 50 )
-texture = ExtResource( 22 )
-patch_margin_left = 20
-patch_margin_top = 20
-patch_margin_right = 20
-patch_margin_bottom = 20
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Message9" type="Label" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer"]
-margin_left = 34.0
-margin_top = 831.0
-margin_right = 354.0
-margin_bottom = 924.0
-rect_min_size = Vector2( 320, 40 )
-size_flags_horizontal = 4
-size_flags_vertical = 0
-custom_fonts/font = SubResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Haha nice! You should get going and make it work now! Bye!"
-valign = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Message2" type="NinePatchRect" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer/Message9"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -10.0
-margin_top = -10.0
-margin_right = 10.0
-margin_bottom = 10.0
-rect_min_size = Vector2( 0, 50 )
-texture = ExtResource( 23 )
-patch_margin_left = 20
-patch_margin_top = 20
-patch_margin_right = 20
-patch_margin_bottom = 20
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Message10" type="Label" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer"]
-margin_left = 34.0
-margin_top = 954.0
-margin_right = 354.0
-margin_bottom = 994.0
-rect_min_size = Vector2( 320, 40 )
-size_flags_horizontal = 4
-size_flags_vertical = 0
-custom_fonts/font = SubResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = ">:["
-align = 2
-valign = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Message2" type="NinePatchRect" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/ScrollContainer/VBoxContainer/Message10"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -10.0
-margin_top = -10.0
-margin_right = 10.0
-margin_bottom = 10.0
-rect_min_size = Vector2( 0, 50 )
-texture = ExtResource( 22 )
-patch_margin_left = 20
-patch_margin_top = 20
-patch_margin_right = 20
-patch_margin_bottom = 20
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Timer" type="Timer" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat"]
+wait_time = 2.0
+one_shot = true
 
 [node name="BottomBar" type="ColorRect" parent="HBoxContainer/TextureRect/VBoxContainer"]
 margin_top = 860.0
@@ -781,7 +723,13 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Tween" type="Tween" parent="."]
-[connection signal="pressed" from="HBoxContainer/TextureRect/VBoxContainer/Content/Music/VBoxContainer/MusicControls/Previous" to="." method="_on_Previous_pressed"]
-[connection signal="pressed" from="HBoxContainer/TextureRect/VBoxContainer/Content/Music/VBoxContainer/MusicControls/PlayPause" to="." method="_on_PlayPause_pressed"]
-[connection signal="pressed" from="HBoxContainer/TextureRect/VBoxContainer/Content/Music/VBoxContainer/MusicControls/Next" to="." method="_on_Next_pressed"]
+[connection signal="pressed" from="HBoxContainer/TextureRect/VBoxContainer/Content/Music/VBoxContainer/MusicControls/Previous" to="HBoxContainer/TextureRect/VBoxContainer/Content/Music" method="_on_Previous_pressed"]
+[connection signal="pressed" from="HBoxContainer/TextureRect/VBoxContainer/Content/Music/VBoxContainer/MusicControls/PlayPause" to="HBoxContainer/TextureRect/VBoxContainer/Content/Music" method="_on_PlayPause_pressed"]
+[connection signal="pressed" from="HBoxContainer/TextureRect/VBoxContainer/Content/Music/VBoxContainer/MusicControls/Next" to="HBoxContainer/TextureRect/VBoxContainer/Content/Music" method="_on_Next_pressed"]
+[connection signal="Choice_Next" from="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/Dialogue" to="HBoxContainer/TextureRect/VBoxContainer/Content/Chat" method="_on_Dialogue_Choice_Next"]
+[connection signal="Conditonal_Data_Needed" from="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/Dialogue" to="HBoxContainer/TextureRect/VBoxContainer/Content/Chat" method="_on_Dialogue_Conditonal_Data_Needed"]
+[connection signal="Dialogue_Ended" from="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/Dialogue" to="HBoxContainer/TextureRect/VBoxContainer/Content/Chat" method="_on_Dialogue_Dialogue_Ended"]
+[connection signal="Dialogue_Next" from="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/Dialogue" to="HBoxContainer/TextureRect/VBoxContainer/Content/Chat" method="_on_Dialogue_Dialogue_Next"]
+[connection signal="Dialogue_Started" from="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/Dialogue" to="HBoxContainer/TextureRect/VBoxContainer/Content/Chat" method="_on_Dialogue_Dialogue_Started"]
+[connection signal="timeout" from="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/Timer" to="HBoxContainer/TextureRect/VBoxContainer/Content/Chat" method="_on_Timer_timeout"]
 [connection signal="pressed" from="HBoxContainer/TextureRect/VBoxContainer/BottomBar/Taskbar/HomeButton" to="." method="_on_HomeButton_pressed"]

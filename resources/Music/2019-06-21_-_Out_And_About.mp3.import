@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/2019-06-21_-_Out_And_About.mp3-a24f3e86a8073e9b046d4cd0c8e6145e.mp3str"
+
+[deps]
+
+source_file="res://resources/Music/2019-06-21_-_Out_And_About.mp3"
+dest_files=[ "res://.import/2019-06-21_-_Out_And_About.mp3-a24f3e86a8073e9b046d4cd0c8e6145e.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

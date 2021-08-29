@@ -3,7 +3,7 @@ extends Spatial
 export (Array, Texture) var clouds setget set_clouds
 export (int, 0, 500) var particle_amount setget set_particle_amount
 export (float) var particle_scale = 40
-export (Vector3) var visible_dimensions = Vector3(500,500,100)
+export (Vector3) var visible_dimensions = Vector3(500,500,200)
 export (float) var wind_speed = 2
 
 
@@ -23,7 +23,7 @@ func _ready():
 		parSys.amount = particle_amount / (1 + clouds.size())
 		parSys.lifetime = vdim.x / wind_speed
 		parSys.preprocess = vdim.x / wind_speed
-		parSys.visibility_aabb = AABB(Vector3(-vdim.x/2,-vdim.y,-vdim.z/2), vdim)
+		parSys.visibility_aabb = AABB(Vector3(-vdim.x/2,-vdim.y,-vdim.z/2), vdim*2)
 		
 		#Create Particle Material
 		var parMat = ParticlesMaterial.new()

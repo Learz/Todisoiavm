@@ -9,12 +9,18 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Spatial",
+"class": "Billboard",
+"language": "GDScript",
+"path": "res://entities/Billboard.gd"
+}, {
 "base": "Node",
 "class": "SoundManagerModule",
 "language": "GDScript",
 "path": "res://addons/sound_manager/module/internal_scripts/SoundManager_config.gd"
 } ]
 _global_script_class_icons={
+"Billboard": "",
 "SoundManagerModule": ""
 }
 
@@ -32,6 +38,10 @@ Global="*res://Global.tscn"
 scene_manager="*res://addons/scene_transition/scene_transition_manager.gd"
 SoundManager="*res://addons/sound_manager/module/SoundManager.tscn"
 
+[debug]
+
+gdscript/warnings/return_value_discarded=false
+
 [display]
 
 window/size/width=1280
@@ -39,7 +49,7 @@ window/size/height=720
 
 [editor_plugins]
 
-enabled=PoolStringArray( "CodeSnippetPopup", "scene_transition", "sound_manager", "zylann.translation_editor" )
+enabled=PoolStringArray( "CodeSnippetPopup", "dialogue_tree", "scene_transition", "sound_manager", "zylann.translation_editor" )
 
 [importer_defaults]
 
@@ -1185,7 +1195,8 @@ right_click={
 
 [locale]
 
-translations=PoolStringArray( "res://resources/Localization/menus.csv" )
+test="en"
+translations=PoolStringArray( "res://resources/Localization/menus.en.translation", "res://resources/Localization/menus.fr.translation" )
 
 [rendering]
 

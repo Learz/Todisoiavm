@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/2019-08-09_-_Vibes.mp3-a5421a6e6e7a15a93ba99507efa3da85.mp3str"
+
+[deps]
+
+source_file="res://resources/Music/2019-08-09_-_Vibes.mp3"
+dest_files=[ "res://.import/2019-08-09_-_Vibes.mp3-a5421a6e6e7a15a93ba99507efa3da85.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
