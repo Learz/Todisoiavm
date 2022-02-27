@@ -17,4 +17,4 @@ func _pressed():
 	if not dir.dir_exists("TODISOIAVM Photos"): 
 		dir.make_dir("TODISOIAVM Photos")
 	dir.open("TODISOIAVM Photos")
-	OS.shell_open(dir.get_current_dir())
+	OS.shell_open(str("file://", dir.get_current_dir()))

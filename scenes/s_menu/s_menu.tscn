@@ -61,7 +61,6 @@ margin_bottom = 140.0
 texture = ExtResource( 2 )
 
 [node name="CenterRow" type="HBoxContainer" parent="MainMenu/Menu"]
-visible = false
 margin_top = 144.0
 margin_right = 1080.0
 margin_bottom = 540.0

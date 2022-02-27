@@ -439,8 +439,9 @@ __meta__ = {
 [node name="TextureRect2" type="TextureRect" parent="HBoxContainer/TextureRect/VBoxContainer/Notification"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -8.0
+margin_top = -22.0
 margin_right = 0.154053
+margin_bottom = -14.0
 rect_min_size = Vector2( 48, 48 )
 size_flags_horizontal = 3
 texture = ExtResource( 6 )
@@ -723,6 +724,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Tween" type="Tween" parent="."]
+
 [connection signal="pressed" from="HBoxContainer/TextureRect/VBoxContainer/Content/Music/VBoxContainer/MusicControls/Previous" to="HBoxContainer/TextureRect/VBoxContainer/Content/Music" method="_on_Previous_pressed"]
 [connection signal="pressed" from="HBoxContainer/TextureRect/VBoxContainer/Content/Music/VBoxContainer/MusicControls/PlayPause" to="HBoxContainer/TextureRect/VBoxContainer/Content/Music" method="_on_PlayPause_pressed"]
 [connection signal="pressed" from="HBoxContainer/TextureRect/VBoxContainer/Content/Music/VBoxContainer/MusicControls/Next" to="HBoxContainer/TextureRect/VBoxContainer/Content/Music" method="_on_Next_pressed"]
