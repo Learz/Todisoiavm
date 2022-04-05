@@ -19,7 +19,7 @@
 [ext_resource path="res://resources/Phone_UI_Previous_Clicked.png" type="Texture" id=17]
 [ext_resource path="res://entities/player/PhoneUIMusicButton.gd" type="Script" id=18]
 [ext_resource path="res://resources/Phone_UI_Home.png" type="Texture" id=19]
-[ext_resource path="res://icon.png" type="Texture" id=20]
+[ext_resource path="res://resources/Phone_UI_Camera_Icon.png" type="Texture" id=20]
 [ext_resource path="res://resources/Phone_UI_Chat_Icon.png" type="Texture" id=21]
 [ext_resource path="res://entities/player/ChatSentMessage.tscn" type="PackedScene" id=22]
 [ext_resource path="res://entities/player/ChatReceivedMessage.tscn" type="PackedScene" id=23]
@@ -354,9 +354,6 @@ rect_pivot_offset = Vector2( 516, 516 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
@@ -478,19 +475,19 @@ custom_constants/vseparation = 30
 custom_constants/hseparation = 23
 columns = 4
 
-[node name="PhoneIcon" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Home/GridContainer" instance=ExtResource( 7 )]
+[node name="MusicIcon" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Home/GridContainer" instance=ExtResource( 7 )]
 iconTex = ExtResource( 9 )
 title = "Music"
 app = NodePath("../../../Music")
 
-[node name="PhoneIcon2" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Home/GridContainer" instance=ExtResource( 7 )]
+[node name="ChatIcon" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Home/GridContainer" instance=ExtResource( 7 )]
 margin_left = 103.0
 margin_right = 183.0
 iconTex = ExtResource( 21 )
 title = "Chat"
 app = NodePath("../../../Chat")
 
-[node name="PhoneIcon3" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Home/GridContainer" instance=ExtResource( 7 )]
+[node name="CameraIcon" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Home/GridContainer" instance=ExtResource( 7 )]
 margin_left = 206.0
 margin_right = 286.0
 iconTex = ExtResource( 20 )

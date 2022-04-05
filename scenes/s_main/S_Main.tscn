@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://scenes/s_main/default_env.tres" type="Environment" id=1]
 [ext_resource path="res://scenes/s_main/s_main.gd" type="Script" id=2]
@@ -30,6 +30,7 @@
 [ext_resource path="res://resources/clouds/Fancé_Nuaj-1.png" type="Texture" id=28]
 [ext_resource path="res://resources/LeagueGothic_24.tres" type="DynamicFont" id=29]
 [ext_resource path="res://entities/houseV2.tscn" type="PackedScene" id=30]
+[ext_resource path="res://resources/models/SleepingCat/Cat.gltf" type="PackedScene" id=31]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 19 )
@@ -124,9 +125,7 @@ WIP"
 align = 1
 valign = 1
 
-[node name="FPS_Counter" parent="." groups=[
-"UI",
-] instance=ExtResource( 5 )]
+[node name="FPS_Counter" parent="." groups=["UI"] instance=ExtResource( 5 )]
 margin_left = 10.0
 margin_top = 10.0
 
@@ -677,6 +676,9 @@ transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 32, 0, 
 [node name="House13" parent="Houses5" instance=ExtResource( 8 )]
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -48 )
 
+[node name="House22" parent="Houses5" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -64 )
+
 [node name="House12" parent="Houses5" instance=ExtResource( 8 )]
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -32 )
 
@@ -846,7 +848,7 @@ transform = Transform( 3.69553e-07, 0, -1, 0, 1, 0, 1, 0, 3.69553e-07, 15.0352, 
 texture_id = 1
 
 [node name="Vending_Machine3" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 28.2616, 0.7, -14.7166 )
+transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 22.2616, 0.7, -14.7166 )
 texture_id = 2
 
 [node name="Vending_Machine4" parent="." instance=ExtResource( 6 )]
@@ -854,27 +856,27 @@ transform = Transform( -4.56975e-07, 0, 1, 0, 1, 0, -1, 0, -4.56975e-07, 1.18349
 texture_id = 3
 
 [node name="Vending_Machine5" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 31.5588, 0.7, -14.7166 )
+transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 25.5588, 0.7, -14.7166 )
 texture_id = 4
 
 [node name="Vending_Machine6" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 31.5588, 5.07837, -14.7166 )
+transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 38.5588, 0.7, -14.7166 )
 texture_id = 5
 
 [node name="Vending_Machine7" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 18.3222, 5.07837, -14.7166 )
+transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 18.322, 0.7, -14.717 )
 texture_id = 6
 
 [node name="Vending_Machine8" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 28.2616, 5.07837, -14.7166 )
+transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 35.2616, 0.7, -14.7166 )
 texture_id = 7
 
 [node name="Vending_Machine9" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 21.9681, 5.07837, -14.7166 )
+transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 28.9681, 0.7, -14.7166 )
 texture_id = 8
 
 [node name="Vending_Machine10" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 25.2516, 5.07837, -14.7166 )
+transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 32.2516, 0.7, -14.7166 )
 texture_id = 9
 
 [node name="Clouds" type="Spatial" parent="."]
@@ -887,5 +889,8 @@ visible_dimensions = Vector3( 500, 300, 100 )
 
 [node name="house" parent="." instance=ExtResource( 30 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00271702, 0.57645, -3.49904 )
+
+[node name="Cat" parent="." instance=ExtResource( 31 )]
+transform = Transform( -0.116672, 0, -0.486197, 0, 0.5, 0, 0.486197, 0, -0.116672, 14.9753, 0.7, -14.768 )
 
 [connection signal="ready" from="VM_Tex_Generator" to="." method="_on_Viewport_ready"]

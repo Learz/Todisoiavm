@@ -1,0 +1,11 @@
+Model Information:
+* title:	Sleeping Cat
+* source:	https://sketchfab.com/3d-models/sleeping-cat-3f7608e2b6b248bf83db09fb21125c2b
+* author:	Pasu (https://sketchfab.com/psucdeviantart)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Sleeping Cat" (https://sketchfab.com/3d-models/sleeping-cat-3f7608e2b6b248bf83db09fb21125c2b) by Pasu (https://sketchfab.com/psucdeviantart) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

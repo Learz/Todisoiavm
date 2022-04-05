@@ -5,7 +5,7 @@ func _ready():
 	pass # Replace with function body.
 
 func grab_focus():
-	$HBoxContainer/TextureRect/VBoxContainer/Content/Home/GridContainer/PhoneIcon.grab_focus()
+	$HBoxContainer/TextureRect/VBoxContainer/Content/Home/GridContainer/MusicIcon.grab_focus()
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
