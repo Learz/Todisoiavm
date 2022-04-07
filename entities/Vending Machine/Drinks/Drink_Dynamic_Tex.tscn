@@ -2,7 +2,7 @@
 
 [ext_resource path="res://resources/fonts/Roboto-Black.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://resources/models/Vending Machine/Bottle_UV.png" type="Texture" id=2]
-[ext_resource path="res://resources/LeagueGothic-Regular.otf" type="DynamicFontData" id=3]
+[ext_resource path="res://resources/fonts/LeagueGothic-Regular.otf" type="DynamicFontData" id=3]
 [ext_resource path="res://entities/Vending Machine/Drinks/Drink_Dynamic_Tex.gd" type="Script" id=4]
 
 [sub_resource type="DynamicFont" id=1]

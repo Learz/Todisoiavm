@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://addons/wireframe/cube_prefab.tscn" type="PackedScene" id=1]
-[ext_resource path="res://resources/arrow.png" type="Texture" id=2]
+[ext_resource path="res://resources/props/arrow.png" type="Texture" id=2]
 [ext_resource path="res://entities/Billboard.gd" type="Script" id=3]
 [ext_resource path="res://entities/onlyInEditor.gd" type="Script" id=4]
 

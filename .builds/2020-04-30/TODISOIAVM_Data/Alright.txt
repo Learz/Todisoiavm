@@ -1,0 +1,7 @@
+Do you feel safe now?
+
+This is a Godot game, everything is contained within the executable.
+But people seem to be scared of independant executables like these.
+So I made some fake files and folders just to reassure you.
+
+Enjoy!

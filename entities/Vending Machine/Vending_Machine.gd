@@ -12,12 +12,12 @@ func _ready():
 	yield(Global, "textures_generated")
 	set_texture()
 	
-	#generate_cans()
 	is_ready = true
 
-#func _input(event):
-#	if event.is_action_pressed("dev_action"):
-#		set_texture()
+func _input(event):
+	if event.is_action_pressed("dev_action"):
+		yield(Global, "textures_generated")
+		set_texture()
 
 func _process(delta):
 	#$Change_Lever.rotate(Vector3(0,0,1), 0.2)

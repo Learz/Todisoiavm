@@ -11,7 +11,7 @@ func _ready():
 	pass # Replace with function body.
 
 func _pressed():
-	#TODO FIX : Dir creation not working on build??
+	#FIX : Dir creation not working on build??
 	var dir = Directory.new()
 	dir.open("res://")
 	if not dir.dir_exists("TODISOIAVM Photos"): 

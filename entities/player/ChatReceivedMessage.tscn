@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://resources/Phone_UI_Chat_Bubble_Left.png" type="Texture" id=1]
+[ext_resource path="res://resources/UI/Phone_UI_Chat_Bubble_Left.png" type="Texture" id=1]
 [ext_resource path="res://resources/fonts/PhoneUI_font.tres" type="DynamicFontData" id=2]
 
 [sub_resource type="DynamicFont" id=6]

@@ -13,8 +13,6 @@ func _ready():
 			plant.texture = plant_textures[randi() % plant_textures.size()]
 			get_node("PlantSocket" + str(i+1)).add_child(plant)
 			plant.global_transform = get_node("PlantSocket" + str(i+1)).global_transform
-			# TODO : Fix the billboards skewing when getting close
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

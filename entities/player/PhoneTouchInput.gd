@@ -70,7 +70,7 @@ func handle_mouse(event):
 		if mouse_pos3D == null:
 			mouse_pos3D = Vector3.ZERO
 	
-	# TODO: adapt to bilboard mode or avoid completely
+	# TODO: adapt to billboard mode or avoid completely
 	
 	# convert the relative event position from 3D to 2D
 	var mouse_pos2D = Vector2(mouse_pos3D.x, -mouse_pos3D.y)

@@ -4,9 +4,9 @@ extends Node
 signal textures_generated
 var textures_generated = false setget set_tex_gen
 var nb_vending_machine_textures = 10
-var vending_machine_textures = []
-var nb_can_textures = 20
-var can_textures = []
+var vending_machine_textures : Array = []
+var nb_drink_textures = 20
+var drink_textures : Array = []
 
 #Settings
 var invert_mouse_buttons = false setget set_invert_mouse_buttons
@@ -64,8 +64,9 @@ func set_tex_gen(v):
 	textures_generated = v
 	emit_signal("textures_generated")
 
+
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func _init():
 	load_config()
 	pass
 	
@@ -88,14 +89,14 @@ func _notification(what):
 #		texture.create_from_image($VM_Tex_Generator.get_texture().get_data())
 #		vending_machine_textures.push_back(texture)
 #
-#	can_textures = []
-#	for i in range(Global.nb_can_textures):
+#	drink_textures = []
+#	for i in range(Global.nb_drink_textures):
 #		$Drink_Tex_Generator/Dynamic_Texture.generate_brand()
 #		yield(get_tree(), "idle_frame")
 #		yield(get_tree(), "idle_frame")
 #		var texture = ImageTexture.new()
 #		texture.create_from_image($Drink_Tex_Generator.get_texture().get_data())
-#		can_textures.push_back(texture)
+#		drink_textures.push_back(texture)
 #	textures_generated = true
 
 func save_config():
@@ -109,6 +110,8 @@ func save_config():
 	configFile.set_value("Display","resolution", OS.window_size)
 	
 	configFile.set_value("Input","invert_mouse_buttons", invert_mouse_buttons)
+	
+	configFile.set_value("Locale","language", TranslationServer.get_locale())
 	# Actions
 	for a in InputMap.get_actions():
 		configFile.set_value("Input", a, InputMap.get_action_list(a))
@@ -139,6 +142,9 @@ func load_config():
 	
 	config = configFile.get_value("Input", "invert_mouse_buttons")
 	if config : invert_mouse_buttons = config
+	
+	config = configFile.get_value("Locale", "language")
+	if config : TranslationServer.set_locale(config)
 	
 	for a in InputMap.get_actions():
 		config = configFile.get_value("Input", a)

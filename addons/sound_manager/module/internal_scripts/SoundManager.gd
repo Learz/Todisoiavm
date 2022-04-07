@@ -44,10 +44,11 @@ var Instantiated_Nodes : Dictionary = {
 ###########
 
 func _ready() -> void:
-	if(ProjectSettings.get_setting("editor_plugins/enabled") &&
-	Array(ProjectSettings.get_setting("editor_plugins/enabled")).has("sound_manager")):
-			get_sound_manager_settings();
-			load_settings();
+	#HACK : For some reason the addon thinks it's disabled
+#	if(ProjectSettings.get_setting("editor_plugins/enabled") &&
+#	Array(ProjectSettings.get_setting("editor_plugins/enabled")).has("sound_manager")):
+	get_sound_manager_settings();
+	load_settings();
 			
 	if (preload_resources && Preloaded_Resources.empty()):
 		print_debug("Preloading...");

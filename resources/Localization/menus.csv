@@ -1,2 +1,8 @@
 id,en,fr
+LABEL_BACK,Back	,Retour
+LABEL_EXIT,Exit,Sortir
+LABEL_GRAPHICS,Graphics,Graphiques
+LABEL_INPUT,Input,Entrée
+LABEL_MISC,Misc,Autre
+LABEL_PLAYER,Player,Joueur
 LABEL_START_GAME,Start Wandering,Commencer la balade

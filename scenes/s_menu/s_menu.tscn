@@ -1,21 +1,22 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://scenes/assets/UI/StartButton.tscn" type="PackedScene" id=1]
-[ext_resource path="res://resources/title.png" type="Texture" id=2]
+[ext_resource path="res://resources/UI/title.png" type="Texture" id=2]
 [ext_resource path="res://scenes/assets/UI/OptionsButton.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/assets/UI/ExitButton.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/assets/UI/CompanyButton.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/assets/UI/InputActionSetting.tscn" type="PackedScene" id=6]
-[ext_resource path="res://resources/LeagueGothic_24.tres" type="DynamicFont" id=7]
+[ext_resource path="res://resources/fonts/LeagueGothic_24.tres" type="DynamicFont" id=7]
 [ext_resource path="res://scenes/s_menu/s_menu.gd" type="Script" id=8]
-[ext_resource path="res://resources/LeagueGothic-Regular.otf" type="DynamicFontData" id=9]
-[ext_resource path="res://resources/LeagueGothic_48.tres" type="DynamicFont" id=10]
+[ext_resource path="res://resources/fonts/LeagueGothic-Regular.otf" type="DynamicFontData" id=9]
+[ext_resource path="res://resources/fonts/LeagueGothic_48.tres" type="DynamicFont" id=10]
 [ext_resource path="res://scenes/assets/UI/UI_Theme.tres" type="Theme" id=11]
 [ext_resource path="res://scenes/s_menu/DisplayMode.gd" type="Script" id=12]
 [ext_resource path="res://scenes/s_menu/PhotoFolderButton.gd" type="Script" id=13]
 [ext_resource path="res://scenes/s_menu/DisplayFPSButton.gd" type="Script" id=14]
 [ext_resource path="res://scenes/s_menu/DisplayReticleButton.gd" type="Script" id=15]
 [ext_resource path="res://scenes/s_menu/InvertMouseButtons.gd" type="Script" id=16]
+[ext_resource path="res://scenes/s_menu/Language.gd" type="Script" id=17]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -31,9 +32,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 11 )
 script = ExtResource( 8 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="MainMenu" type="Control" parent="."]
 anchor_right = 1.0
@@ -96,7 +94,7 @@ margin_right = 876.0
 margin_bottom = 396.0
 focus_neighbour_bottom = NodePath("../StartBtn")
 custom_styles/focus = SubResource( 1 )
-title = "Exit"
+title = "LABEL_EXIT"
 
 [node name="CompanyBtn" parent="MainMenu/Menu/CenterRow" instance=ExtResource( 5 )]
 margin_left = 880.0
@@ -115,9 +113,6 @@ anchor_right = 2.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ColorRect" type="ColorRect" parent="Options"]
 anchor_right = 1.0
@@ -149,8 +144,8 @@ __meta__ = {
 [node name="OptionsLabel" type="Label" parent="Options/Menu"]
 margin_right = 1080.0
 margin_bottom = 77.0
-custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 1, 0.592157, 0.227451, 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Options"
 
 [node name="VBoxContainer" type="HBoxContainer" parent="Options/Menu"]
@@ -159,6 +154,7 @@ margin_right = 1080.0
 margin_bottom = 490.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_constants/separation = 20
 
 [node name="Input" type="VBoxContainer" parent="Options/Menu/VBoxContainer"]
 margin_right = 476.0
@@ -173,7 +169,7 @@ margin_bottom = 58.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
 custom_fonts/font = ExtResource( 10 )
-text = "Input Settings"
+text = "LABEL_INPUT"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -201,7 +197,7 @@ __meta__ = {
 margin_right = 236.0
 margin_bottom = 30.0
 custom_fonts/font = ExtResource( 7 )
-text = "Player"
+text = "LABEL_PLAYER"
 
 [node name="Move Forward" parent="Options/Menu/VBoxContainer/Input/InputSettings/PlayerInputs" instance=ExtResource( 6 )]
 margin_top = 34.0
@@ -330,35 +326,36 @@ actionName = "Cancel"
 realActionName = "ui_cancel"
 
 [node name="Graphics" type="VBoxContainer" parent="Options/Menu/VBoxContainer"]
-margin_left = 480.0
-margin_right = 714.0
+margin_left = 496.0
+margin_right = 778.0
 margin_bottom = 403.0
+size_flags_horizontal = 3
 
 [node name="GraphicsSettingsLabel" type="Label" parent="Options/Menu/VBoxContainer/Graphics"]
-margin_right = 234.0
+margin_right = 282.0
 margin_bottom = 58.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
 custom_fonts/font = ExtResource( 10 )
-text = "Graphics Settings"
+text = "LABEL_GRAPHICS"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Options/Menu/VBoxContainer/Graphics"]
+[node name="DisplayModeLabel" type="Label" parent="Options/Menu/VBoxContainer/Graphics"]
 margin_top = 62.0
-margin_right = 234.0
+margin_right = 282.0
 margin_bottom = 92.0
 custom_fonts/font = ExtResource( 7 )
 text = "Display Mode"
 
 [node name="DisplayMode" type="MenuButton" parent="Options/Menu/VBoxContainer/Graphics"]
 margin_top = 96.0
-margin_right = 234.0
+margin_right = 282.0
 margin_bottom = 126.0
 focus_mode = 2
-custom_fonts/font = ExtResource( 7 )
 custom_constants/hseparation = 20
+custom_fonts/font = ExtResource( 7 )
 button_mask = 3
 text = "Display Mode"
 flat = false
@@ -367,7 +364,7 @@ script = ExtResource( 12 )
 
 [node name="PhotoFolderLabel" type="Label" parent="Options/Menu/VBoxContainer/Graphics"]
 margin_top = 130.0
-margin_right = 234.0
+margin_right = 282.0
 margin_bottom = 160.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -379,7 +376,7 @@ __meta__ = {
 
 [node name="PhotoFolderButton" type="Button" parent="Options/Menu/VBoxContainer/Graphics"]
 margin_top = 164.0
-margin_right = 234.0
+margin_right = 282.0
 margin_bottom = 194.0
 custom_fonts/font = ExtResource( 7 )
 button_mask = 3
@@ -388,7 +385,7 @@ script = ExtResource( 13 )
 
 [node name="DisplayFPSButton" type="CheckButton" parent="Options/Menu/VBoxContainer/Graphics"]
 margin_top = 198.0
-margin_right = 234.0
+margin_right = 282.0
 margin_bottom = 230.0
 custom_fonts/font = ExtResource( 7 )
 button_mask = 3
@@ -398,7 +395,7 @@ script = ExtResource( 14 )
 
 [node name="DisplayReticleButton" type="CheckButton" parent="Options/Menu/VBoxContainer/Graphics"]
 margin_top = 234.0
-margin_right = 234.0
+margin_right = 282.0
 margin_bottom = 266.0
 custom_fonts/font = ExtResource( 7 )
 button_mask = 3
@@ -406,12 +403,46 @@ text = "Display Reticle"
 flat = true
 script = ExtResource( 15 )
 
+[node name="Misc" type="VBoxContainer" parent="Options/Menu/VBoxContainer"]
+margin_left = 798.0
+margin_right = 1080.0
+margin_bottom = 403.0
+size_flags_horizontal = 3
+
+[node name="MiscLabel" type="Label" parent="Options/Menu/VBoxContainer/Misc"]
+margin_right = 282.0
+margin_bottom = 58.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 10 )
+text = "LABEL_MISC"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LanguageLabel" type="Label" parent="Options/Menu/VBoxContainer/Misc"]
+margin_top = 62.0
+margin_right = 282.0
+margin_bottom = 92.0
+custom_fonts/font = ExtResource( 7 )
+text = "Language"
+
+[node name="Language" type="MenuButton" parent="Options/Menu/VBoxContainer/Misc"]
+margin_top = 96.0
+margin_right = 282.0
+margin_bottom = 126.0
+custom_fonts/font = ExtResource( 7 )
+text = "English"
+flat = false
+items = [ "English", null, 0, false, false, 0, 0, null, "", false, "French", null, 0, false, false, 1, 0, null, "", false ]
+script = ExtResource( 17 )
+
 [node name="BackBtn" parent="Options/Menu" instance=ExtResource( 4 )]
 margin_top = 500.0
 margin_bottom = 560.0
 focus_neighbour_bottom = NodePath("../StartBtn")
 custom_styles/focus = SubResource( 1 )
-title = "Back"
+title = "LABEL_BACK"
 link = "MainMenu"
 type = 3
 

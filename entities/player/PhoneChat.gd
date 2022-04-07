@@ -52,4 +52,4 @@ func add_message(text, actor = "Me"):
 	message.text = text
 	$VBoxContainer/ScrollContainer/Messages.add_child(message)
 	$Dialogue.next_dialogue()
-	#$Timer.start()
+	$Timer.start()
