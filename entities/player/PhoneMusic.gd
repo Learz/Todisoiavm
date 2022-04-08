@@ -27,10 +27,9 @@ func _on_PlayPause_pressed():
 	if SoundManager.is_bgm_playing():
 		song_playing = SoundManager.bgm_playing
 		var t = Texture.new()
-		$VBoxContainer/MusicControls/PlayPause.texture_normal = load("res://resources/Phone_UI_Play.png")
+		$VBoxContainer/MusicControls/PlayPause.texture_normal = load("res://resources/UI/Phone_UI_Play.png")
 		SoundManager.stop_bgm()
 	else:
 		
-		$VBoxContainer/MusicControls/PlayPause.texture_normal = load("res://resources/Phone_UI_Stop.png")
+		$VBoxContainer/MusicControls/PlayPause.texture_normal = load("res://resources/UI/Phone_UI_Stop.png")
 		SoundManager.play_bgm(song_playing)
-	pass # Replace with function body.

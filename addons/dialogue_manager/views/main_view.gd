@@ -15,16 +15,19 @@ onready var open_button := $Margin/VBox/Toolbar/OpenButton
 onready var content := $Margin/VBox/Content
 onready var title_list := $Margin/VBox/Content/VBox/TitleList
 onready var error_list := $Margin/VBox/Content/VBox/ErrorList
-onready var editor := $Margin/VBox/Content/CodeEditor
+onready var search_toolbar := $Margin/VBox/Content/VBox2/SearchToolbar
+onready var editor := $Margin/VBox/Content/VBox2/CodeEditor
 onready var new_dialogue_dialog := $NewDialogueDialog
 onready var open_dialogue_dialog := $OpenDialogueDialog
 onready var invalid_dialogue_dialog := $InvalidDialogueDialog
 onready var settings_dialog := $SettingsDialog
+onready var insert_menu := $Margin/VBox/Toolbar/InsertMenu
 onready var translations_menu := $Margin/VBox/Toolbar/TranslationsMenu
 onready var save_translations_dialog := $SaveTranslationsDialog
 onready var update_button := $Margin/VBox/Toolbar/UpdateButton
 onready var error_button := $Margin/VBox/Toolbar/ErrorButton
 onready var run_node_button := $Margin/VBox/Toolbar/RunButton
+onready var search_button := $Margin/VBox/Toolbar/SearchButton
 
 
 var plugin
@@ -49,15 +52,27 @@ func _ready() -> void:
 	open_button.icon = get_icon("Load", "EditorIcons")
 	$Margin/VBox/Toolbar/SettingsButton.text = ""
 	$Margin/VBox/Toolbar/SettingsButton.icon = get_icon("Tools", "EditorIcons")
-	$Margin/VBox/Toolbar/ErrorButton.text = ""
-	$Margin/VBox/Toolbar/ErrorButton.icon = get_icon("Debug", "EditorIcons")
-	$Margin/VBox/Toolbar/RunButton.text = ""
-	$Margin/VBox/Toolbar/RunButton.icon = get_icon("PlayScene", "EditorIcons")
+	error_button.text = ""
+	error_button.icon = get_icon("Debug", "EditorIcons")
+	run_node_button.text = ""
+	run_node_button.icon = get_icon("PlayScene", "EditorIcons")
+	search_button.icon = get_icon("Search", "EditorIcons")
 	$Margin/VBox/Toolbar/TranslationsMenu.icon = get_icon("Translation", "EditorIcons")
 	$Margin/VBox/Toolbar/HelpButton.icon = get_icon("Help", "EditorIcons")
-	var popup = translations_menu.get_popup()
+	
+	insert_menu.icon = get_icon("RichTextEffect", "EditorIcons")
+	var popup = insert_menu.get_popup()
+	popup.set_item_icon(0, get_icon("RichTextEffect", "EditorIcons"))
+	popup.set_item_icon(1, get_icon("RichTextEffect", "EditorIcons"))
+	popup.set_item_icon(3, get_icon("Time", "EditorIcons"))
+	popup.set_item_icon(4, get_icon("ViewportSpeed", "EditorIcons"))
+	popup.set_item_icon(5, get_icon("DebugNext", "EditorIcons"))
+	
+	popup = translations_menu.get_popup()
 	popup.set_item_icon(0, get_icon("Translation", "EditorIcons"))
 	popup.set_item_icon(1, get_icon("FileList", "EditorIcons"))
+	
+	search_toolbar.visible = false
 	
 	# Get version number
 	var config = ConfigFile.new()
@@ -67,11 +82,20 @@ func _ready() -> void:
 	
 	file_label.icon = get_icon("Filesystem", "EditorIcons")
 	
+	insert_menu.get_popup().connect("id_pressed", self, "_on_insert_menu_id_pressed")
 	translations_menu.get_popup().connect("id_pressed", self, "_on_translation_menu_id_pressed")
 	
-	if settings.has_editor_value("recent_resources"):
-		recent_resources = settings.get_editor_value("recent_resources")
+	recent_resources = settings.get_editor_value("recent_resources", [])
 	build_open_menu()
+	
+	editor.wrap_enabled = settings.get_editor_value("wrap_lines", false)
+
+
+func apply_changes() -> void:
+	if is_instance_valid(editor) and current_resource != null:
+		current_resource.set("raw_text", editor.text)
+		ResourceSaver.save(current_resource.resource_path, current_resource)
+		parse(true)
 
 
 ### Helpers
@@ -106,6 +130,8 @@ func set_resource(value: DialogueResource) -> void:
 		content.visible = true
 		error_button.disabled = false
 		run_node_button.disabled = false
+		search_button.disabled = false
+		insert_menu.disabled = false
 		translations_menu.disabled = false
 		_on_CodeEditor_text_changed()
 		has_changed = false
@@ -114,6 +140,8 @@ func set_resource(value: DialogueResource) -> void:
 		file_label.visible = false
 		error_button.disabled = true
 		run_node_button.disabled = true
+		search_button.disabled = true
+		insert_menu.disabled = true
 		translations_menu.disabled = true
 
 
@@ -126,7 +154,6 @@ func get_nice_file(file: String) -> String:
 
 
 func open_resource(resource: DialogueResource) -> void:
-	parse(true)
 	apply_upgrades(resource)
 	set_resource(resource)
 	# Add this to our list of recent resources
@@ -138,7 +165,6 @@ func open_resource(resource: DialogueResource) -> void:
 	parse(true)
 
 
-
 func open_resource_from_path(path: String) -> void:
 	var resource = load(path)
 	if resource is DialogueResource:
@@ -148,6 +174,9 @@ func open_resource_from_path(path: String) -> void:
 
 
 func apply_upgrades(resource: DialogueResource) -> void:
+	if resource == null: return
+	if not resource is DialogueResource: return
+	
 	var lines = resource.raw_text.split("\n")
 	for i in range(0, lines.size()):
 		var line: String = lines[i]
@@ -160,29 +189,34 @@ func apply_upgrades(resource: DialogueResource) -> void:
 				line = line.substr(0, index) + "=> " + line.substr(index + 7).replace(" ", "_")
 		lines[i] = line
 	
-	resource.raw_text = lines.join("\n")
+	resource.set("syntax_version", Constants.SYNTAX_VERSION)
+	resource.set("raw_text", lines.join("\n"))
 	
 
 func parse(force_show_errors: bool = false) -> void:
-	if not current_resource: return
+	if current_resource == null: return
 	if not has_changed and not force_show_errors: return
 	
 	var result = parser.parse(editor.text)
 	
-	current_resource.syntax_version = Constants.SYNTAX_VERSION
-	current_resource.titles = result.get("titles")
-	current_resource.lines = result.get("lines")
-	current_resource.errors = result.get("errors")
+	if settings.get_editor_value("store_compiler_results", true):
+		current_resource.set("titles", result.titles)
+		current_resource.set("lines", result.lines)
+		current_resource.set("errors", result.errors)
+	else:
+		current_resource.set("titles", {})
+		current_resource.set("lines", {})
+		current_resource.set("errors", [])
 	ResourceSaver.save(current_resource.resource_path, current_resource)
 	
 	has_changed = false
 	
 	if force_show_errors or settings.get_editor_value("check_for_errors") or error_list.errors.size() > 0:
-		error_list.errors = current_resource.errors
+		error_list.errors = result.errors
 		
 		for line_number in range(0, editor.get_line_count() - 1):
 			editor.set_line_as_bookmark(line_number, false)
-			for error in current_resource.errors:
+			for error in result.errors:
 				if error.get("line") == line_number:
 					editor.set_line_as_bookmark(line_number, true)
 
@@ -321,19 +355,33 @@ func _on_open_menu_index_pressed(index):
 			open_resource_from_path(item)
 
 
+func _on_insert_menu_id_pressed(id):
+	match id:
+		0:
+			editor.insert_bbcode("[wave amp=25 freq=5]", "[/wave]")
+		1:
+			editor.insert_bbcode("[shake rate=20 level=10]", "[/shake]")
+		3:
+			editor.insert_bbcode("[wait=1]")
+		4:
+			editor.insert_bbcode("[speed=0.2]")
+		5:
+			editor.insert_bbcode("[next=auto]")
+
+
 func _on_translation_menu_id_pressed(id):
 	match id:
 		0:
 			generate_translations_keys()
 		1:
-			save_translations_dialog.current_path = current_resource.resource_path.replace(".tres", ".csv")
+			var filename = current_resource.resource_path.get_file().replace(".tres", ".csv")
+			var path = settings.get_editor_value("last_csv_path", current_resource.resource_path.get_base_dir()) + "/" + filename
+			save_translations_dialog.current_path = path
 			save_translations_dialog.popup_centered()
 
 
 func _on_CodeEditor_text_changed():
 	has_changed = true
-	current_resource.raw_text = editor.text
-	ResourceSaver.save(current_resource.resource_path, current_resource)
 	title_list.titles = editor.get_titles()
 	parse_timeout.start(1)
 
@@ -345,8 +393,6 @@ func _on_NewButton_pressed():
 func _on_NewDialogueDialog_file_selected(path):
 	var resource = DialogueResource.new()
 	resource.take_over_path(path)
-	resource.raw_text = "~ this_is_a_node_title\n\nNathan: This is some dialogue.\nNathan: Here are some choices.\n- First one\n\tNathan: You picked the first one.\n- Second one\n\tNathan: You picked the second one.\n- Start again => this_is_a_node_title\n- End the conversation => END\nNathan: For more information about conditional dialogue, mutations, and all the fun stuff, see the online documentation."
-	resource.syntax_version = Constants.SYNTAX_VERSION
 	ResourceSaver.save(path, resource)
 	open_resource(resource)
 
@@ -384,7 +430,9 @@ func _on_OpenDialogueDialog_confirmed():
 
 
 func _on_SettingsDialog_popup_hide():
-	parse()
+	parse(true)
+	editor.wrap_enabled = settings.get_editor_value("wrap_lines", false)
+	editor.grab_focus()
 
 
 func _on_ErrorList_error_pressed(error):
@@ -396,6 +444,7 @@ func _on_HelpButton_pressed():
 
 
 func _on_SaveTranslationsDialog_file_selected(path):
+	settings.set_editor_value("last_csv_path", path.get_base_dir())
 	save_translations(path)
 
 
@@ -420,3 +469,18 @@ func _on_RunButton_pressed():
 	if settings.has_editor_value("run_title"):
 		settings.set_editor_value("run_resource", current_resource.resource_path)
 		plugin.get_editor_interface().play_custom_scene("res://addons/dialogue_manager/views/test_scene.tscn")
+
+
+func _on_SearchButton_toggled(button_pressed):
+	search_toolbar.visible = button_pressed
+
+
+func _on_SearchToolbar_close_requested():
+	search_button.pressed = false
+	search_toolbar.visible = false
+	editor.grab_focus()
+
+
+func _on_SearchToolbar_open_requested():
+	search_button.pressed = true
+	search_toolbar.visible = true

@@ -23,16 +23,16 @@ var MARKER_CODE_REGEX := RegEx.new()
 var TOKEN_DEFINITIONS: Dictionary = {}
 
 
-func _ready() -> void:
-	VALID_TITLE_REGEX.compile("^[a-zA-Z_0-9]+$")
+func _init() -> void:
+	VALID_TITLE_REGEX.compile("^[^\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)\\-\\=\\+\\{\\}\\[\\]\\;\\:\\\"\\'\\,\\.\\<\\>\\?\\/\\s]+$")
 	TRANSLATION_REGEX.compile("\\[TR:(?<tr>.*?)\\]")
-	MUTATION_REGEX.compile("(do|set) ((?<lhs>[a-z_A-Z][a-z_A-Z0-9]+) ?(?<operator>\\+=|-=|\\*=\\/=|=) ? (?<rhs>.*)|(?<function>[a-z_A-Z][a-z_A-Z0-9]+)\\((?<args>.*)\\))")
+	MUTATION_REGEX.compile("(do|set) ((?<mutation>[a-z_A-Z][a-z_A-Z0-9\\[\\]\"\\.]+ ?(\\+=|\\-=|\\*=|/=|=) ? .*)|(?<function>[a-z_A-Z][a-z_A-Z0-9]+)\\((?<args>.*)\\))")
 	WRAPPED_CONDITION_REGEX.compile("\\[if (?<condition>.*)\\]")
 	CONDITION_REGEX.compile("(if|elif) (?<condition>.*)")
 	REPLACEMENTS_REGEX.compile("{{(.*?)}}")
 	GOTO_REGEX.compile("=> (?<jump_to_title>.*)")
 	BB_CODE_REGEX.compile("\\[[^\\]]+\\]")
-	MARKER_CODE_REGEX.compile("\\[(?<code>wait|\\/?speed|do |set )(?<args>[^\\]]+)?\\]")
+	MARKER_CODE_REGEX.compile("\\[(?<code>wait|/?speed|do |set |next)(?<args>[^\\]]+)?\\]")
 	
 	# Build our list of tokeniser tokens
 	var tokens = {
@@ -46,10 +46,13 @@ func _ready() -> void:
 		Constants.TOKEN_BRACE_CLOSE: "^\\}",
 		Constants.TOKEN_COLON: "^:",
 		Constants.TOKEN_COMPARISON: "^(==|<=|>=|<|>|!=|in )",
+		Constants.TOKEN_ASSIGNMENT: "^(\\+=|\\-=|\\*=|/=|=)",
 		Constants.TOKEN_NUMBER: "^\\-?\\d+(\\.\\d+)?",
-		Constants.TOKEN_OPERATOR: "^(\\+|-|\\*|/)",
+		Constants.TOKEN_OPERATOR: "^(\\+|\\-|\\*|/|%)",
 		Constants.TOKEN_COMMA: "^,",
+		Constants.TOKEN_DOT: "^\\.",
 		Constants.TOKEN_BOOL: "^(true|false)",
+		Constants.TOKEN_NOT: "^(not( |$)|!)",
 		Constants.TOKEN_AND_OR: "^(and|or)( |$)",
 		Constants.TOKEN_STRING: "^\".*?\"",
 		Constants.TOKEN_VARIABLE: "^[a-zA-Z_][a-zA-Z_0-9]+",
@@ -89,7 +92,7 @@ func parse(content: String) -> Dictionary:
 		var raw_line = raw_lines[id]
 		
 		var line: Dictionary = {
-			"next_id": Constants.ID_NULL
+			next_id = Constants.ID_NULL
 		}
 		
 		# Ignore empty lines and comments
@@ -126,6 +129,7 @@ func parse(content: String) -> Dictionary:
 				line["condition"] = extract_condition(raw_line, true)
 			if " => " in raw_line:
 				line["next_id"] = extract_goto(raw_line, titles)
+				
 			line["text"] = extract_response(raw_line)
 			
 			var previous_response_id = find_previous_response_id(id, raw_lines)
@@ -138,7 +142,7 @@ func parse(content: String) -> Dictionary:
 				# No previous response so this is the first in the list
 				line["responses"] = PoolStringArray([str(id)])
 			
-			line["next_id_after"] = find_next_line_after_responses(id, raw_lines)
+			line["next_id_after"] = find_next_line_after_responses(id, raw_lines, dialogue, parent_stack)
 
 			# If this response has no body then the next id is the next id after
 			if not line.has("next_id") or line.get("next_id") == Constants.ID_NULL:
@@ -152,6 +156,37 @@ func parse(content: String) -> Dictionary:
 			line["replacements"] = extract_dialogue_replacements(line.get("text"))
 			if line.get("replacements").size() > 0 and line.get("replacements")[0].has("error"):
 				errors.append(error(id, "Invalid expression"))
+			
+			# If this response has a character name in it then it will automatically be
+			# injected as a line of dialogue if the player selects it
+			var l = line.get("text").replace("\\:", "!ESCAPED_COLON!")
+			if ": " in l:
+				var first_child: Dictionary = { 
+					type = Constants.TYPE_DIALOGUE, 
+					next_id = line.get("next_id"),
+					next_id_after = line.get("next_id_after"),
+					replacements = line.get("replacements"),
+					translation_key = line.get("translation_key")
+				}
+				
+				var bits = Array(l.strip_edges().split(": "))
+				first_child["character"] = bits.pop_front()
+				# You can use variables in the character's name
+				first_child["character_replacements"] = extract_dialogue_replacements(first_child.get("character"))
+				if first_child.get("character_replacements").size() > 0 and first_child.get("character_replacements")[0].has("error"):
+					errors.append(error(id, "Invalid expression in character name"))
+				first_child["text"] = PoolStringArray(bits).join(": ").replace("!ESCAPED_COLON!", ":")
+				
+				line["character"] = first_child.get("character")
+				line["text"] = first_child.get("text")
+				
+				if first_child.get("translation_key") == null:
+					first_child["translation_key"] = first_child.get("text")
+				
+				dialogue[str(id) + ".1"] = first_child
+				line["next_id"] = str(id) + ".1"
+			else:
+				line["text"] = l.replace("!ESCAPED_COLON!", ":")
 		
 		# Title
 		elif raw_line.begins_with("~ "):
@@ -195,6 +230,10 @@ func parse(content: String) -> Dictionary:
 			if ": " in l:
 				var bits = Array(l.strip_edges().split(": "))
 				line["character"] = bits.pop_front()
+				# You can use variables in the character's name
+				line["character_replacements"] = extract_dialogue_replacements(line.get("character"))
+				if line.get("character_replacements").size() > 0 and line.get("character_replacements")[0].has("error"):
+					errors.append(error(id, "Invalid expression in character name"))
 				line["text"] = PoolStringArray(bits).join(": ").replace("!ESCAPED_COLON!", ":")
 			else:
 				line["character"] = ""
@@ -210,6 +249,10 @@ func parse(content: String) -> Dictionary:
 			line["pauses"] = markers.get("pauses")
 			line["speeds"] = markers.get("speeds")
 			line["inline_mutations"] = markers.get("mutations")
+			line["time"] = markers.get("time")
+			
+			# Unescape any newlines
+			line["text"] = line.get("text").replace("\\n", "\n")
 		
 		# Work out where to go after this line
 		if line.get("next_id") == Constants.ID_NULL:
@@ -237,7 +280,7 @@ func parse(content: String) -> Dictionary:
 					known_translations[line.get("translation_key")] = line.get("text")
 			else:
 				# Default translations key
-				if settings.get_editor_value("missing_translations_are_errors", false):
+				if settings != null and settings.get_editor_value("missing_translations_are_errors", false):
 					errors.append(error(id, "Missing translation"))
 				else:
 					line["translation_key"] = line.get("text")
@@ -328,7 +371,7 @@ func find_previous_response_id(line_number: int, all_lines: Array) -> String:
 		if is_line_empty(line): continue
 		
 		# If its a response at the same indent level then its a match
-		if get_indent(line) <= indent_size:
+		if get_indent(line) == indent_size:
 			if line.strip_edges().begins_with("- "):
 				last_found_response_id = str(i)
 			else:
@@ -398,6 +441,7 @@ func find_next_line_after_conditions(line_number: int, all_lines: Array, dialogu
 			# We have to check the parent of this block
 			for p in range(line_number - 1, -1, -1):
 				line = all_lines[p]
+				if is_line_empty(line): continue
 				line_indent = get_indent(line)
 				if line_indent < expected_indent:
 					return dialogue[str(p)].next_id_after
@@ -405,7 +449,7 @@ func find_next_line_after_conditions(line_number: int, all_lines: Array, dialogu
 	return Constants.ID_END_CONVERSATION
 
 
-func find_next_line_after_responses(line_number: int, all_lines: Array) -> String:
+func find_next_line_after_responses(line_number: int, all_lines: Array, dialogue: Dictionary, parent_stack: Array) -> String:
 	var line = all_lines[line_number]
 	var expected_indent = get_indent(line)
 
@@ -416,15 +460,32 @@ func find_next_line_after_responses(line_number: int, all_lines: Array) -> Strin
 		
 		if is_line_empty(line): continue
 		
+		var indent = get_indent(line)
+		
 		line = line.strip_edges()
 		
 		# We hit a title so the next line is the end of the conversation
 		if line.begins_with("~ "):
 			return Constants.ID_END_CONVERSATION
 		
-		# Another option so we continue
+		# Another option
 		elif line.begins_with("- "):
-			continue
+			if indent == expected_indent:
+				# ...at the same level so we continue
+				continue
+			elif indent < expected_indent:
+				# ...outdented so check the previous parent
+				var previous_parent = parent_stack[parent_stack.size() - 2]
+				return dialogue[str(previous_parent)].next_id_after
+		
+		# We're at the end of a conditional so jump back up to see what's after it
+		elif line.begins_with("elif ") or line.begins_with("else"):
+			for p in range(line_number - 1, -1, -1):
+				line = all_lines[p]
+				if is_line_empty(line): continue
+				var line_indent = get_indent(line)
+				if line_indent < expected_indent:
+					return dialogue[str(p)].next_id_after
 		
 		# Otherwise check the indent for an outdent
 		else:
@@ -469,23 +530,19 @@ func extract_mutation(line: String) -> Dictionary:
 		var expression = tokenise(found.strings[found.names.get("args")])
 		if expression.size() > 0 and expression[0].get("type") == Constants.TYPE_ERROR:
 			return { "error": expression[0].get("value") }
-
-		return {
-			"function": found.strings[found.names.get("function")],
-			"args": tokens_to_list(expression)
-		}
+		else:
+			return {
+				"function": found.strings[found.names.get("function")],
+				"args": tokens_to_list(expression)
+			}
 	
 	# Otherwise we are setting a variable so expressionise its new value
-	elif found.names.has("lhs"):
-		var expression = tokenise(found.strings[found.names.get("rhs")])
+	elif found.names.has("mutation"):
+		var expression = tokenise(found.strings[found.names.get("mutation")])
 		if expression[0].get("type") == Constants.TYPE_ERROR:
 			return { "error": "Invalid expression for value" }
-		
-		return {
-			"variable": found.strings[found.names.get("lhs")],
-			"operator": found.strings[found.names.get("operator")],
-			"expression": expression
-		}
+		else:
+			return { "expression": expression }
 	
 	else:
 		return { "error": "Incomplete expression" }
@@ -505,10 +562,8 @@ func extract_condition(raw_line: String, is_wrapped: bool = false) -> Dictionary
 	
 	if expression[0].get("type") == Constants.TYPE_ERROR:
 		return { "error": expression[0].get("value") }
-	
-	return {
-		"expression": expression
-	}
+	else:
+		return { "expression": expression }
 
 
 func extract_dialogue_replacements(text: String) -> Array:
@@ -557,23 +612,31 @@ func extract_markers(line: String) -> Dictionary:
 	var mutations = []
 	var bb_codes = []
 	var index_map = {}
+	var time = null
 	
 	# Extract all of the BB codes so that we know the actual text (we could do this easier with
 	# a RichTextLabel but then we'd need to await idle_frame which is annoying)
 	var founds = BB_CODE_REGEX.search_all(text)
+	var accumulaive_length_offset = 0
 	if founds:
 		for found in founds:
 			var code = found.strings[0]
 			# Ignore our own markers
 			if MARKER_CODE_REGEX.search(code):
 				continue
-			bb_codes.append([found.get_start(), code])
+			bb_codes.append({
+				code = code,
+				start = found.get_start(),
+				offset_start = found.get_start() - accumulaive_length_offset
+			})
+			accumulaive_length_offset += code.length()
 
-	for i in range(bb_codes.size() - 1, -1, -1):
-		text.erase(bb_codes[i][0], bb_codes[i][1].length())
+	for bb_code in bb_codes:
+		text.erase(bb_code.offset_start, bb_code.code.length())
 	
 	var found = MARKER_CODE_REGEX.search(text)
 	var limit = 0
+	var prev_codes_len = 0
 	while found and limit < 1000:
 		limit += 1
 		var index = text.find(found.strings[0])
@@ -596,33 +659,39 @@ func extract_markers(line: String) -> Dictionary:
 			
 		match code:
 			"wait":
-				pauses[index] = args.get("value").to_float()
+				if pauses.has(index):
+					pauses[index] += args.get("value").to_float()
+				else:
+					pauses[index] = args.get("value").to_float()
 			"speed":
 				speeds.append([index, args.get("value").to_float()])
 			"/speed":
 				speeds.append([index, 1.0])
 			"do":
 				mutations.append([index, args.get("value")])
-		
-		var length = found.strings[0].length()
+			"next":
+				time = args.get("value") if args.has("value") else "0"
 		
 		# Find any BB codes that are after this index and remove the length from their start
+		var length = found.strings[0].length()
 		for bb_code in bb_codes:
-			if bb_code[0] > length:
-				bb_code[0] -= length
+			if bb_code.offset_start >= found.get_start():
+				bb_code.offset_start -= length
+				bb_code.start -= length
 		
 		text.erase(index, length)
 		found = MARKER_CODE_REGEX.search(text)
 	
 	# Put the BB Codes back in
 	for bb_code in bb_codes:
-		text = text.insert(bb_code[0], bb_code[1])
-	
+		text = text.insert(bb_code.start, bb_code.code)
+
 	return {
 		"text": text,
 		"pauses": pauses,
 		"speeds": speeds,
-		"mutations": mutations
+		"mutations": mutations,
+		"time": time
 	}
 		
 
@@ -738,13 +807,24 @@ func build_token_tree(tokens: Array, expected_close_token: String = "") -> Array
 				
 				return [tree, tokens]
 			
+			Constants.TOKEN_NOT:
+				# Double nots negate each other
+				if tokens.size() > 0 and tokens.front().get("type") == Constants.TOKEN_NOT:
+					tokens.pop_front()
+				else:
+					tree.append({
+						"type": token.get("type")
+					})
+				
 			Constants.TOKEN_COMMA, \
-			Constants.TOKEN_COLON:
+			Constants.TOKEN_COLON, \
+			Constants.TOKEN_DOT:
 				tree.append({
 					"type": token.get("type")
 				})
 			
 			Constants.TOKEN_COMPARISON, \
+			Constants.TOKEN_ASSIGNMENT, \
 			Constants.TOKEN_OPERATOR, \
 			Constants.TOKEN_AND_OR, \
 			Constants.TOKEN_VARIABLE: \
@@ -786,26 +866,87 @@ func check_next_token(token: Dictionary, next_tokens: Array) -> String:
 	match token.get("type"):
 		Constants.TOKEN_FUNCTION, \
 		Constants.TOKEN_PARENS_OPEN:
-			unexpected_token_types = [null, Constants.TOKEN_COMMA, Constants.TOKEN_COLON, Constants.TOKEN_COMPARISON, Constants.TOKEN_OPERATOR, Constants.TOKEN_AND_OR]
+			unexpected_token_types = [
+				null, 
+				Constants.TOKEN_COMMA, 
+				Constants.TOKEN_COLON, 
+				Constants.TOKEN_COMPARISON, 
+				Constants.TOKEN_ASSIGNMENT,
+				Constants.TOKEN_OPERATOR, 
+				Constants.TOKEN_AND_OR,
+				Constants.TOKEN_DOT
+			]
+		
+		Constants.TOKEN_BRACKET_CLOSE:
+			unexpected_token_types = [
+				Constants.TOKEN_NOT,
+				Constants.TOKEN_BOOL, 
+				Constants.TOKEN_STRING, 
+				Constants.TOKEN_NUMBER, 
+				Constants.TOKEN_VARIABLE
+			]
 		
 		Constants.TOKEN_PARENS_CLOSE, \
-		Constants.TOKEN_BRACE_CLOSE, \
-		Constants.TOKEN_BRACKET_CLOSE:
-			unexpected_token_types = [Constants.TOKEN_BOOL, Constants.TOKEN_STRING, Constants.TOKEN_NUMBER, Constants.TOKEN_VARIABLE]
+		Constants.TOKEN_BRACE_CLOSE:
+			unexpected_token_types = [
+				Constants.TOKEN_NOT,
+				Constants.TOKEN_ASSIGNMENT,
+				Constants.TOKEN_BOOL, 
+				Constants.TOKEN_STRING, 
+				Constants.TOKEN_NUMBER, 
+				Constants.TOKEN_VARIABLE
+			]
 
 		Constants.TOKEN_COMPARISON, \
 		Constants.TOKEN_OPERATOR, \
 		Constants.TOKEN_COMMA, \
 		Constants.TOKEN_COLON, \
+		Constants.TOKEN_DOT, \
+		Constants.TOKEN_NOT, \
 		Constants.TOKEN_AND_OR, \
 		Constants.TOKEN_DICTIONARY_REFERENCE:
-			unexpected_token_types = [null, Constants.TOKEN_COMMA, Constants.TOKEN_COLON, Constants.TOKEN_COMPARISON, Constants.TOKEN_OPERATOR, Constants.TOKEN_AND_OR, Constants.TOKEN_PARENS_CLOSE, Constants.TOKEN_BRACE_CLOSE, Constants.TOKEN_BRACKET_CLOSE]
+			unexpected_token_types = [
+				null, 
+				Constants.TOKEN_COMMA, 
+				Constants.TOKEN_COLON, 
+				Constants.TOKEN_COMPARISON, 
+				Constants.TOKEN_ASSIGNMENT,
+				Constants.TOKEN_OPERATOR, 
+				Constants.TOKEN_AND_OR, 
+				Constants.TOKEN_PARENS_CLOSE, 
+				Constants.TOKEN_BRACE_CLOSE, 
+				Constants.TOKEN_BRACKET_CLOSE,
+				Constants.TOKEN_DOT
+			]
 
 		Constants.TOKEN_BOOL, \
 		Constants.TOKEN_STRING, \
-		Constants.TOKEN_NUMBER, \
+		Constants.TOKEN_NUMBER:
+			unexpected_token_types = [
+				Constants.TOKEN_NOT,
+				Constants.TOKEN_ASSIGNMENT,
+				Constants.TOKEN_BOOL, 
+				Constants.TOKEN_STRING, 
+				Constants.TOKEN_NUMBER, 
+				Constants.TOKEN_VARIABLE, 
+				Constants.TOKEN_FUNCTION, 
+				Constants.TOKEN_PARENS_OPEN, 
+				Constants.TOKEN_BRACE_OPEN, 
+				Constants.TOKEN_BRACKET_OPEN
+			]
+			
 		Constants.TOKEN_VARIABLE:
-			unexpected_token_types = [Constants.TOKEN_BOOL, Constants.TOKEN_STRING, Constants.TOKEN_NUMBER, Constants.TOKEN_VARIABLE, Constants.TOKEN_FUNCTION, Constants.TOKEN_PARENS_OPEN, Constants.TOKEN_BRACE_OPEN, Constants.TOKEN_BRACKET_OPEN]
+			unexpected_token_types = [
+				Constants.TOKEN_NOT,
+				Constants.TOKEN_BOOL, 
+				Constants.TOKEN_STRING, 
+				Constants.TOKEN_NUMBER, 
+				Constants.TOKEN_VARIABLE, 
+				Constants.TOKEN_FUNCTION, 
+				Constants.TOKEN_PARENS_OPEN, 
+				Constants.TOKEN_BRACE_OPEN, 
+				Constants.TOKEN_BRACKET_OPEN
+			]
 
 	if next_token_type in unexpected_token_types:
 		match next_token_type:
@@ -820,7 +961,9 @@ func check_next_token(token: Dictionary, next_tokens: Array) -> String:
 				return "Unexpected bracket"
 
 			Constants.TOKEN_COMPARISON, \
+			Constants.TOKEN_ASSIGNMENT, \
 			Constants.TOKEN_OPERATOR, \
+			Constants.TOKEN_NOT, \
 			Constants.TOKEN_AND_OR:
 				return "Unexpected operator"
 			
@@ -828,6 +971,8 @@ func check_next_token(token: Dictionary, next_tokens: Array) -> String:
 				return "Unexpected comma"
 			Constants.TOKEN_COLON:
 				return "Unexpected colon"
+			Constants.TOKEN_DOT:
+				return "Unexpected dot"
 
 			Constants.TOKEN_BOOL:
 				return "Unexpected boolean"

@@ -59,7 +59,7 @@ func _process(_delta: float) -> void:
 		$Head/Camera/Phone.translation.x = (get_viewport().get_visible_rect().size.x/1280)*phoneOrigin.x * 720/get_viewport().get_visible_rect().size.y
 		
 		if !vending_mode:
-			camera_rotation()	
+			camera_rotation()
 
 # Called every physics tick. 'delta' is constant
 func _physics_process(delta: float) -> void:
@@ -83,7 +83,7 @@ func _physics_process(delta: float) -> void:
 # Called when there is an input event
 func _input(event: InputEvent) -> void:
 	if !Global.paused:
-		if event is InputEventMouseMotion:
+		if event is InputEventMouseMotion and !phone_out:
 			mouse_axis = event.relative
 		if event.is_action_pressed("phone"):
 			move_phone()
@@ -97,22 +97,21 @@ func _input(event: InputEvent) -> void:
 			#	screenshot()
 
 func move_phone():
-	$Head/Viewport/PhoneUI.grab_focus()
 	phone_out = !phone_out
-	Global.display_reticle = !phone_out
-	var phonePos = Vector3($Head/Camera/Phone.translation.x,-0.02,phoneOrigin.z) if phone_out else Vector3($Head/Camera/Phone.translation.x,-0.5,phoneOrigin.z)
-	var easeType = Tween.EASE_OUT if phone_out else Tween.EASE_IN
-	$Tween.interpolate_property($Head/Camera/Phone, "translation", null, phonePos, 1.0, Tween.TRANS_BACK, easeType)
-	$Tween.start()
-	#yield(phoneTween, "tween_all_completed")
 	$Head/Camera/Phone.is_phone_out = phone_out
 	set_mouse_mode()
+	if phone_out:
+		$Head/Viewport/PhoneUI.grab_focus()
+	var phonePos = Vector3($Head/Camera/Phone.translation.x,-0.02,phoneOrigin.z) if phone_out else Vector3($Head/Camera/Phone.translation.x,-0.5,phoneOrigin.z)
+	var easeType = Tween.EASE_OUT if phone_out else Tween.EASE_IN
+	$Tween.interpolate_property($Head/Camera/Phone, "translation", null, phonePos, 0.7, Tween.TRANS_BACK, easeType)
+	$Tween.start()
+	#yield(phoneTween, "tween_all_completed")
 
 func move_to_anchor():
 	var trans_speed = 0.5
 	var trans_type = Tween.TRANS_QUART
 	if vending_mode:
-		Global.display_reticle = true
 		#$Head/Camera.global_translate()
 		$Tween.interpolate_property($Head/Camera, "translation", null, Vector3(0,0,0), trans_speed, trans_type, Tween.EASE_OUT)
 		$Tween.interpolate_property($Head/Camera, "rotation", null, Vector3(0,0,0), trans_speed, trans_type, Tween.EASE_OUT)
@@ -123,7 +122,6 @@ func move_to_anchor():
 		if rayCollider:
 			var anchor : Spatial = rayCollider.owner.get_node("Camera_Anchor")
 			if anchor:
-				Global.display_reticle = false
 #				#$Head/Camera.look_at(anchor.global_transform.origin, Vector3.UP)
 #				$Head/Camera.global_transform.origin = anchor.global_transform.origin
 #				$Head/Camera.global_transform.basis = anchor.global_transform.basis
@@ -136,8 +134,10 @@ func move_to_anchor():
 func set_mouse_mode():
 	if(!phone_out and !vending_mode and !dev_mouse_display):
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		Global.display_reticle = true
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		Global.display_reticle = false
 
 func screenshot():
 	for uiElement in get_tree().get_nodes_in_group("UI"):
@@ -293,10 +293,10 @@ func camera_rotation() -> void:
 		
 		mouse_axis = Vector2()
 		
-	rotate_y(deg2rad(horizontal))
-	head.rotate_x(deg2rad(vertical))
+		rotate_y(deg2rad(horizontal))
+		head.rotate_x(deg2rad(vertical))
 	
-	# Clamp mouse rotation
-	var temp_rot: Vector3 = head.rotation_degrees
-	temp_rot.x = clamp(temp_rot.x, -90, 90)
-	head.rotation_degrees = temp_rot
+		# Clamp mouse rotation
+		var temp_rot: Vector3 = head.rotation_degrees
+		temp_rot.x = clamp(temp_rot.x, -90, 90)
+		head.rotation_degrees = temp_rot

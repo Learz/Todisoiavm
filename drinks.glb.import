@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/Metal Screw Small.glb-5932f2cbf965c0c2ad994c2cb1eb1791.scn"
+path="res://.import/drinks.glb-3798e4043851c2c5015e29fe0b7b7c57.scn"
 
 [deps]
 
-source_file="res://resources/models/Bottles/Metal Screw Small.glb"
-dest_files=[ "res://.import/Metal Screw Small.glb-5932f2cbf965c0c2ad994c2cb1eb1791.scn" ]
+source_file="res://drinks.glb"
+dest_files=[ "res://.import/drinks.glb-3798e4043851c2c5015e29fe0b7b7c57.scn" ]
 
 [params]
 
@@ -18,8 +18,8 @@ nodes/custom_script="res://resources/models/Bottles/Bottle_import.gd"
 nodes/storage=0
 nodes/use_legacy_names=false
 materials/location=1
-materials/storage=1
-materials/keep_on_reimport=true
+materials/storage=0
+materials/keep_on_reimport=false
 meshes/octahedral_compression=true
 meshes/compress=true
 meshes/ensure_tangents=true

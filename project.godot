@@ -14,10 +14,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://entities/Billboard.gd"
 }, {
+"base": "Node",
+"class": "DialogueLine",
+"language": "GDScript",
+"path": "res://addons/dialogue_manager/dialogue_line.gd"
+}, {
 "base": "Resource",
 "class": "DialogueResource",
 "language": "GDScript",
 "path": "res://addons/dialogue_manager/dialogue_resource.gd"
+}, {
+"base": "Node",
+"class": "DialogueResponse",
+"language": "GDScript",
+"path": "res://addons/dialogue_manager/dialogue_response.gd"
 }, {
 "base": "Node",
 "class": "SoundManagerModule",
@@ -26,7 +36,9 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Billboard": "",
+"DialogueLine": "",
 "DialogueResource": "",
+"DialogueResponse": "",
 "SoundManagerModule": ""
 }
 
@@ -57,7 +69,7 @@ window/dpi/allow_hidpi=true
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/CodeSnippetPopup/plugin.cfg", "res://addons/Todo_Manager/plugin.cfg", "res://addons/dialogue_manager/plugin.cfg", "res://addons/dialogue_tree/plugin.cfg", "res://addons/scene_transition/plugin.cfg", "res://addons/sound_manager/plugin.cfg", "res://addons/zylann.translation_editor/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/CodeSnippetPopup/plugin.cfg", "res://addons/Todo_Manager/plugin.cfg", "res://addons/dialogue_manager/plugin.cfg", "res://addons/scene_transition/plugin.cfg", "res://addons/sound_manager/plugin.cfg", "res://addons/zylann.translation_editor/plugin.cfg" )
 
 [importer_defaults]
 
@@ -1105,12 +1117,15 @@ scene={
 "meshes/ensure_tangents": true,
 "meshes/light_baking": 0,
 "meshes/lightmap_texel_size": 0.1,
-"meshes/storage": 1,
+"meshes/octahedral_compression": true,
+"meshes/storage": 0,
 "nodes/custom_script": "",
 "nodes/root_name": "Scene Root",
 "nodes/root_scale": 1.0,
 "nodes/root_type": "Spatial",
-"nodes/storage": 0
+"nodes/storage": 0,
+"nodes/use_legacy_names": false,
+"skins/use_named_skins": true
 }
 
 [input]
@@ -1194,6 +1209,10 @@ right_click={
 "events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
 
 [layer_names]
 

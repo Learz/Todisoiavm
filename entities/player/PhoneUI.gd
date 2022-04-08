@@ -18,5 +18,4 @@ func _on_HomeButton_pressed():
 			$Tween.interpolate_property(app, "rect_position", null, Vector2(0,600), 0.5, Tween.TRANS_QUART)
 			$Tween.interpolate_property(app, "rect_scale", null, Vector2(0.2,0.2), 0.8, Tween.TRANS_CIRC)
 			$Tween.start()
-	pass # Replace with function body.
 

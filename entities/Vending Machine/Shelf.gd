@@ -6,7 +6,6 @@ export var drinkType = 0
 func _ready():
 	yield(Global, "textures_generated")
 	generate_cans()
-	pass # Replace with function body.
 
 func generate_cans():
 	for i in range(6):

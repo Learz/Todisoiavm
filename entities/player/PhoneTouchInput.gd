@@ -29,9 +29,11 @@ func _mouse_entered_area():
 	is_mouse_inside = true
 
 func _input(event):
+	if not is_phone_out:
+		return
 	# Check if the event is a non-mouse/non-touch event
 	var is_mouse_event = false
-	for mouse_event in [InputEventMouseButton, InputEventMouseMotion, InputEventScreenDrag, InputEventScreenTouch]:
+	for mouse_event in [InputEventMouseButton, InputEventMouseMotion]:
 		if event is mouse_event:
 			is_mouse_event = true
 			break
@@ -39,7 +41,7 @@ func _input(event):
 	# If the event is a mouse/touch event and/or the mouse is either held or inside the area, then
 	# we need to do some additional processing in the handle_mouse function before passing the event to the viewport.
 	# If the event is not a mouse/touch event, then we can just pass the event directly to the viewport.
-	if is_mouse_event and (is_mouse_inside or is_mouse_held) and is_phone_out:
+	if is_mouse_event and (is_mouse_inside or is_mouse_held):
 		handle_mouse(event)
 	elif not is_mouse_event:
 		node_viewport.input(event)
@@ -51,8 +53,9 @@ func handle_mouse(event):
 	quad_mesh_size = node_quad.mesh.size
 	
 	# Detect mouse being held to mantain event while outside of bounds. Avoid orphan clicks
-	if event is InputEventMouseButton or event is InputEventScreenTouch:
+	if event is InputEventMouseButton:
 		is_mouse_held = event.pressed
+	
 	
 	# Find mouse position in Area
 	var mouse_pos3D = find_mouse(event.global_position)

@@ -10,16 +10,22 @@ const Constants = preload("res://addons/dialogue_manager/constants.gd")
 const Line = preload("res://addons/dialogue_manager/dialogue_line.gd")
 const Response = preload("res://addons/dialogue_manager/dialogue_response.gd")
 
+const Settings = preload("res://addons/dialogue_manager/components/settings.gd")
+const Parser = preload("res://addons/dialogue_manager/components/parser.gd")
+
 const ExampleBalloon = preload("res://addons/dialogue_manager/example_balloon/example_balloon.gd")
 
 
 var resource: DialogueResource
 var game_states: Array = []
 var auto_translate: bool = true
+var settings: Settings = Settings.new()
 
 var is_dialogue_running := false setget set_is_dialogue_running
 
 var _node_properties: Array = []
+var _resource_cache: Array = []
+var _trash: Node = Node.new()
 
 
 func _ready() -> void:
@@ -31,14 +37,14 @@ func _ready() -> void:
 	temp_node.free()
 	
 	# Load the config file (if there is one) so we can set up any global state objects
-	var config = ConfigFile.new()
-	var success = config.load(Constants.CONFIG_PATH)
-	if success == OK:
-		var states = config.get_value("runtime", "states", [])
-		for node_name in states:
-			var state = get_node("/root/" + node_name)
-			if state:
-				game_states.append(state)
+	add_child(settings)
+	for node_name in settings.get_runtime_value("states", []):
+		var state = get_node("/root/" + node_name)
+		if state:
+			game_states.append(state)
+	
+	# Add a node for cleaning up
+	add_child(_trash)
 
 
 # Step through lines and run any mutations until we either 
@@ -56,10 +62,15 @@ func get_next_dialogue_line(key: String, override_resource: DialogueResource = n
 	
 	assert(local_resource.syntax_version == Constants.SYNTAX_VERSION, "This dialogue resource is older than the runtime expects.")
 	
+	var resource_path = local_resource.resource_path
+	if local_resource.lines.size() == 0:
+		# We probably have pre-baking turned off so we need to compile on the fly
+		local_resource = compile_resource(local_resource)
+	
 	if local_resource.errors.size() > 0:
 		# Store in a local var for debugger convenience
 		var errors = local_resource.errors
-		printerr("There are %d error(s) in %s" % [errors.size(), local_resource.resource_path])
+		printerr("There are %d error(s) in %s" % [errors.size(), resource_path])
 		for error in errors:
 			printerr("\tLine %s: %s" % [error.get("line"), error.get("message")])
 		assert(false, "The provided DialogueResource contains errors. See Output for details.")
@@ -92,13 +103,28 @@ func get_next_dialogue_line(key: String, override_resource: DialogueResource = n
 func replace_values(line_or_response) -> String:
 	if line_or_response is Line:
 		var line: Line = line_or_response
-		return get_replacements(line.dialogue, line.replacements)
+		return get_with_replacements(line.dialogue, line.replacements)
 	elif line_or_response is Response:
 		var response: Response = line_or_response
-		return get_replacements(response.prompt, response.replacements)
+		return get_with_replacements(response.prompt, response.replacements)
 	else:
 		return ""
 
+
+func get_resource_from_text(text: String) -> DialogueResource:
+	var parser = Parser.new()
+	var resource = DialogueResource.new()
+	
+	var results = parser.parse(text)
+	parser.queue_free()
+	
+	resource.raw_text = text
+	resource.syntax_version = Constants.SYNTAX_VERSION
+	resource.titles = results.get("titles")
+	resource.lines = results.get("lines")
+	resource.errors = results.get("errors")
+	
+	return resource
 
 
 func show_example_dialogue_balloon(title: String, resource: DialogueResource = null) -> void:
@@ -111,6 +137,23 @@ func show_example_dialogue_balloon(title: String, resource: DialogueResource = n
 	
 
 ### Helpers
+
+
+func compile_resource(resource: DialogueResource) -> DialogueResource:
+	# See if we have this cached, first
+	for item in _resource_cache:
+		if item[0] == resource.resource_path:
+			return item[1]
+	
+	# Otherwise, compile it and then cache it
+	var next_resource = get_resource_from_text(resource.raw_text)
+	_resource_cache.insert(0, [resource.resource_path, next_resource])
+	
+	# Only keep recent stuff in the cache
+	if _resource_cache.size() > 5:
+		_resource_cache.remove(5)
+	
+	return next_resource
 
 
 # Get a line by its ID
@@ -148,25 +191,23 @@ func get_line(key: String, local_resource: DialogueResource) -> Line:
 	var line = Line.new(data, auto_translate)
 	line.dialogue_manager = self
 	
-	# No dialogue and only one node is the same as an early exit
+	# If we are the first of a list of responses then get the other ones
 	if data.get("type") == Constants.TYPE_RESPONSE:
 		line.responses = get_responses(data.get("responses"), local_resource)
 		return line
 	
 	# Add as a child so that it gets cleaned up automatically
-	add_child(line)
+	_trash.add_child(line)
 	
 	# Replace any variables in the dialogue text
 	if data.get("type") == Constants.TYPE_DIALOGUE and data.has("replacements"):
-		line.dialogue = replace_values(line)
+		line.character = get_with_replacements(line.character, line.character_replacements)
+		line.dialogue = get_with_replacements(line.dialogue, line.replacements)
 	
 	# Inject the next node's responses if they have any
 	var next_line = local_resource.lines.get(line.next_id)
 	if next_line != null and next_line.get("type") == Constants.TYPE_RESPONSE:
 		line.responses = get_responses(next_line.get("responses"), local_resource)
-		# If there is only one response then it has to point to the next node
-		if line.responses.size() == 1:
-			line.next_id = line.responses[0].next_id
 	
 	return line
 
@@ -179,6 +220,15 @@ func set_is_dialogue_running(value: bool) -> void:
 			emit_signal("dialogue_finished")
 			
 	is_dialogue_running = value
+
+
+func get_game_states() -> Array:
+	var current_scene = get_tree().current_scene
+	var unique_states = []
+	for state in [current_scene] + game_states:
+		if not unique_states.has(state):
+			unique_states.append(state)
+	return unique_states
 
 
 # Check if a condition is met
@@ -199,10 +249,9 @@ func mutate(mutation: Dictionary) -> void:
 		match function_name:
 			"wait":
 				yield(get_tree().create_timer(float(args[0])), "timeout")
+				return
 			"emit":
-				var current_scene = get_tree().current_scene
-				var states = [current_scene] + game_states
-				for state in states:
+				for state in get_game_states():
 					if state.has_signal(args[0]):
 						match args.size():
 							1:
@@ -227,41 +276,23 @@ func mutate(mutation: Dictionary) -> void:
 					printable[mutation.get("args")[i][0].get("value")] = args[i]
 				print(printable)
 			_:
-				var current_scene = get_tree().current_scene
-				var states = [current_scene] + game_states
-				var found = false
-				for state in states:
+				for state in get_game_states():
 					if state.has_method(function_name):
-						found = true
 						var result = state.callv(function_name, args)
 						if result is GDScriptFunctionState and result.is_valid():
 							yield(result, "completed")
-				if not found:
-					printerr("'" + function_name + "' is not a method on the current scene (" + current_scene.name + ") or on any game states (" + str(game_states) + ").")
-					assert(false, "Missing function on current scene or game state. See Output for details.")
-		
-		# Wait one frame to give the dialogue handler a chance to yield
-		yield(get_tree(), "idle_frame")
-		return
+						else:
+							yield(get_tree(), "idle_frame")
+						return
+				
+				printerr("'" + function_name + "' is not a method in any game states (" + str(get_game_states()) + ").")
+				assert(false, "Missing function on current scene or game state. See Output for details.")
 	
-	elif mutation.has("variable"):
-		var lhs = mutation.get("variable")
-		var rhs = resolve(mutation.get("expression").duplicate(true))
-	
-		match mutation.get("operator"):
-			"=":
-				set_state_value(lhs, rhs)
-			"+=":
-				set_state_value(lhs, apply_operation("+", get_state_value(lhs), rhs))
-			"-=":
-				set_state_value(lhs, apply_operation("-", get_state_value(lhs), rhs))
-			"*=":
-				set_state_value(lhs, apply_operation("*", get_state_value(lhs), rhs))
-			"/=":
-				set_state_value(lhs, apply_operation("/", get_state_value(lhs), rhs))
+	elif mutation.has("expression"):
+		resolve(mutation.get("expression").duplicate(true))
 		
-		# Wait one frame to give the dialogue handler a chance to yield
-		yield(get_tree(), "idle_frame")
+	# Wait one frame to give the dialogue handler a chance to yield
+	yield(get_tree(), "idle_frame")
 
 
 func resolve_each(array: Array) -> Array:
@@ -272,7 +303,7 @@ func resolve_each(array: Array) -> Array:
 	
 
 # Replace any variables, etc in the dialogue with their state values
-func get_replacements(text: String, replacements: Array) -> String:
+func get_with_replacements(text: String, replacements: Array) -> String:
 	for replacement in replacements:
 		var value = resolve(replacement.get("expression").duplicate(true))
 		text = text.replace(replacement.get("value_in_text"), str(value))
@@ -285,11 +316,13 @@ func get_responses(ids: Array, local_resource: DialogueResource) -> Array:
 	var responses: Array = []
 	for id in ids:
 		var data = local_resource.lines.get(id)
-		if data.get("condition") == null or check(data.get("condition")):
+		if settings.get_runtime_value("include_all_responses", false) or data.get("condition") == null or check(data.get("condition")):
 			var response = Response.new(data, auto_translate)
-			response.prompt = replace_values(response)
+			response.character = get_with_replacements(response.character, response.character_replacements)
+			response.prompt = get_with_replacements(response.prompt, response.replacements)
+			response.is_allowed = data.get("condition") == null or check(data.get("condition"))
 			# Add as a child so that it gets cleaned up automatically
-			add_child(response)
+			_trash.add_child(response)
 			responses.append(response)
 	
 	return responses
@@ -298,62 +331,100 @@ func get_responses(ids: Array, local_resource: DialogueResource) -> Array:
 # Get a value on the current scene or game state
 func get_state_value(property: String):
 	# It's a variable
-	var current_scene = get_tree().current_scene
-	var states = [current_scene] + game_states
-	for state in states:
+	for state in get_game_states():
 		if has_property(state, property):
 			return state.get(property)
 
-	printerr("'" + property + "' is not a property on the current scene (" + current_scene.name + ") or on any game states (" + str(game_states) + ").")
+	printerr("'" + property + "' is not a property on any game states (" + str(get_game_states()) + ").")
 	assert(false, "Missing property on current scene or game state. See Output for details.")
 
 
 # Set a value on the current scene or game state
 func set_state_value(property: String, value) -> void:
-	var current_scene = get_tree().current_scene
-	var states = [current_scene] + game_states
-	for state in states:
+	for state in get_game_states():
 		if has_property(state, property):
 			state.set(property, value)
 			return
 	
-	printerr("'" + property + "' is not a property on the current scene (" + current_scene.name + ") or on any game states (" + str(game_states) + ").")
+	printerr("'" + property + "' is not a property on any game states (" + str(get_game_states()) + ").")
 	assert(false, "Missing property on current scene or game state. See Output for details.")
 
 
 # Collapse any expressions
 func resolve(tokens: Array):
-	# Handle functions and state values first
+	# Handle groups first
 	for token in tokens:
+		if token.get("type") == Constants.TOKEN_GROUP:
+			token["type"] = "value"
+			token["value"] = resolve(token.get("value"))
+	
+	# Then variables/methods
+	var i = 0
+	var limit = 0
+	while i < tokens.size() and limit < 1000:
+		var token = tokens[i]
+		
 		if token.get("type") == Constants.TOKEN_FUNCTION:
 			var function_name = token.get("function")
 			var args = resolve_each(token.get("value"))
-			var current_scene = get_tree().current_scene
-			var states = [current_scene] + game_states
-			for state in states:
-				if state.has_method(function_name):
-					token["type"] = "value"
-					token["value"] = state.callv(function_name, args)
-			
-			printerr("'" + function_name + "' is not a method on the current scene (" + current_scene.name + ") or on any game states (" + str(game_states) + ").")
-			assert(false, "Missing function on current scene or game state. See Output for details.")
+			if function_name == "str":
+				token["type"] = "value"
+				token["value"] = str(args[0])
+			elif tokens[i - 1].get("type") == Constants.TOKEN_DOT:
+				# If we are calling a deeper function then we need to collapse the
+				# value into the thing we are calling the function on
+				var caller = tokens[i - 2]
+				if not caller.get("value").has_method(function_name):
+					printerr("\"%s\" is not a callable method on \"%s\"" % [function_name, str(caller)])
+					assert(false, "Missing callable method on calling object. See Output for details.")
+				caller["type"] = "value"
+				caller["value"] = caller.get("value").callv(function_name, args)
+				tokens.remove(i)
+				tokens.remove(i-1)
+				i -= 2
+			else:
+				var found = false
+				for state in get_game_states():
+					if state.has_method(function_name):
+						token["type"] = "value"
+						token["value"] = state.callv(function_name, args)
+						found = true
+				
+				if not found:
+					printerr("\"%s\" is not a method on any game states (%s)" % [function_name, str(get_game_states())])
+					assert(false, "Missing function on current scene or game state. See Output for details.")
 		
 		elif token.get("type") == Constants.TOKEN_DICTIONARY_REFERENCE:
-			token["type"] = "value"
 			var value = get_state_value(token.get("variable"))
 			var index = resolve(token.get("value"))
 			if typeof(value) == TYPE_DICTIONARY:
-				if value.has(index):
-					token["value"] = value[index]
+				if tokens.size() > i + 1 and tokens[i + 1].get("type") == Constants.TOKEN_ASSIGNMENT:
+					# If the next token is an assignment then we need to leave this as a reference
+					# so that it can be resolved once everything ahead of it has been resolved
+					token["type"] = "dictionary"
+					token["value"] = value
+					token["key"] = index
 				else:
-					printerr("Key \"%s\" not found in dictionary \"%s\"" % [str(index), token.get("variable")])
-					assert(false, "Key not found in dictionary. See Output for details.")
+					if value.has(index):
+						token["type"] = "value"
+						token["value"] = value[index]
+					else:
+						printerr("Key \"%s\" not found in dictionary \"%s\"" % [str(index), token.get("variable")])
+						assert(false, "Key not found in dictionary. See Output for details.")
 			elif typeof(value) == TYPE_ARRAY:
-				if index >= 0 and index < value.size():
-					token["value"] = value[index]
+				if tokens.size() > i + 1 and tokens[i + 1].get("type") == Constants.TOKEN_ASSIGNMENT:
+					# If the next token is an assignment then we need to leave this as a reference
+					# so that it can be resolved once everything ahead of it has been resolved
+					token["type"] = "array"
+					token["value"] = value
+					token["key"] = index
 				else:
-					printerr("Index %d out of bounds of array \"%s\"" % [index, token.get("variable")])
-					assert(false, "Index out of bounds of array. See Output for details.")
+					if index >= 0 and index < value.size():
+						token["type"] = "value"
+						token["value"] = value[index]
+					else:
+						printerr("Index %d out of bounds of array \"%s\"" % [index, token.get("variable")])
+						assert(false, "Index out of bounds of array. See Output for details.")
 		
 		elif token.get("type") == Constants.TOKEN_ARRAY:
 			token["type"] = "value"
@@ -369,25 +440,42 @@ func resolve(tokens: Array):
 			token["value"] = dictionary
 			
 		elif token.get("type") == Constants.TOKEN_VARIABLE:
-			token["type"] = "value"
 			if token.get("value") == "null":
+				token["type"] = "value"
 				token["value"] = null
+			elif tokens[i - 1].get("type") == Constants.TOKEN_DOT:
+				var caller = tokens[i - 2]
+				var property = token.get("value")
+				if tokens.size() > i + 1 and tokens[i + 1].get("type") == Constants.TOKEN_ASSIGNMENT:
+					# If the next token is an assignment then we need to leave this as a reference
+					# so that it can be resolved once everything ahead of it has been resolved
+					caller["type"] = "property"
+					caller["property"] = property
+				else:
+					# If we are requesting a deeper property then we need to collapse the
+					# value into the thing we are referencing from
+					caller["type"] = "value"
+					caller["value"] = caller.get("value").get(property)
+				tokens.remove(i)
+				tokens.remove(i-1)
+				i -= 2
+			elif tokens.size() > i + 1 and tokens[i + 1].get("type") == Constants.TOKEN_ASSIGNMENT:
+				# It's a normal variable but we will be assigning to it so don't resolve
+				# it until everything after it has been resolved
+				token["type"] = "variable"
 			else:
+				token["type"] = "value"
 				token["value"] = get_state_value(token.get("value"))
-	
-	# Then groups
-	for token in tokens:
-		if token.get("type") == Constants.TOKEN_GROUP:
-			token["type"] = "value"
-			token["value"] = resolve(token.get("value"))
+		
+		i += 1
 	
 	# Then multiply and divide
-	var i = 0
-	var limit = 0
+	i = 0
+	limit = 0
 	while i < tokens.size() and limit < 1000:
 		limit += 1
 		var token = tokens[i]
-		if token.get("type") == Constants.TOKEN_OPERATOR and token.get("value") in ["*", "/"]:
+		if token.get("type") == Constants.TOKEN_OPERATOR and token.get("value") in ["*", "/", "%"]:
 			token["type"] = "value"
 			token["value"] = apply_operation(token.get("value"), tokens[i-1].get("value"), tokens[i+1].get("value"))
 			tokens.remove(i+1)
@@ -409,6 +497,22 @@ func resolve(tokens: Array):
 			token["value"] = apply_operation(token.get("value"), tokens[i-1].get("value"), tokens[i+1].get("value"))
 			tokens.remove(i+1)
 			tokens.remove(i-1)
+			i -= 1
+		i += 1
+		
+	if limit >= 1000:
+		assert(false, "Something went wrong")
+	
+	# Then negations
+	i = 0
+	limit = 0
+	while i < tokens.size() and limit < 1000:
+		limit += 1
+		var token = tokens[i]
+		if token.get("type") == Constants.TOKEN_NOT:
+			token["type"] = "value"
+			token["value"] = not tokens[i+1].get("value")
+			tokens.remove(i+1)
 			i -= 1
 		i += 1
 		
@@ -446,6 +550,39 @@ func resolve(tokens: Array):
 			i -= 1
 		i += 1
 				
+	if limit >= 1000:
+		assert(false, "Something went wrong")
+	
+	# Lastly, resolve any assignments
+	i = 0
+	limit = 0
+	while i < tokens.size() and limit < 1000:
+		limit += 1
+		var token = tokens[i]
+		if token.get("type") == Constants.TOKEN_ASSIGNMENT:
+			var lhs = tokens[i - 1]
+			var value
+			
+			match lhs.get("type"):
+				"variable":
+					value = apply_operation(token.get("value"), get_state_value(lhs.get("value")), tokens[i+1].get("value"))
+					set_state_value(lhs.get("value"), value)
+				"property":
+					value = apply_operation(token.get("value"), lhs.get("value").get(lhs.get("property")), tokens[i+1].get("value"))
+					lhs.get("value").set(lhs.get("property"), value)
+				"dictionary", "array":
+					value = apply_operation(token.get("value"), lhs.get("value")[lhs.get("key")], tokens[i+1].get("value"))
+					lhs.get("value")[lhs.get("key")] = value
+				_:
+					assert(false, "Unknown assignment target")
+			
+			token["type"] = "value"
+			token["value"] = value
+			tokens.remove(i+1)
+			tokens.remove(i-1)
+			i -= 1
+		i += 1
+	
 	if limit >= 1000:
 		assert(false, "Something went wrong")
 	
@@ -518,18 +655,24 @@ func apply_operation(operator: String, first_value, second_value):
 			return first_value
 	
 	match operator:
-		"+":
+		"=":
+			return second_value
+		"+", "+=":
 			return first_value + second_value
-		"-":
+		"-", "-=":
 			return first_value - second_value
-		"/":
+		"/", "/=":
 			return first_value / second_value
-		"*":
+		"*", "*=":
 			return first_value * second_value
+		"%":
+			return first_value % second_value
 		"and":
 			return first_value and second_value
 		"or":
 			return first_value or second_value
+		_:
+			assert(false, "Unknown operator")
 
 
 # Check if a dialogue line contains meaninful information
@@ -559,5 +702,5 @@ func has_property(thing: Object, name: String) -> bool:
 
 
 func cleanup() -> void:
-	for line in get_children():
+	for line in _trash.get_children():
 		line.queue_free()

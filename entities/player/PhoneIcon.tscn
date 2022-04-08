@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://entities/player/PhoneMenuButton.gd" type="Script" id=1]
 [ext_resource path="res://resources/fonts/PhoneUI_font.tres" type="DynamicFontData" id=2]
-[ext_resource path="res://icon.png" type="Texture" id=3]
 
 [sub_resource type="DynamicFont" id=1]
 size = 24
@@ -29,7 +28,6 @@ margin_bottom = 87.0
 rect_min_size = Vector2( 80, 0 )
 size_flags_horizontal = 0
 size_flags_vertical = 3
-texture = ExtResource( 3 )
 expand = true
 stretch_mode = 6
 
@@ -39,6 +37,5 @@ margin_top = 91.0
 margin_right = 80.0
 margin_bottom = 120.0
 custom_fonts/font = SubResource( 1 )
-text = "Titlee"
 align = 1
 valign = 1

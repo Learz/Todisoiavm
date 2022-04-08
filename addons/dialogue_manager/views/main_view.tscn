@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://addons/dialogue_manager/components/code_editor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogue_manager/views/main_view.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://addons/dialogue_manager/components/settings.gd" type="Script" id=4]
 [ext_resource path="res://addons/dialogue_manager/views/settings_dialog.tscn" type="PackedScene" id=5]
 [ext_resource path="res://addons/dialogue_manager/components/update_checker.tscn" type="PackedScene" id=6]
+[ext_resource path="res://addons/dialogue_manager/components/search.tscn" type="PackedScene" id=7]
 [ext_resource path="res://addons/dialogue_manager/views/new_dialogue_dialog.tscn" type="PackedScene" id=12]
 [ext_resource path="res://addons/dialogue_manager/components/parser.gd" type="Script" id=13]
 [ext_resource path="res://addons/dialogue_manager/views/choose_title_dialog.tscn" type="PackedScene" id=14]
@@ -54,9 +55,6 @@ anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="UpdateChecker" parent="." instance=ExtResource( 6 )]
 plugin_url = "https://github.com/nathanhoad/godot_dialogue_manager"
@@ -107,61 +105,82 @@ icon = SubResource( 2 )
 flat = true
 
 [node name="Control" type="Control" parent="Margin/VBox/Toolbar"]
-margin_right = 722.0
+margin_right = 610.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 
 [node name="NewButton" type="ToolButton" parent="Margin/VBox/Toolbar"]
-margin_left = 726.0
-margin_right = 754.0
+margin_left = 614.0
+margin_right = 642.0
 margin_bottom = 24.0
 hint_tooltip = "Make a new dialogue file"
 icon = SubResource( 2 )
 
 [node name="OpenButton" type="MenuButton" parent="Margin/VBox/Toolbar"]
-margin_left = 758.0
-margin_right = 786.0
+margin_left = 646.0
+margin_right = 674.0
 margin_bottom = 24.0
 hint_tooltip = "Open a dialogue file"
 icon = SubResource( 2 )
-items = [ "Open...", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "res://test.tres", SubResource( 2 ), 0, false, false, 2, 0, null, "", false, "res://test2.tres", SubResource( 2 ), 0, false, false, 3, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Clear recent files", null, 0, false, false, 5, 0, null, "", false ]
+items = [ "Open...", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "", null, 0, false, false, -1, 0, null, "", true, "Clear recent files", null, 0, false, false, 5, 0, null, "", false ]
 
 [node name="VSeparator" type="VSeparator" parent="Margin/VBox/Toolbar"]
-margin_left = 790.0
-margin_right = 794.0
+margin_left = 678.0
+margin_right = 682.0
 margin_bottom = 24.0
 
 [node name="SettingsButton" type="ToolButton" parent="Margin/VBox/Toolbar"]
-margin_left = 798.0
-margin_right = 826.0
+margin_left = 686.0
+margin_right = 714.0
 margin_bottom = 24.0
 hint_tooltip = "Configure dialogue editor settings"
 icon = SubResource( 2 )
 
 [node name="ErrorButton" type="ToolButton" parent="Margin/VBox/Toolbar"]
-margin_left = 830.0
-margin_right = 858.0
+margin_left = 718.0
+margin_right = 746.0
 margin_bottom = 24.0
 hint_tooltip = "Check syntax"
 disabled = true
 icon = SubResource( 2 )
 
 [node name="RunButton" type="ToolButton" parent="Margin/VBox/Toolbar"]
-margin_left = 862.0
-margin_right = 890.0
+margin_left = 750.0
+margin_right = 778.0
 margin_bottom = 24.0
 hint_tooltip = "Play the test scene"
 disabled = true
 icon = SubResource( 2 )
 
+[node name="SearchButton" type="ToolButton" parent="Margin/VBox/Toolbar"]
+margin_left = 782.0
+margin_right = 810.0
+margin_bottom = 24.0
+hint_tooltip = "Find text"
+disabled = true
+toggle_mode = true
+icon = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="VSeparator2" type="VSeparator" parent="Margin/VBox/Toolbar"]
-margin_left = 894.0
-margin_right = 898.0
+margin_left = 814.0
+margin_right = 818.0
 margin_bottom = 24.0
 
+[node name="InsertMenu" type="MenuButton" parent="Margin/VBox/Toolbar"]
+margin_left = 822.0
+margin_right = 891.0
+margin_bottom = 24.0
+disabled = true
+text = "Insert"
+icon = SubResource( 2 )
+items = [ "Wave BBCode", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "Shake BBCode", SubResource( 2 ), 0, false, false, 1, 0, null, "", false, "-", null, 0, false, true, 2, 0, null, "", true, "Typing pause", SubResource( 2 ), 0, false, false, 3, 0, null, "", false, "Typing speed change", SubResource( 2 ), 0, false, false, 4, 0, null, "", false, "Auto advance", SubResource( 2 ), 0, false, false, 5, 0, null, "", false ]
+
 [node name="TranslationsMenu" type="MenuButton" parent="Margin/VBox/Toolbar"]
-margin_left = 902.0
-margin_right = 1010.0
+margin_left = 895.0
+margin_right = 1003.0
 margin_bottom = 24.0
 disabled = true
 text = "Translations"
@@ -169,14 +188,14 @@ icon = SubResource( 2 )
 items = [ "Generate static keys", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "Save to CSV...", SubResource( 2 ), 0, false, false, 1, 0, null, "", false ]
 
 [node name="Control2" type="Control" parent="Margin/VBox/Toolbar"]
-margin_left = 1014.0
-margin_right = 1737.0
+margin_left = 1007.0
+margin_right = 1618.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 
 [node name="HelpButton" type="ToolButton" parent="Margin/VBox/Toolbar"]
-margin_left = 1741.0
-margin_right = 1871.0
+margin_left = 1622.0
+margin_right = 1752.0
 margin_bottom = 24.0
 hint_tooltip = "Get some help"
 text = "Documentation"
@@ -184,20 +203,19 @@ icon = SubResource( 2 )
 
 [node name="VersionLabel" type="Label" parent="Margin/VBox/Toolbar"]
 modulate = Color( 1, 1, 1, 0.392157 )
-margin_left = 1875.0
-margin_right = 1914.0
+margin_left = 1756.0
+margin_right = 1795.0
 margin_bottom = 24.0
 size_flags_vertical = 1
-text = "v1.0.0"
+text = "v1.7.0"
 valign = 1
 
 [node name="UpdateButton" type="Button" parent="Margin/VBox/Toolbar"]
-visible = false
 margin_left = 1799.0
 margin_right = 1914.0
 margin_bottom = 24.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "v4.1.0 available!"
+text = "v1.7.2 available!"
 flat = true
 
 [node name="Content" type="HBoxContainer" parent="Margin/VBox"]
@@ -227,7 +245,18 @@ margin_top = 1049.0
 margin_right = 382.0
 margin_bottom = 1049.0
 
-[node name="CodeEditor" parent="Margin/VBox/Content" instance=ExtResource( 1 )]
+[node name="VBox2" type="VBoxContainer" parent="Margin/VBox/Content"]
+margin_right = 40.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.0
+
+[node name="SearchToolbar" parent="Margin/VBox/Content/VBox2" instance=ExtResource( 7 )]
+visible = false
+_text_edit = NodePath("../CodeEditor")
+
+[node name="CodeEditor" parent="Margin/VBox/Content/VBox2" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 386.0
@@ -242,7 +271,7 @@ custom_colors/bookmark_color = Color( 1, 0.333333, 0.333333, 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/number_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 5 )
-_choose_title_dialog = NodePath("../../../../ChooseTitleDialog")
+_choose_title_dialog = NodePath("../../../../../ChooseTitleDialog")
 
 [node name="NewDialogueDialog" parent="." instance=ExtResource( 12 )]
 
@@ -266,12 +295,15 @@ _settings = NodePath("../Settings")
 [connection signal="pressed" from="Margin/VBox/Toolbar/SettingsButton" to="." method="_on_SettingsButton_pressed"]
 [connection signal="pressed" from="Margin/VBox/Toolbar/ErrorButton" to="." method="_on_ErrorButton_pressed"]
 [connection signal="pressed" from="Margin/VBox/Toolbar/RunButton" to="." method="_on_RunButton_pressed"]
+[connection signal="toggled" from="Margin/VBox/Toolbar/SearchButton" to="." method="_on_SearchButton_toggled"]
 [connection signal="pressed" from="Margin/VBox/Toolbar/HelpButton" to="." method="_on_HelpButton_pressed"]
 [connection signal="pressed" from="Margin/VBox/Toolbar/UpdateButton" to="." method="_on_UpdateButton_pressed"]
 [connection signal="title_clicked" from="Margin/VBox/Content/VBox/TitleList" to="." method="_on_TitleList_title_clicked"]
 [connection signal="error_pressed" from="Margin/VBox/Content/VBox/ErrorList" to="." method="_on_ErrorList_error_pressed"]
-[connection signal="active_title_changed" from="Margin/VBox/Content/CodeEditor" to="." method="_on_CodeEditor_active_title_changed"]
-[connection signal="text_changed" from="Margin/VBox/Content/CodeEditor" to="." method="_on_CodeEditor_text_changed"]
+[connection signal="close_requested" from="Margin/VBox/Content/VBox2/SearchToolbar" to="." method="_on_SearchToolbar_close_requested"]
+[connection signal="open_requested" from="Margin/VBox/Content/VBox2/SearchToolbar" to="." method="_on_SearchToolbar_open_requested"]
+[connection signal="active_title_changed" from="Margin/VBox/Content/VBox2/CodeEditor" to="." method="_on_CodeEditor_active_title_changed"]
+[connection signal="text_changed" from="Margin/VBox/Content/VBox2/CodeEditor" to="." method="_on_CodeEditor_text_changed"]
 [connection signal="file_selected" from="NewDialogueDialog" to="." method="_on_NewDialogueDialog_file_selected"]
 [connection signal="confirmed" from="OpenDialogueDialog" to="." method="_on_OpenDialogueDialog_confirmed"]
 [connection signal="file_selected" from="OpenDialogueDialog" to="." method="_on_OpenDialogueDialog_file_selected"]

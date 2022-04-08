@@ -10,6 +10,15 @@ raw_text = "~ intro
 Soot: Hey, what's up?
 - Not much, just walking around.
 	Soot: ah ok
+	Soot: Any reason?
+	- Looking for a drink.
+		Soot: Oh, can you bring me one too?
+		- No
+			Soot: aw okay
+			Soot: Well, enjoy your time.
+		- Yeah sure
+			Soot: Nice thanks!
+
 => END"
 errors = [  ]
 titles = {
@@ -21,8 +30,52 @@ lines = {
 "text": "intro",
 "type": "title"
 },
+"10": {
+"character": "Soot",
+"character_replacements": [  ],
+"inline_mutations": [  ],
+"next_id": "end",
+"parent_id": "8",
+"pauses": {
+},
+"replacements": [  ],
+"speeds": [  ],
+"text": "Well, enjoy your time.",
+"time": null,
+"translation_key": "Well, enjoy your time.",
+"type": "dialogue"
+},
+"11": {
+"next_id": "12",
+"next_id_after": "end",
+"parent_id": "6",
+"replacements": [  ],
+"text": "Yeah sure",
+"translation_key": "Yeah sure",
+"type": "response"
+},
+"12": {
+"character": "Soot",
+"character_replacements": [  ],
+"inline_mutations": [  ],
+"next_id": "end",
+"parent_id": "11",
+"pauses": {
+},
+"replacements": [  ],
+"speeds": [  ],
+"text": "Nice thanks!",
+"time": null,
+"translation_key": "Nice thanks!",
+"type": "dialogue"
+},
+"14": {
+"next_id": "end",
+"type": "goto"
+},
 "2": {
 "character": "Soot",
+"character_replacements": [  ],
 "inline_mutations": [  ],
 "next_id": "3",
 "pauses": {
@@ -30,12 +83,13 @@ lines = {
 "replacements": [  ],
 "speeds": [  ],
 "text": "Hey, what's up?",
+"time": null,
 "translation_key": "Hey, what's up?",
 "type": "dialogue"
 },
 "3": {
 "next_id": "4",
-"next_id_after": "5",
+"next_id_after": "14",
 "replacements": [  ],
 "responses": PoolStringArray( "3" ),
 "text": "Not much, just walking around.",
@@ -44,6 +98,7 @@ lines = {
 },
 "4": {
 "character": "Soot",
+"character_replacements": [  ],
 "inline_mutations": [  ],
 "next_id": "5",
 "parent_id": "3",
@@ -52,11 +107,73 @@ lines = {
 "replacements": [  ],
 "speeds": [  ],
 "text": "ah ok",
+"time": null,
 "translation_key": "ah ok",
 "type": "dialogue"
 },
 "5": {
-"next_id": "end",
-"type": "goto"
+"character": "Soot",
+"character_replacements": [  ],
+"inline_mutations": [  ],
+"next_id": "6",
+"parent_id": "3",
+"pauses": {
+},
+"replacements": [  ],
+"speeds": [  ],
+"text": "Any reason?",
+"time": null,
+"translation_key": "Any reason?",
+"type": "dialogue"
+},
+"6": {
+"next_id": "7",
+"next_id_after": "end",
+"parent_id": "3",
+"replacements": [  ],
+"responses": PoolStringArray( "6" ),
+"text": "Looking for a drink.",
+"translation_key": "Looking for a drink.",
+"type": "response"
+},
+"7": {
+"character": "Soot",
+"character_replacements": [  ],
+"inline_mutations": [  ],
+"next_id": "8",
+"parent_id": "6",
+"pauses": {
+},
+"replacements": [  ],
+"speeds": [  ],
+"text": "Oh, can you bring me one too?",
+"time": null,
+"translation_key": "Oh, can you bring me one too?",
+"type": "dialogue"
+},
+"8": {
+"next_id": "9",
+"next_id_after": "end",
+"parent_id": "6",
+"replacements": [  ],
+"responses": PoolStringArray( "8", "11" ),
+"text": "No",
+"translation_key": "No",
+"type": "response"
+},
+"9": {
+"character": "Soot",
+"character_replacements": [  ],
+"inline_mutations": [  ],
+"next_id": "10",
+"parent_id": "8",
+"pauses": {
+},
+"replacements": [  ],
+"speeds": [  ],
+"text": "aw okay",
+"time": null,
+"translation_key": "aw okay",
+"type": "dialogue"
 }
 }

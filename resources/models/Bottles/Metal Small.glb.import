@@ -11,7 +11,7 @@ dest_files=[ "res://.import/Metal Small.glb-bfd0913b5e1e01362fe4a28f1869e386.scn
 
 [params]
 
-nodes/root_type="Spatial"
+nodes/root_type="RigidBody"
 nodes/root_name="Scene Root"
 nodes/root_scale=1.0
 nodes/custom_script="res://resources/models/Bottles/Bottle_import.gd"

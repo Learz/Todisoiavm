@@ -1,4 +1,5 @@
 extends Node
+class_name DialogueLine
 
 const Constants = preload("res://addons/dialogue_manager/constants.gd")
 
@@ -6,10 +7,12 @@ var dialogue_manager
 
 var type: String = Constants.TYPE_DIALOGUE
 var next_id: String
+var translation_key: String
 
 var mutation: Dictionary
 
 var character: String
+var character_replacements: Array
 var dialogue: String
 var replacements: Array
 
@@ -19,6 +22,8 @@ var pauses: Dictionary = {}
 var speeds: Array = []
 var inline_mutations: Array = []
 
+var time = null
+
 
 func _init(data: Dictionary, should_translate: bool = true) -> void:
 	type = data.get("type")
@@ -27,11 +32,14 @@ func _init(data: Dictionary, should_translate: bool = true) -> void:
 	match data.get("type"):
 		Constants.TYPE_DIALOGUE:
 			character = data.get("character")
-			dialogue = tr(data.get("text")) if should_translate else data.get("text")
+			character_replacements = data.get("character_replacements", [])
+			dialogue = tr(data.get("translation_key")) if should_translate else data.get("text")
+			translation_key = data.get("translation_key")
 			replacements = data.get("replacements", [])
 			pauses = data.get("pauses", {})
 			speeds = data.get("speeds", [])
 			inline_mutations = data.get("inline_mutations", [])
+			time = data.get("time")
 			
 		Constants.TYPE_MUTATION:
 			mutation = data.get("mutation")
@@ -52,7 +60,8 @@ func get_speed(index: int) -> float:
 
 func mutate_inline_mutations(index: int) -> void:
 	for inline_mutation in inline_mutations:
+		# inline mutations are an array of arrays in the form of [character index, resolvable function]
 		if inline_mutation[0] > index:
 			return
 		if inline_mutation[0] == index:
-			dialogue_manager.mutate(inline_mutations[0])
+			dialogue_manager.mutate(inline_mutation[1])

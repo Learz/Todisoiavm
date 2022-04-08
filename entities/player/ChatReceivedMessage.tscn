@@ -16,14 +16,11 @@ margin_bottom = 110.0
 rect_min_size = Vector2( 320, 40 )
 size_flags_horizontal = 4
 size_flags_vertical = 0
-custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 6 )
 text = "Hey dev! How u doin?"
 valign = 1
 autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Message2" type="NinePatchRect" parent="."]
 show_behind_parent = true
@@ -39,6 +36,3 @@ patch_margin_left = 20
 patch_margin_top = 20
 patch_margin_right = 20
 patch_margin_bottom = 20
-__meta__ = {
-"_edit_use_anchors_": false
-}

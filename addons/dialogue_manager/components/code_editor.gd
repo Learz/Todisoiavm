@@ -65,6 +65,7 @@ func _ready() -> void:
 	add_keyword_color("in", condition_color)
 	add_keyword_color("and", condition_color)
 	add_keyword_color("or", condition_color)
+	add_keyword_color("not", condition_color)
 	
 	# Values
 	add_keyword_color("true", value_color)
@@ -106,6 +107,17 @@ func _gui_input(event):
 			create_title(current_goto_title)
 		"Control+Shift+Space":
 			choose_title_dialog.choose_a_title(get_titles())
+
+
+func insert_bbcode(open_tag: String, close_tag: String = "") -> void:
+	if close_tag == "":
+		insert_text_at_cursor(open_tag)
+		grab_focus()
+	else:
+		var selected_text = get_selection_text()
+		insert_text_at_cursor("%s%s%s" % [open_tag, selected_text, close_tag])
+		grab_focus()
+		cursor_set_column(cursor_get_column() - close_tag.length())
 
 
 func get_titles() -> Array:

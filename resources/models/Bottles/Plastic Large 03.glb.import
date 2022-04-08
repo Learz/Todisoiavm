@@ -11,7 +11,7 @@ dest_files=[ "res://.import/Plastic Large 03.glb-0f307aa5c3be52ea388c28e1d3c42ac
 
 [params]
 
-nodes/root_type="Spatial"
+nodes/root_type="RigidBody"
 nodes/root_name="Scene Root"
 nodes/root_scale=1.0
 nodes/custom_script="res://resources/models/Bottles/Bottle_import.gd"

@@ -13,6 +13,6 @@ func _on_item_pressed(id):
 			TranslationServer.set_locale("fr")
 	get_tree().reload_current_scene()
 
-#TODO : locale name is always in english, maybe unwanted?
+#DESIGN : locale name is always in english, maybe unwanted?
 func set_current_mode_text():
 	text = TranslationServer.get_locale_name(TranslationServer.get_locale())

@@ -57,4 +57,3 @@ func _ready():
 		#Add to tree and array
 		add_child(parSys)
 	#particles.append(parSys)
-	pass # Replace with function body.

@@ -47,24 +47,24 @@ func _input(event: InputEvent) -> void:
 		generator_thread.wait_to_finish()
 		generator_thread.start(self, "_generate_textures")
 				
-func _physics_process(delta):
+func _physics_process(_delta):
 	$HUD.visible = Global.display_HUD
 	$FPS_Counter.visible = Global.display_FPS
 	$HUD/ReticleUI.visible = Global.display_reticle
 
 # Texture Generation
 # Instances Generators and generate all the textures
-func _generate_textures(empty):
+func _generate_textures(_empty):
 	randomize()
 #	yield(get_tree(), "idle_frame")
 	
 	yield(get_tree(), "idle_frame")
 	# Instance all generators
 	Global.vending_machine_textures = []
-	for i in range(Global.nb_vending_machine_textures):
+	for _i in range(Global.nb_vending_machine_textures):
 		$VM_Tex_Generators.add_child(vm_tex_generator.instance())
 	Global.drink_textures = []
-	for i in range(Global.nb_drink_textures):
+	for _i in range(Global.nb_drink_textures):
 		$Drink_Tex_Generators.add_child(drink_tex_generator.instance())
 	
 	# Wait for the generators to display the procedural textures

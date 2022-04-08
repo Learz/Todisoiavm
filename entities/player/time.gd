@@ -11,7 +11,7 @@ func _ready():
 	pass # Replace with function body.
 
 
-func _process(delta):
+func _process(_delta):
 	var timeDict = OS.get_time();
 	var hour = timeDict.hour;
 	var minute = timeDict.minute;

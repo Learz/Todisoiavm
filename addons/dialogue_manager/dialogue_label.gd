@@ -8,6 +8,7 @@ signal finished()
 
 const Line = preload("res://addons/dialogue_manager/dialogue_line.gd")
 
+export var skip_action: String = "ui_cancel"
 export var seconds_per_step: float = 0.02
 
 
@@ -27,8 +28,11 @@ func _process(delta: float) -> void:
 		# Type out text
 		if percent_visible < 1:
 			# If cancel is pressed then skip typing it out
-			if Input.is_action_pressed("ui_cancel"):
+			if Input.is_action_just_pressed(skip_action):
 				percent_visible = 1
+				# Run any inline mutations that haven't been run yet
+				for i in range(index, get_total_character_count()):
+					dialogue.mutate_inline_mutations(i)
 			
 			# Otherwise, keep typing
 			elif waiting_seconds > 0:
@@ -71,5 +75,9 @@ func type_out() -> void:
 	waiting_seconds = 0
 	# Text isn't calculated until the next frame
 	yield(get_tree(), "idle_frame")
+	if not get_total_character_count():
+		emit_signal("finished")
+		queue_free()
+		return
 	percent_per_index = 100.0 / float(get_total_character_count()) / 100.0
 	is_typing = true

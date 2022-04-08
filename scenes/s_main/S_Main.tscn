@@ -83,6 +83,7 @@ text = "E"
 align = 1
 valign = 1
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -99,7 +100,7 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="MarginContainer" type="Control" parent="HUD"]
+[node name="CornerControl" type="Control" parent="HUD"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -107,30 +108,30 @@ anchor_bottom = 1.0
 margin_left = -60.0
 margin_top = -60.0
 
-[node name="Label" type="Label" parent="HUD/MarginContainer"]
+[node name="Label" type="Label" parent="HUD/CornerControl"]
 anchor_left = 0.115
 anchor_top = -0.336
 anchor_right = 0.115
 anchor_bottom = -0.336
-margin_left = -42.7512
-margin_top = -11.8343
-margin_right = -11.7512
-margin_bottom = 21.1657
+margin_left = -52.8419
+margin_top = -20.2432
+margin_right = -21.8419
+margin_bottom = 12.7568
 size_flags_vertical = 5
 custom_fonts/font = ExtResource( 33 )
 text = "Q"
 align = 1
 valign = 1
 
-[node name="UiPhoneIcon" type="TextureRect" parent="HUD/MarginContainer"]
+[node name="UiPhoneIcon" type="TextureRect" parent="HUD/CornerControl"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -57.0
-margin_top = -84.5
-margin_right = -8.0
-margin_bottom = -19.5
+margin_left = -67.0907
+margin_top = -92.9089
+margin_right = -18.0907
+margin_bottom = -27.9089
 rect_rotation = 13.2
 texture = ExtResource( 31 )
 expand = true
@@ -341,7 +342,7 @@ transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -32 )
 
 [node name="Vending_Machine" parent="." instance=ExtResource( 6 )]
-transform = Transform( 3.69553e-07, 0, -1, 0, 1, 0, 1, 0, 3.69553e-07, 14.7718, 0.7, -18.3728 )
+transform = Transform( 3.69553e-07, 0, -1, 0, 1, 0, 1, 0, 3.69553e-07, 15.3306, 0.7, -18.3728 )
 
 [node name="Vending_Machine2" parent="." instance=ExtResource( 6 )]
 transform = Transform( 3.69553e-07, 0, -1, 0, 1, 0, 1, 0, 3.69553e-07, 15.0352, 0.7, -40.973 )
@@ -352,31 +353,31 @@ transform = Transform( -4.56975e-07, 0, 1, 0, 1, 0, -1, 0, -4.56975e-07, 1.18349
 texture_id = 3
 
 [node name="Vending_Machine3" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 22.2616, 0.7, -14.7166 )
+transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 22.2616, 0.7, -15.4294 )
 texture_id = 2
 
 [node name="Vending_Machine5" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 25.5588, 0.7, -14.7166 )
+transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 25.5588, 0.7, -15.4294 )
 texture_id = 4
 
 [node name="Vending_Machine6" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 38.5588, 0.7, -14.7166 )
+transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 38.5588, 0.7, -15.4294 )
 texture_id = 5
 
 [node name="Vending_Machine7" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 18.322, 0.7, -14.717 )
+transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 18.322, 0.7, -15.4298 )
 texture_id = 6
 
 [node name="Vending_Machine8" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 35.2616, 0.7, -14.7166 )
+transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 35.2616, 0.7, -15.4294 )
 texture_id = 7
 
 [node name="Vending_Machine9" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 28.9681, 0.7, -14.7166 )
+transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 28.9681, 0.7, -15.4294 )
 texture_id = 8
 
 [node name="Vending_Machine10" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 32.2516, 0.7, -14.7166 )
+transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 32.2516, 0.7, -15.4294 )
 texture_id = 9
 
 [node name="Clouds" type="Spatial" parent="."]
