@@ -3,42 +3,45 @@ extends KinematicBody
 ###################-VARIABLES-####################
 
 # Camera
-export var mouse_sensitivity := 10.0
-export var mouse_smoothness := 80
-export var joystick_sensitivity := 2.0
 export var joystick_deadzone := 0.08
 export var head_path: NodePath
 export var cam_path: NodePath
-export var FOV := 80.0
-var mouse_axis := Vector2()
 onready var head: Spatial = get_node(head_path)
 onready var cam: Camera = get_node(cam_path)
+export var FOV := 80.0
+var mouse_axis := Vector2()
+
+var rightHandOrigin : Vector3
+var leftHandOrigin : Vector3
+
 # Move
 var velocity := Vector3()
 var direction := Vector3()
 var move_axis := Vector2()
 var can_sprint := true
 var sprinting := false
+
 # Walk
 const FLOOR_NORMAL := Vector3(0, 1, 0)
 export var gravity := 30.0
 export var walk_speed := 10
-export var sprint_speed := 16
+export var sprint_speed := 20
 export var acceleration := 8
 export var deacceleration := 10
 export(float, 0.0, 1.0, 0.05) var air_control := 0.3
 export var jump_height := 10
+
 # Fly
 export var fly_speed := 10
 export var fly_accel := 4
 var flying := false
 var climbing := false
+
 # Slopes
 export var floor_max_angle := 45.0
 
 #Phone
 var phone_out = false
-var phoneOrigin : Vector3
 
 var vending_mode = false
 var dev_mouse_display = false
@@ -47,7 +50,8 @@ var dev_mouse_display = false
 
 # Called when the node enters the scene tree
 func _ready() -> void:
-	phoneOrigin = $Head/Camera/Phone.translation
+	rightHandOrigin = $Head/Camera/RightHand.translation
+	leftHandOrigin = $Head/Camera/LeftHand.translation
 	cam.fov = FOV
 
 
@@ -56,7 +60,8 @@ func _process(_delta: float) -> void:
 	if !Global.paused:
 		move_axis.x = Input.get_action_strength("move_forward") - Input.get_action_strength("move_backward")
 		move_axis.y = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
-		$Head/Camera/Phone.translation.x = (get_viewport().get_visible_rect().size.x/1280)*phoneOrigin.x * 720/get_viewport().get_visible_rect().size.y
+		$Head/Camera/RightHand.translation.x = (get_viewport().get_visible_rect().size.x/1280)*rightHandOrigin.x * 720/get_viewport().get_visible_rect().size.y
+		$Head/Camera/LeftHand.translation.x = (get_viewport().get_visible_rect().size.x/1280)*leftHandOrigin.x * 720/get_viewport().get_visible_rect().size.y
 		
 		if !vending_mode:
 			camera_rotation()
@@ -83,6 +88,7 @@ func _physics_process(delta: float) -> void:
 # Called when there is an input event
 func _input(event: InputEvent) -> void:
 	if !Global.paused:
+		#TODO : Drink pickup system (pickup rotate drop throw)
 		if event is InputEventMouseMotion and !phone_out:
 			mouse_axis = event.relative
 		if event.is_action_pressed("phone"):
@@ -96,19 +102,19 @@ func _input(event: InputEvent) -> void:
 			#if(not phone_out):
 			#	screenshot()
 
-func move_phone():
+func move_phone() -> void:
 	phone_out = !phone_out
-	$Head/Camera/Phone.is_phone_out = phone_out
+	$Head/Camera/RightHand/Phone.is_phone_out = phone_out
 	set_mouse_mode()
 	if phone_out:
 		$Head/Viewport/PhoneUI.grab_focus()
-	var phonePos = Vector3($Head/Camera/Phone.translation.x,-0.02,phoneOrigin.z) if phone_out else Vector3($Head/Camera/Phone.translation.x,-0.5,phoneOrigin.z)
+	var phonePos = Vector3($Head/Camera/RightHand.translation.x,-0.02,rightHandOrigin.z) if phone_out else Vector3($Head/Camera/RightHand.translation.x,-0.5,rightHandOrigin.z)
 	var easeType = Tween.EASE_OUT if phone_out else Tween.EASE_IN
-	$Tween.interpolate_property($Head/Camera/Phone, "translation", null, phonePos, 0.7, Tween.TRANS_BACK, easeType)
+	$Tween.interpolate_property($Head/Camera/RightHand, "translation", null, phonePos, 0.7, Tween.TRANS_BACK, easeType)
 	$Tween.start()
 	#yield(phoneTween, "tween_all_completed")
 
-func move_to_anchor():
+func move_to_anchor() -> void:
 	var trans_speed = 0.5
 	var trans_type = Tween.TRANS_QUART
 	if vending_mode:
@@ -131,7 +137,7 @@ func move_to_anchor():
 				vending_mode = true
 	set_mouse_mode()
 
-func set_mouse_mode():
+func set_mouse_mode() -> void:
 	if(!phone_out and !vending_mode and !dev_mouse_display):
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		Global.display_reticle = true
@@ -139,7 +145,7 @@ func set_mouse_mode():
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		Global.display_reticle = false
 
-func screenshot():
+func screenshot() -> void:
 	for uiElement in get_tree().get_nodes_in_group("UI"):
 		uiElement.hide()
 	yield(get_tree(), "idle_frame")
@@ -196,11 +202,11 @@ func walk(delta: float) -> void:
 	var _speed: int
 	if (Input.is_action_pressed("move_sprint") and can_sprint and move_axis.x == 1):
 		_speed = sprint_speed
-		#cam.set_fov(lerp(cam.fov, FOV * 1.05, delta * 8))
+		cam.set_fov(lerp(cam.fov, FOV * 1.05, delta * 8))
 		sprinting = true
 	else:
 		_speed = walk_speed
-		#cam.set_fov(lerp(cam.fov, FOV, delta * 8))
+		cam.set_fov(lerp(cam.fov, FOV, delta * 8))
 		sprinting = false
 	
 	# Acceleration and Deacceleration
@@ -283,13 +289,13 @@ func camera_rotation() -> void:
 	var vertical:float = 0
 	
 	if joystick_axis.length() > joystick_deadzone:
-		horizontal += -(joystick_axis.x * joystick_sensitivity)
-		vertical += -(joystick_axis.y * joystick_sensitivity)
+		horizontal += -(joystick_axis.x * Global.joystick_sensitivity)
+		vertical += -(joystick_axis.y * Global.joystick_sensitivity)
 	
 	if mouse_axis.length() > 0 and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		# Get mouse delta
-		horizontal += -(mouse_axis.x * mouse_sensitivity) / mouse_smoothness 
-		vertical += -(mouse_axis.y * mouse_sensitivity) / mouse_smoothness 
+		horizontal += -(mouse_axis.x * Global.mouse_sensitivity) / Global.mouse_smoothness 
+		vertical += -(mouse_axis.y * Global.mouse_sensitivity) / Global.mouse_smoothness 
 		
 		mouse_axis = Vector2()
 		

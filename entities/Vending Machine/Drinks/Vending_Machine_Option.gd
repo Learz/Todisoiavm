@@ -35,6 +35,7 @@ func set_texture():
 
 func _on_ButtonBody_input_event(camera, event, click_position, click_normal, shape_idx):
 	if event.is_action_pressed("left_click"):
+		#TODO : Spawn the drink, give script to drink
 		#TODO : Change the sound to a more accurate vending button
 		SoundManager.play_se("Blip_Select", true, false)
 		tween.interpolate_property($Button, "translation", null, buttonPos + Vector3(0,0,-0.08), 0.1)

@@ -20,7 +20,7 @@ func _ready() -> void:
 		print("** Fast Close enabled in the 's_main.gd' script **")
 		print("** 'Esc' to close 'Shift + F1' to release mouse **")
 	
-	#TODO : Fix how slow this is at the start
+	#TODO : Fix how slow this is at the start (deferred loading?)
 	#Generate vending machines and drinks textures
 	generator_thread = Thread.new()
 	generator_thread.start(self, "_generate_textures")

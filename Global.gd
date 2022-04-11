@@ -16,6 +16,10 @@ enum WINDOW_MODE {WINDOWED, FULLSCREEN, BORDERLESS}
 var window_mode = 0 setget set_window_mode
 var config_path = "res://Config.cfg"
 
+var mouse_sensitivity := 10.0
+var mouse_smoothness := 80
+var joystick_sensitivity := 2.0
+
 #Global states
 var paused = true
 var display_HUD = false
@@ -77,27 +81,6 @@ func quit():
 func _notification(what):
 	if (what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST):
 		quit()
-		
-#func generate_textures():
-#	randomize()
-#	vending_machine_textures = []
-#	for i in range(Global.nb_vending_machine_textures):
-#		$VM_Tex_Generator/Dynamic_Texture.generate_brand()
-#		yield(get_tree(), "idle_frame")
-#		yield(get_tree(), "idle_frame")
-#		var texture = ImageTexture.new()
-#		texture.create_from_image($VM_Tex_Generator.get_texture().get_data())
-#		vending_machine_textures.push_back(texture)
-#
-#	drink_textures = []
-#	for i in range(Global.nb_drink_textures):
-#		$Drink_Tex_Generator/Dynamic_Texture.generate_brand()
-#		yield(get_tree(), "idle_frame")
-#		yield(get_tree(), "idle_frame")
-#		var texture = ImageTexture.new()
-#		texture.create_from_image($Drink_Tex_Generator.get_texture().get_data())
-#		drink_textures.push_back(texture)
-#	textures_generated = true
 
 func save_config():
 	# Initiate ConfigFile 
@@ -110,6 +93,8 @@ func save_config():
 	configFile.set_value("Display","resolution", OS.window_size)
 	
 	configFile.set_value("Input","invert_mouse_buttons", invert_mouse_buttons)
+	configFile.set_value("Input","mouse_sensitivity", mouse_sensitivity)
+	configFile.set_value("Input","joystick_sensitivity", joystick_sensitivity)
 	
 	configFile.set_value("Locale","language", TranslationServer.get_locale())
 	# Actions
@@ -143,6 +128,12 @@ func load_config():
 	config = configFile.get_value("Input", "invert_mouse_buttons")
 	if config : invert_mouse_buttons = config
 	
+	config = configFile.get_value("Input", "mouse_sensitivity")
+	if config : mouse_sensitivity = config
+	
+	config = configFile.get_value("Input", "joystick_sensitivity")
+	if config : joystick_sensitivity = config
+	
 	config = configFile.get_value("Locale", "language")
 	if config : TranslationServer.set_locale(config)
 	
@@ -152,7 +143,3 @@ func load_config():
 			InputMap.action_erase_events(a)
 			for c in config: 
 				InputMap.action_add_event(a, c)
-
-
-#func _on_VM_Tex_Generator_ready():
-#	generate_textures()
