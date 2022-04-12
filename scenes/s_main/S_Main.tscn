@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://scenes/s_main/default_env.tres" type="Environment" id=1]
 [ext_resource path="res://scenes/s_main/s_main.gd" type="Script" id=2]
@@ -31,6 +31,7 @@
 [ext_resource path="res://scenes/assets/UI/HUD_Theme.tres" type="Theme" id=29]
 [ext_resource path="res://entities/houseV2.tscn" type="PackedScene" id=30]
 [ext_resource path="res://resources/UI/UI_Phone_Icon.svg" type="Texture" id=31]
+[ext_resource path="res://resources/models/GIS_Trial/shibuya cut.glb" type="PackedScene" id=32]
 [ext_resource path="res://resources/fonts/Konbeni.tres" type="DynamicFont" id=33]
 
 [sub_resource type="ShaderMaterial" id=1]
@@ -164,7 +165,7 @@ particle_scale = 60.0
 visible_dimensions = Vector3( 500, 300, 100 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.59442, 2.49691, -6.52272 )
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -113.31, 2.49691, -23.8016 )
 head_path = NodePath("../Player/Head")
 cam_path = NodePath("../Player/Head/Camera")
 FOV = 70.0
@@ -390,3 +391,6 @@ texture_id = 9
 
 [node name="house" parent="." instance=ExtResource( 30 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00271702, 0.57645, -3.49904 )
+
+[node name="shibuya cut" parent="." instance=ExtResource( 32 )]
+transform = Transform( 0.0997223, 0, -0.00744725, 0, 0.1, 0, 0.00744725, 0, 0.0997223, -147.743, 0, -31.497 )

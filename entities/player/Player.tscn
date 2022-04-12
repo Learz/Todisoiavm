@@ -48,7 +48,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 transform = Transform( 0.001, 0, 0, 0, 0.001, 0, 0, 0, 0.001, 0, 0, 0 )
 size = 3.0
 near = 0.01
-far = 400.0
+far = 600.0
 
 [node name="RayCast" type="RayCast" parent="Head/Camera"]
 enabled = true

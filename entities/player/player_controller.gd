@@ -53,6 +53,7 @@ func _ready() -> void:
 	rightHandOrigin = $Head/Camera/RightHand.translation
 	leftHandOrigin = $Head/Camera/LeftHand.translation
 	cam.fov = FOV
+	Global.player = self
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame
@@ -208,6 +209,7 @@ func walk(delta: float) -> void:
 		_speed = walk_speed
 		cam.set_fov(lerp(cam.fov, FOV, delta * 8))
 		sprinting = false
+	_speed *= Global.debug_speed_multiplier
 	
 	# Acceleration and Deacceleration
 	# where would the player go
@@ -275,7 +277,7 @@ func fly(delta: float) -> void:
 	direction = direction.normalized()
 	
 	# Acceleration and Deacceleration
-	var target: Vector3 = direction * fly_speed
+	var target: Vector3 = direction * fly_speed * Global.debug_speed_multiplier
 	velocity = velocity.linear_interpolate(target, fly_accel * delta)
 	
 	# Move

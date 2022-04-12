@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://resources/models/phone_bg.jpg" type="Texture" id=1]
 [ext_resource path="res://entities/player/time.gd" type="Script" id=2]
@@ -23,9 +23,13 @@
 [ext_resource path="res://resources/UI/Phone_UI_Chat_Icon.png" type="Texture" id=21]
 [ext_resource path="res://entities/player/ChatSentMessage.tscn" type="PackedScene" id=22]
 [ext_resource path="res://entities/player/ChatReceivedMessage.tscn" type="PackedScene" id=23]
+[ext_resource path="res://resources/UI/speedyboi_icon.png" type="Texture" id=24]
+[ext_resource path="res://entities/player/PhoneSpeedy.gd" type="Script" id=25]
 [ext_resource path="res://entities/player/PhoneChat.gd" type="Script" id=26]
 [ext_resource path="res://entities/player/PhoneMusic.gd" type="Script" id=27]
 [ext_resource path="res://entities/player/ChatChoiceButton.tscn" type="PackedScene" id=28]
+[ext_resource path="res://resources/UI/cheats_icon.png" type="Texture" id=29]
+[ext_resource path="res://resources/UI/noclip_icon.png" type="Texture" id=30]
 
 [sub_resource type="DynamicFont" id=1]
 size = 24
@@ -225,6 +229,13 @@ margin_right = 286.0
 iconTex = ExtResource( 20 )
 title = "Camera"
 
+[node name="CheatsIcon" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Home/GridContainer" instance=ExtResource( 7 )]
+margin_left = 309.0
+margin_right = 389.0
+iconTex = ExtResource( 29 )
+title = "Cheats"
+app = NodePath("../../../Speedy")
+
 [node name="Music" type="Control" parent="HBoxContainer/TextureRect/VBoxContainer/Content"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -322,7 +333,9 @@ script = ExtResource( 18 )
 [node name="Chat" type="Control" parent="HBoxContainer/TextureRect/VBoxContainer/Content"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 3.20001
 margin_top = 600.0
+margin_right = 3.20001
 margin_bottom = 600.0
 rect_scale = Vector2( 0.2, 0.2 )
 rect_pivot_offset = Vector2( 254, 360 )
@@ -344,7 +357,7 @@ custom_constants/separation = 30
 
 [node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/VBoxContainer"]
 margin_right = 509.0
-margin_bottom = 604.0
+margin_bottom = 603.0
 rect_clip_content = false
 mouse_filter = 1
 size_flags_horizontal = 3
@@ -484,8 +497,9 @@ margin_right = 414.0
 margin_bottom = 1370.0
 
 [node name="ReplyBox" type="HBoxContainer" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/VBoxContainer"]
-margin_top = 634.0
+margin_top = 633.0
 margin_right = 509.0
+margin_bottom = 719.0
 theme = SubResource( 8 )
 
 [node name="Choices" type="VBoxContainer" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/VBoxContainer/ReplyBox"]
@@ -517,6 +531,78 @@ text = "Send"
 [node name="Timer" type="Timer" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Chat"]
 wait_time = 3.0
 one_shot = true
+
+[node name="Speedy" type="Control" parent="HBoxContainer/TextureRect/VBoxContainer/Content"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 3.0
+margin_top = 600.0
+margin_right = 3.0
+margin_bottom = 600.0
+rect_scale = Vector2( 0.2, 0.2 )
+rect_pivot_offset = Vector2( 254, 360 )
+script = ExtResource( 25 )
+
+[node name="Background" type="ColorRect" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Speedy"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.254902, 0.254902, 0.254902, 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Speedy"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 40.0
+margin_top = 40.0
+margin_right = -40.0
+margin_bottom = -40.0
+custom_constants/separation = 30
+
+[node name="TitleSpeedy" type="Label" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Speedy/VBoxContainer"]
+margin_right = 429.0
+margin_bottom = 38.0
+size_flags_vertical = 5
+custom_fonts/font = SubResource( 2 )
+text = "Not speedy"
+align = 1
+clip_text = true
+
+[node name="Speed" type="TextureButton" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Speedy/VBoxContainer"]
+margin_left = 148.0
+margin_top = 68.0
+margin_right = 281.0
+margin_bottom = 164.0
+rect_min_size = Vector2( 133, 96 )
+rect_pivot_offset = Vector2( 66, 48 )
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource( 24 )
+expand = true
+stretch_mode = 5
+script = ExtResource( 18 )
+
+[node name="TitleNoclip" type="Label" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Speedy/VBoxContainer"]
+margin_top = 194.0
+margin_right = 429.0
+margin_bottom = 232.0
+size_flags_vertical = 5
+custom_fonts/font = SubResource( 2 )
+text = "Clipping"
+align = 1
+clip_text = true
+
+[node name="Noclip" type="TextureButton" parent="HBoxContainer/TextureRect/VBoxContainer/Content/Speedy/VBoxContainer"]
+margin_left = 148.0
+margin_top = 262.0
+margin_right = 281.0
+margin_bottom = 358.0
+rect_min_size = Vector2( 133, 96 )
+rect_pivot_offset = Vector2( 66, 48 )
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource( 30 )
+expand = true
+stretch_mode = 5
+script = ExtResource( 18 )
 
 [node name="BottomBar" type="ColorRect" parent="HBoxContainer/TextureRect/VBoxContainer"]
 margin_top = 860.0
@@ -562,4 +648,6 @@ size_flags_vertical = 3
 [connection signal="pressed" from="HBoxContainer/TextureRect/VBoxContainer/Content/Music/VBoxContainer/MusicControls/PlayPause" to="HBoxContainer/TextureRect/VBoxContainer/Content/Music" method="_on_PlayPause_pressed"]
 [connection signal="pressed" from="HBoxContainer/TextureRect/VBoxContainer/Content/Music/VBoxContainer/MusicControls/Next" to="HBoxContainer/TextureRect/VBoxContainer/Content/Music" method="_on_Next_pressed"]
 [connection signal="timeout" from="HBoxContainer/TextureRect/VBoxContainer/Content/Chat/Timer" to="HBoxContainer/TextureRect/VBoxContainer/Content/Chat" method="_on_Timer_timeout"]
+[connection signal="pressed" from="HBoxContainer/TextureRect/VBoxContainer/Content/Speedy/VBoxContainer/Speed" to="HBoxContainer/TextureRect/VBoxContainer/Content/Speedy" method="_on_Speed_pressed"]
+[connection signal="pressed" from="HBoxContainer/TextureRect/VBoxContainer/Content/Speedy/VBoxContainer/Noclip" to="HBoxContainer/TextureRect/VBoxContainer/Content/Speedy" method="_on_Noclip_pressed"]
 [connection signal="pressed" from="HBoxContainer/TextureRect/VBoxContainer/BottomBar/Taskbar/HomeButton" to="." method="_on_HomeButton_pressed"]

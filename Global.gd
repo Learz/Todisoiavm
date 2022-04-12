@@ -25,6 +25,11 @@ var paused = true
 var display_HUD = false
 var display_reticle = false setget set_reticle
 
+#Debug vars
+var player
+var debug_speed_multiplier = 1
+var debug_noclip = false setget set_noclip
+
 func set_invert_mouse_buttons(s):
 	invert_mouse_buttons = s
 	var clickEvent = InputEventMouseButton.new()
@@ -67,6 +72,12 @@ func set_window_mode(s):
 func set_tex_gen(v):
 	textures_generated = v
 	emit_signal("textures_generated")
+
+
+func set_noclip(v):
+	debug_noclip = v
+	player.get_node("Collision").disabled = v
+	player.flying = v
 
 
 # Called when the node enters the scene tree for the first time.
