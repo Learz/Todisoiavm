@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://scenes/s_main/default_env.tres" type="Environment" id=1]
 [ext_resource path="res://scenes/s_main/s_main.gd" type="Script" id=2]
@@ -33,11 +33,19 @@
 [ext_resource path="res://resources/UI/UI_Phone_Icon.svg" type="Texture" id=31]
 [ext_resource path="res://resources/models/GIS_Trial/shibuya cut.glb" type="PackedScene" id=32]
 [ext_resource path="res://resources/fonts/Konbeni.tres" type="DynamicFont" id=33]
+[ext_resource path="res://entities/FogWall.tscn" type="PackedScene" id=34]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 19 )
 shader_param/Direction = Vector3( 0.02, 0.01, 0 )
 shader_param/CloudColor = Color( 1, 1, 1, 1 )
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.639216, 0.639216, 0.639216, 0.996078 )
+
+[sub_resource type="CubeMesh" id=3]
+material = SubResource( 2 )
+size = Vector3( 10, 10, 60 )
 
 [node name="S_Main" type="Spatial"]
 script = ExtResource( 2 )
@@ -165,7 +173,7 @@ particle_scale = 60.0
 visible_dimensions = Vector3( 500, 300, 100 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -113.31, 2.49691, -23.8016 )
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -11.467, 60, 21.88 )
 head_path = NodePath("../Player/Head")
 cam_path = NodePath("../Player/Head/Camera")
 FOV = 70.0
@@ -393,4 +401,42 @@ texture_id = 9
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00271702, 0.57645, -3.49904 )
 
 [node name="shibuya cut" parent="." instance=ExtResource( 32 )]
-transform = Transform( 0.0997223, 0, -0.00744725, 0, 0.1, 0, 0.00744725, 0, 0.0997223, -147.743, 0, -31.497 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 60, 0 )
+
+[node name="FogWall" parent="." instance=ExtResource( 34 )]
+transform = Transform( 0.998961, 0, 0.0455722, 0, 1, 0, -0.0455722, 0, 0.998961, 104.374, 70.9778, 16.6315 )
+
+[node name="FogWall2" parent="." instance=ExtResource( 34 )]
+transform = Transform( 0.0644626, 0, 0.99792, 0, 1, 0, -0.99792, 0, 0.0644626, 70.6246, 70.9778, -193.491 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="FogWall2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.49107, 15.3715, 0.0963211 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="FogWall3" parent="." instance=ExtResource( 34 )]
+transform = Transform( -0.695449, 0, 0.718575, 0, 1, 0, -0.718575, 0, -0.695449, -269.33, 70.9778, -239.688 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="FogWall3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.49107, 15.3715, 0.0963211 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="FogWall4" parent="." instance=ExtResource( 34 )]
+transform = Transform( -0.910316, 0, 0.413915, 0, 1, 0, -0.413915, 0, -0.910316, -356.408, 70.9778, -122.666 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="FogWall4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.49107, 15.3715, 0.0963211 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="FogWall5" parent="." instance=ExtResource( 34 )]
+transform = Transform( -0.889831, 0, -0.456291, 0, 1, 0, 0.456291, 0, -0.889831, -357.08, 70.9778, 96.5472 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="FogWall5"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.49107, 15.3715, 0.0963211 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="FogWall6" parent="." instance=ExtResource( 34 )]
+transform = Transform( 0.0848433, 0, -1.99279, 0, 1, 0, 0.996394, 0, 0.169687, 0.120354, 67.9923, 115.501 )
