@@ -26,8 +26,8 @@ func _process(delta):
 func set_texture():
 	var tex_id = randi()%Global.nb_vending_machine_textures
 	#TO FIX : Crashes when generated too fast
-	$Machine.get_surface_material(0).albedo_texture = Global.vending_machine_textures[texture_id]
-	$Door.get_surface_material(0).albedo_texture = Global.vending_machine_textures[texture_id]
+	$Machine.get_surface_material(0).albedo_texture = Global.vending_machine_textures[tex_id]
+	$Door.get_surface_material(0).albedo_texture = Global.vending_machine_textures[tex_id]
 
 func _on_StaticBody_input_event(camera, event: InputEvent, click_position, click_normal, shape_idx):
 	if event.is_action_pressed("left_click"):

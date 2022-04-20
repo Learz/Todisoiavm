@@ -18,7 +18,6 @@ Soot: Hey, what's up?
 			Soot: Well, enjoy your time.
 		- Yeah sure
 			Soot: Nice thanks!
-
 => END"
 errors = [  ]
 titles = {
@@ -69,7 +68,7 @@ lines = {
 "translation_key": "Nice thanks!",
 "type": "dialogue"
 },
-"14": {
+"13": {
 "next_id": "end",
 "type": "goto"
 },
@@ -89,7 +88,7 @@ lines = {
 },
 "3": {
 "next_id": "4",
-"next_id_after": "14",
+"next_id_after": "13",
 "replacements": [  ],
 "responses": PoolStringArray( "3" ),
 "text": "Not much, just walking around.",

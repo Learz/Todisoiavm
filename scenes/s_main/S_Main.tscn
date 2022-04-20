@@ -359,42 +359,50 @@ transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, 
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 16, 0, -32 )
 
 [node name="Vending_Machine" parent="." instance=ExtResource( 6 )]
-transform = Transform( 3.69553e-07, 0, -1, 0, 1, 0, 1, 0, 3.69553e-07, 15.3306, 0.7, -18.3728 )
+transform = Transform( 2.35437e-07, 0, -0.75, 0, 0.75, 0, 0.75, 0, 2.35437e-07, 15.3306, 0.7, -18.3728 )
 
 [node name="Vending_Machine2" parent="." instance=ExtResource( 6 )]
-transform = Transform( 3.69553e-07, 0, -1, 0, 1, 0, 1, 0, 3.69553e-07, 15.0352, 0.7, -40.973 )
+transform = Transform( 2.35437e-07, 0, -0.75, 0, 0.75, 0, 0.75, 0, 2.35437e-07, 15.0352, 0.7, -40.973 )
 texture_id = 1
 
 [node name="Vending_Machine4" parent="." instance=ExtResource( 6 )]
-transform = Transform( -4.56975e-07, 0, 1, 0, 1, 0, -1, 0, -4.56975e-07, 1.18349, 0.7, -62.1499 )
+transform = Transform( -3.01004e-07, 0, 0.75, 0, 0.75, 0, -0.75, 0, -3.01004e-07, 1.18349, 0.7, -62.1499 )
 texture_id = 3
 
 [node name="Vending_Machine3" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 22.2616, 0.7, -15.4294 )
+transform = Transform( 0.749059, 0, -0.0375653, 0, 0.75, 0, 0.0375653, 0, 0.749059, -26.7479, 59.9877, -27.7085 )
 texture_id = 2
 
 [node name="Vending_Machine5" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 25.5588, 0.7, -15.4294 )
+transform = Transform( 0.145406, 0, 0.73577, 0, 0.75, 0, -0.73577, 0, 0.145406, -27.8123, 60.0056, 53.2762 )
 texture_id = 4
 
 [node name="Vending_Machine6" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 38.5588, 0.7, -15.4294 )
+transform = Transform( 0.469433, 0, -0.584921, 0, 0.75, 0, 0.584921, 0, 0.469433, 68.0817, 60.0056, -23.718 )
 texture_id = 5
 
 [node name="Vending_Machine7" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 18.322, 0.7, -15.4298 )
+transform = Transform( -0.477372, 0, 0.57846, 0, 0.75, 0, -0.57846, 0, -0.477372, -36.4279, 60.0056, 24.0878 )
 texture_id = 6
 
 [node name="Vending_Machine8" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 35.2616, 0.7, -15.4294 )
+transform = Transform( 0.0719882, 0, 0.746538, 0, 0.75, 0, -0.746538, 0, 0.0719882, -75.0386, 60.0056, -32.4253 )
+texture_id = 7
+
+[node name="Vending_Machine12" parent="." instance=ExtResource( 6 )]
+transform = Transform( 0.749259, 0, 0.0333296, 0, 0.75, 0, -0.0333296, 0, 0.749259, -60.0512, 60.0056, -26.4262 )
+texture_id = 7
+
+[node name="Vending_Machine11" parent="." instance=ExtResource( 6 )]
+transform = Transform( 0.0719882, 0, 0.746538, 0, 0.75, 0, -0.746538, 0, 0.0719882, -74.8466, 60.0056, -34.4161 )
 texture_id = 7
 
 [node name="Vending_Machine9" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 28.9681, 0.7, -15.4294 )
+transform = Transform( -0.530182, 0, 0.530478, 0, 0.75, 0, -0.530478, 0, -0.530182, -18.8738, 60.0056, -39.5121 )
 texture_id = 8
 
 [node name="Vending_Machine10" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 4.13264e-07, 0, 1, 0, -4.13264e-07, 0, 1, 32.2516, 0.7, -15.4294 )
+transform = Transform( 0.744197, 0, -0.0931165, 0, 0.75, 0, 0.0931165, 0, 0.744197, 8.90523, 60.0056, -39.095 )
 texture_id = 9
 
 [node name="house" parent="." instance=ExtResource( 30 )]
